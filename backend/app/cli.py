@@ -45,6 +45,12 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     demo_parser.add_argument("--force-fresh", action="store_true")
 
+    subparsers.add_parser(
+        "reconcile-steps",
+        help="Recompute every timeline step's status from its linked tasks "
+        "(one-time repair for data written before task-step sync existed)",
+    )
+
     return parser
 
 
@@ -74,9 +80,37 @@ async def _run_seed(path: Path, force_fresh: bool) -> int:
     return 0
 
 
+async def _run_reconcile() -> int:
+    from sqlalchemy import select
+
+    from app.models import ProcessStep
+    from app.services.process_sync import sync_step_from_tasks
+
+    factory = get_session_factory()
+    changed = 0
+    try:
+        async with factory() as session:
+            result = await session.execute(
+                select(ProcessStep).where(ProcessStep.archived_at.is_(None))
+            )
+            for step in result.scalars().all():
+                before = step.status
+                synced = await sync_step_from_tasks(session, step.id, "cli-reconcile")
+                if synced is not None and synced.status != before:
+                    changed += 1
+                    logger.info("Step %s: %s -> %s", step.name, before, synced.status)
+            await session.commit()
+    finally:
+        await dispose_engine()
+    logger.info("Reconciled: %d step(s) updated.", changed)
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
     args = _build_parser().parse_args(argv)
+    if args.command == "reconcile-steps":
+        return asyncio.run(_run_reconcile())
     if args.command == "seed":
         path = args.file
     else:  # seed-demo

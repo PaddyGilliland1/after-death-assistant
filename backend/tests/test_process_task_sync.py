@@ -143,3 +143,33 @@ def test_unlinked_task_touches_no_step(client_and_ids):
     ).json()
     client.patch(f"/tasks/{created['id']}", json={"status": "done"})
     assert _timeline_status(client, step_id) == "not_started"
+
+
+def test_cli_reconcile_repairs_pre_sync_drift(client_and_ids, monkeypatch):
+    client, _, step_id, task_id = client_and_ids
+    import asyncio
+
+    # Simulate pre-fix drift: task done directly in the DB, step untouched.
+    engine = create_async_engine(TEST_URL, poolclass=NullPool)
+    factory = async_sessionmaker(engine, expire_on_commit=False)
+
+    async def drift():
+        async with factory() as session:
+            task = await session.get(Task, task_id)
+            task.status = "done"
+            session.add(task)
+            await session.commit()
+        await engine.dispose()
+
+    asyncio.run(drift())
+    assert _timeline_status(client, step_id) == "not_started"
+
+    monkeypatch.setenv("DATABASE_URL", TEST_URL)
+    from app.core.config import get_settings
+
+    get_settings.cache_clear()
+    from app import cli
+
+    assert cli.main(["reconcile-steps"]) == 0
+    get_settings.cache_clear()
+    assert _timeline_status(client, step_id) == "done"
