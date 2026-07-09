@@ -145,9 +145,12 @@ def test_registry_loads_and_skips_unresolved_urls():
     keys = {source.key for source in sources}
     assert "IHT400" in keys
     assert "rnrb_guidance" in keys
-    # The three TO-RESOLVE entries are skipped with a logged note.
-    assert "IHT435" not in keys
-    assert "rnrb_transfer_guidance" not in keys
+    # TO-RESOLVE entries are skipped with a logged note. IHT435 and the
+    # RNRB transfer guidance were later resolved and now load; only the
+    # sites that block automated fetching remain unresolved.
+    assert "IHT435" in keys
+    assert "rnrb_transfer_guidance" in keys
+    assert "checklist_moneyhelper" not in keys
     assert "checklist_moneyhelper" not in keys
     assert all(source.url != UNRESOLVED_URL for source in sources)
     # Every entry carries the full provenance set.
