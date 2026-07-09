@@ -290,6 +290,10 @@ async def update_task(
         before=before,
         after=_snapshot(task),
     )
+    if "status" in changes and task.process_step_id is not None:
+        from app.services.process_sync import sync_step_from_tasks
+
+        await sync_step_from_tasks(session, task.process_step_id, user.email)
     await session.commit()
     await session.refresh(task)
     return task

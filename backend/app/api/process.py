@@ -99,6 +99,9 @@ async def patch_process_step(
         before=before,
         after={"status": payload.status},
     )
+    from app.services.process_sync import sync_tasks_from_step
+
+    await sync_tasks_from_step(session, step, user.email)
     await session.commit()
     return step
 
