@@ -1,0 +1,52 @@
+# ============================================================
+# PERSONAL DATA - NEVER COMMIT (Guardrail 5: no personal data in git)
+# The repo ships schema + synthetic seed only. Real estate data
+# and the private handoff documents stay local.
+# ============================================================
+seed
+seed/
+claude-code-build-prompt.md
+requirements-spec.html
+technical-thesis.html
+
+# Environment / credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*
+*secret*
+*apikey*
+config/secrets/
+.mcp.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+
+# Node
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Databases / storage (local dev)
+*.sqlite
+*.db
+storage/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

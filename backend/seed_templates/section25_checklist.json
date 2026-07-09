@@ -1,0 +1,330 @@
+[
+  {
+    "order": 1,
+    "phase": "first_days",
+    "title": "Get the death verified and the MCCD issued",
+    "description": "Have the death verified by a healthcare professional; the medical examiner scrutinises the cause of death and issues the Medical Certificate of Cause of Death (MCCD). If the death is referred to the coroner, await the interim certificate; an inquest can delay registration.",
+    "depends_on": [],
+    "suggested_owner_role": "family"
+  },
+  {
+    "order": 2,
+    "phase": "first_days",
+    "title": "Tell close family, friends and any employer",
+    "description": "Tell close family and friends. If the person was working, tell the employer.",
+    "depends_on": [1],
+    "suggested_owner_role": "family"
+  },
+  {
+    "order": 3,
+    "phase": "first_days",
+    "title": "Find the will, codicils and funeral wishes",
+    "description": "Locate the will, any codicils and any recorded funeral wishes. Check for a prepaid funeral plan.",
+    "depends_on": [],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 4,
+    "phase": "first_days",
+    "title": "Secure the home, belongings and pets; insure the empty property",
+    "description": "Secure the property and belongings and care for any pets. Make sure the empty home is insured and tell the insurer it is unoccupied.",
+    "depends_on": [],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 5,
+    "phase": "first_days",
+    "title": "Arrange the funeral",
+    "description": "Arrange the funeral through a director or directly, following any recorded wishes or prepaid plan. Consider the DWP Funeral Expenses Payment only if a person on a qualifying benefit is paying for the funeral.",
+    "depends_on": [1, 3],
+    "suggested_owner_role": "family"
+  },
+  {
+    "order": 6,
+    "phase": "register_death",
+    "title": "Register the death within 5 days and order certified copies",
+    "description": "Register at the register office, ideally in the area where the death occurred. Order several certified copies of the death certificate; many organisations require an original.",
+    "depends_on": [1],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 7,
+    "phase": "register_death",
+    "title": "Give the certificate for burial or cremation to the funeral director",
+    "description": "Pass the certificate for burial or cremation (the green form) issued at registration to the funeral director.",
+    "depends_on": [6],
+    "suggested_owner_role": "family"
+  },
+  {
+    "order": 8,
+    "phase": "register_death",
+    "title": "Use Tell Us Once within 28 days",
+    "description": "Use the Tell Us Once service within 28 days of receiving the reference number at registration. It notifies DWP, HMRC, the Passport Office, DVLA, the council, public-sector pension schemes and Veterans UK in one step.",
+    "depends_on": [6],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 9,
+    "phase": "notify_organisations",
+    "title": "Notify banks, building societies, NS&I and Premium Bonds",
+    "description": "Tell every bank and building society, and NS&I including any Premium Bonds. A free bulk service can help: the Death Notification Service (UK Finance) covers most banks and building societies; Life Ledger and Settld cover a wider set of companies.",
+    "depends_on": [6],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 10,
+    "phase": "notify_organisations",
+    "title": "Notify pension providers, including any armed forces service pension",
+    "description": "Tell private and workplace pension providers. If the person held an armed forces service pension, notify the Armed Forces Pension Scheme; payments stop and arrears or a short continuation may apply. Check service charities (for example the relevant benevolent fund, the Royal British Legion and SSAFA) for bereavement support and possible help with funeral costs.",
+    "depends_on": [6],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 11,
+    "phase": "notify_organisations",
+    "title": "Notify insurers",
+    "description": "Tell life, home, car, health and pet insurers. Keep the empty-home policy live and compliant with any unoccupancy conditions.",
+    "depends_on": [6],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 12,
+    "phase": "notify_organisations",
+    "title": "Notify the mortgage lender, or the landlord or housing association",
+    "description": "Tell the mortgage lender if the person owned the home, or the landlord or housing association if they rented.",
+    "depends_on": [6],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 13,
+    "phase": "notify_organisations",
+    "title": "Notify utility suppliers",
+    "description": "Tell the electricity, gas and water suppliers. Take meter readings and keep supplies as needed for an empty property.",
+    "depends_on": [6],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 14,
+    "phase": "notify_organisations",
+    "title": "Notify telecoms providers",
+    "description": "Tell the landline, broadband and mobile phone providers.",
+    "depends_on": [6],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 15,
+    "phase": "notify_organisations",
+    "title": "Notify TV Licensing and streaming or subscription services",
+    "description": "Tell TV Licensing and cancel or transfer streaming and other subscription services.",
+    "depends_on": [6],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 16,
+    "phase": "notify_organisations",
+    "title": "Notify health and care providers",
+    "description": "Tell the GP, dentist and optician, cancel any hospital appointments, and tell any care agency involved.",
+    "depends_on": [6],
+    "suggested_owner_role": "family"
+  },
+  {
+    "order": 17,
+    "phase": "notify_organisations",
+    "title": "Notify the employer or former employer and professional bodies",
+    "description": "Tell the employer or former employer (there may be pension or death-in-service benefits) and any professional bodies.",
+    "depends_on": [6],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 18,
+    "phase": "notify_organisations",
+    "title": "Notify clubs, societies and memberships",
+    "description": "Tell clubs, societies and membership organisations, including any local library, so memberships are closed or transferred.",
+    "depends_on": [6],
+    "suggested_owner_role": "family"
+  },
+  {
+    "order": 19,
+    "phase": "notify_organisations",
+    "title": "Deal with digital accounts",
+    "description": "Memorialise or close social media accounts, and deal with email, cloud and photo accounts, domains and digital wallets according to each provider's bereavement process.",
+    "depends_on": [6],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 20,
+    "phase": "cancel_redirect_protect",
+    "title": "Cancel subscriptions, memberships and recurring payments",
+    "description": "Cancel recurring direct debits, standing orders, subscriptions and memberships. Check bank statements for regular payments to catch anything not already known.",
+    "depends_on": [9],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 21,
+    "phase": "cancel_redirect_protect",
+    "title": "Redirect post and stop marketing mail",
+    "description": "Set up Royal Mail redirection for the person's post and register with the Bereavement Register to stop marketing mail.",
+    "depends_on": [6],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 22,
+    "phase": "cancel_redirect_protect",
+    "title": "Deal with any vehicle",
+    "description": "Sort the vehicle: insurance, SORN or sale or transfer, and update the DVLA registered keeper details.",
+    "depends_on": [8],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 23,
+    "phase": "cancel_redirect_protect",
+    "title": "Claim the Council Tax Class F exemption",
+    "description": "Claim the Class F council tax exemption on the empty property while it is awaiting probate.",
+    "depends_on": [8],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 24,
+    "phase": "cancel_redirect_protect",
+    "title": "Trace forgotten assets via the free official services",
+    "description": "Search for anything forgotten using the free official services: My Lost Account (banks, building societies and NS&I), the Pension Tracing Service (gov.uk) and the Unclaimed Assets Register (ABI). Also sweep post, email, statements and tax records, and check for a safe deposit box, loyalty schemes and digital wallets. Never pay a reclaim firm; these searches are free.",
+    "depends_on": [6],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 25,
+    "phase": "administer_estate",
+    "title": "Confirm the executors named in the will",
+    "description": "Confirm who the will names as executors and that they are willing and able to act.",
+    "depends_on": [3],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 26,
+    "phase": "administer_estate",
+    "title": "Open an executors' bank account",
+    "description": "Open a dedicated executors' account so estate money is kept separate and every movement is traceable.",
+    "depends_on": [25],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 27,
+    "phase": "administer_estate",
+    "title": "Value the estate",
+    "description": "Value every asset and liability at the date of death: request date-of-death balances from each institution, obtain a RICS valuation for any property, and record whether each figure is an estimate or confirmed.",
+    "depends_on": [9, 25],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 28,
+    "phase": "administer_estate",
+    "title": "Assess inheritance tax and determine the reporting route",
+    "description": "Assess the IHT position from the valuations and determine whether the estate is excepted or a full IHT400 is required. Any claim to the residence nil-rate band or its transfer forces a full IHT400 even if no tax is payable.",
+    "depends_on": [27],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 29,
+    "phase": "administer_estate",
+    "title": "Complete the IHT400 and required schedules; arrange payment",
+    "description": "Complete the IHT400 and the schedules the estate's contents require, and arrange payment of any tax due (Direct Payment Scheme from the deceased's accounts, or instalments where available).",
+    "depends_on": [28],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 30,
+    "phase": "administer_estate",
+    "title": "Pay any inheritance tax due by the statutory deadline",
+    "description": "Pay any IHT due by the end of the sixth month after the month of death; interest runs on late payment.",
+    "depends_on": [29],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 31,
+    "phase": "administer_estate",
+    "title": "Submit the IHT400 and wait for the HMRC code",
+    "description": "Submit the IHT400 to HMRC and wait for the code needed by the probate service (roughly 20 working days) before applying for probate.",
+    "depends_on": [29],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 32,
+    "phase": "administer_estate",
+    "title": "Apply for probate and receive the grant",
+    "description": "Apply for probate (online where possible), pay the application fee, and receive the grant of probate.",
+    "depends_on": [31],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 33,
+    "phase": "administer_estate",
+    "title": "Place the Section 27 creditor notice",
+    "description": "Place a deceased-estates notice in The Gazette and a local newspaper. The claim window is two months from placement and protects the executors from unknown creditor claims before distribution.",
+    "depends_on": [32],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 34,
+    "phase": "administer_estate",
+    "title": "Collect the assets",
+    "description": "Collect in the assets: close accounts, encash or transfer holdings, and sell or transfer any property as the will directs.",
+    "depends_on": [32],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 35,
+    "phase": "administer_estate",
+    "title": "Settle debts and creditors",
+    "description": "Settle all verified debts and creditor claims in the correct priority order before distributing anything.",
+    "depends_on": [33, 34],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 36,
+    "phase": "administer_estate",
+    "title": "Finalise administration-period income tax and capital gains tax",
+    "description": "Finalise income tax to the date of death and for the administration period, and any CGT on disposals above probate value. A residential-property gain must be reported and paid within 60 days of completion. Check whether the informal route applies or the estate is complex.",
+    "depends_on": [34],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 37,
+    "phase": "administer_estate",
+    "title": "Prepare estate accounts and make interim distributions",
+    "description": "Prepare estate accounts showing capital, administration, income and distribution, and make any interim distributions only once the creditor-notice window has closed and creditors are settled or provisioned.",
+    "depends_on": [35],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 38,
+    "phase": "administer_estate",
+    "title": "Wait out the claims window, then make the final distribution",
+    "description": "Wait out the six-month post-grant claims window under the Inheritance (Provision for Family and Dependants) Act before the final distribution, then distribute the residue and obtain receipts or approvals from the residuary beneficiaries.",
+    "depends_on": [32, 37],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 39,
+    "phase": "administer_estate",
+    "title": "Apply for the IHT30 clearance certificate and retain records",
+    "description": "Apply to HMRC for the IHT30 clearance certificate once the IHT position is final, and retain the estate records for around 12 years for HMRC and executor protection.",
+    "depends_on": [30, 38],
+    "suggested_owner_role": "executor"
+  },
+  {
+    "order": 40,
+    "phase": "support_wellbeing",
+    "title": "Arrange bereavement support",
+    "description": "Support is available throughout: Cruse Bereavement Support, the Age UK advice line, Marie Curie, Sue Ryder and the GP.",
+    "depends_on": [],
+    "suggested_owner_role": "family"
+  },
+  {
+    "order": 41,
+    "phase": "support_wellbeing",
+    "title": "Check bereavement-related benefits",
+    "description": "Check benefit entitlements: the Funeral Expenses Payment if a person on a qualifying benefit is paying for the funeral, and Bereavement Support Payment where there is a surviving spouse or civil partner.",
+    "depends_on": [],
+    "suggested_owner_role": "family"
+  }
+]

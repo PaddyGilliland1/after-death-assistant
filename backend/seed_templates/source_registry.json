@@ -1,0 +1,268 @@
+[
+  {
+    "form_code_or_topic": "IHT400",
+    "title": "Inheritance Tax account (IHT400) and IHT400 notes",
+    "url": "https://www.gov.uk/government/publications/inheritance-tax-inheritance-tax-account-iht400",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "IHT402",
+    "title": "Claim to transfer unused nil rate band (IHT402)",
+    "url": "https://www.gov.uk/government/publications/inheritance-tax-claim-to-transfer-unused-nil-rate-band-iht402",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "IHT403",
+    "title": "Gifts and other transfers of value (IHT403)",
+    "url": "https://www.gov.uk/government/publications/inheritance-tax-gifts-and-other-transfers-of-value-iht403",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "IHT405",
+    "title": "Houses, land, buildings and interests in land (IHT405)",
+    "url": "https://www.gov.uk/government/publications/inheritance-tax-houses-land-buildings-and-interest-in-land-iht405",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "IHT406",
+    "title": "Bank and building society accounts and National Savings and Investments (IHT406)",
+    "url": "https://www.gov.uk/government/publications/inheritance-tax-bank-and-building-society-accounts-iht406",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "IHT407",
+    "title": "Household and personal goods (IHT407)",
+    "url": "https://www.gov.uk/government/publications/inheritance-tax-household-and-personal-goods-iht407",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "IHT411",
+    "title": "Listed stocks and shares (IHT411)",
+    "url": "https://www.gov.uk/government/publications/inheritance-tax-listed-stocks-and-shares-iht411",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "IHT412",
+    "title": "Unlisted stocks and shares and control holdings (IHT412)",
+    "url": "https://www.gov.uk/government/publications/inheritance-tax-unlisted-stocks-and-shares-and-control-holdings-iht412",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "IHT435",
+    "title": "Claim for residence nil rate band (IHT435)",
+    "url": "https://www.gov.uk/government/publications/claim-the-residence-nil-rate-band-rnrb-iht435",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "IHT436",
+    "title": "Claim to transfer any unused residence nil rate band (IHT436)",
+    "url": "https://assets.publishing.service.gov.uk/media/630898a6e90e0729dd8bb41b/IHT436.pdf",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "rnrb_guidance",
+    "title": "Inheritance Tax: residence nil rate band",
+    "url": "https://www.gov.uk/guidance/inheritance-tax-residence-nil-rate-band",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "nrb_transfer_guidance",
+    "title": "Transferring unused basic threshold for Inheritance Tax",
+    "url": "https://www.gov.uk/guidance/transferring-unused-basic-threshold-for-inheritance-tax",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "rnrb_transfer_guidance",
+    "title": "Transferring unused residence nil rate band for Inheritance Tax",
+    "url": "https://www.gov.uk/guidance/check-if-you-can-get-an-additional-inheritance-tax-threshold",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "rnrb_downsizing",
+    "title": "How downsizing, selling or gifting a home affects the additional Inheritance Tax threshold",
+    "url": "https://www.gov.uk/guidance/how-downsizing-selling-or-gifting-a-home-affects-the-additional-inheritance-tax-threshold",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "probate_before_you_apply",
+    "title": "Applying for probate: before you apply (including excepted-estate rules)",
+    "url": "https://www.gov.uk/applying-for-probate/before-you-apply",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "valuing_the_estate",
+    "title": "Valuing the estate of someone who died",
+    "url": "https://www.gov.uk/valuing-estate-of-someone-who-died",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "excepted_estate_reporting",
+    "title": "Inheritance Tax reporting rules if a person died after 1 January 2022",
+    "url": "https://www.nidirect.gov.uk/publications/inheritance-tax-reporting-rules-if-person-died-after-1-january-2022",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "UK (published by nidirect; rules apply to England and Wales estates)"
+  },
+  {
+    "form_code_or_topic": "paying_iht",
+    "title": "Paying Inheritance Tax: deadlines, reference number, Direct Payment Scheme, instalments",
+    "url": "https://www.gov.uk/paying-inheritance-tax",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "tell_us_once",
+    "title": "What to do after a death: organisations you need to contact and Tell Us Once",
+    "url": "https://www.gov.uk/after-a-death/organisations-you-need-to-contact-and-tell-us-once",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "gazette_s27_notice",
+    "title": "The Gazette: place a deceased estates notice (Trustee Act 1925 section 27)",
+    "url": "https://www.thegazette.co.uk/wills-and-probate/place-a-deceased-estates-notice",
+    "licence": "See source terms (The Gazette / TSO)",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "IHT30",
+    "title": "Application for a clearance certificate (IHT30)",
+    "url": "https://www.gov.uk/government/publications/inheritance-tax-application-for-a-clearance-certificate-iht30",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "IHT35",
+    "title": "Claim for relief: loss on sale of shares (IHT35)",
+    "url": "https://www.gov.uk/government/publications/inheritance-tax-claim-for-relief-loss-on-sale-of-shares-iht35",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "IHT38",
+    "title": "Claim for relief: loss on sale of land (IHT38)",
+    "url": "https://www.gov.uk/government/publications/inheritance-tax-claim-for-relief-loss-on-sale-of-land-iht38",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "admin_period_tax",
+    "title": "Dealing with the estate of someone who died: reporting the estate (administration-period income tax and CGT)",
+    "url": "https://www.gov.uk/probate-estate/reporting-the-estate",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "cgt_60_day_reporting",
+    "title": "Report and pay Capital Gains Tax on UK property (60-day rule)",
+    "url": "https://www.gov.uk/report-and-pay-your-capital-gains-tax",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "IOV2",
+    "title": "Instrument of variation checklist (IOV2), deeds of variation",
+    "url": "https://assets.publishing.service.gov.uk/media/5a7df4d040f0b6230268838d/IOV2.pdf",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "probate_fees",
+    "title": "Applying for probate: fees",
+    "url": "https://www.gov.uk/applying-for-probate/fees",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "when_someone_dies",
+    "title": "What to do when someone dies: step by step",
+    "url": "https://www.gov.uk/when-someone-dies",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "funeral_expenses_payment",
+    "title": "Funeral Expenses Payment",
+    "url": "https://www.gov.uk/funeral-payments",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "armed_forces_pension_death",
+    "title": "Death of an Armed Forces Pension Scheme member",
+    "url": "https://www.gov.uk/guidance/death-of-an-armed-forces-pension-scheme-member",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "medical_examiner_mccd",
+    "title": "NHS England: the national medical examiner system (death certification reform)",
+    "url": "https://www.england.nhs.uk/patient-safety/medical-examiners/the-national-medical-examiner-system/",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "asset_tracing",
+    "title": "LITRG: tracing assets after a death",
+    "url": "https://www.litrg.org.uk/tax-nic/trusts-and-estates/bereavement-tax-issues-death/tracing-assets-after-death",
+    "licence": "Proprietary; reference with attribution, check terms before caching",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "checklist_age_uk",
+    "title": "Age UK: what to do when someone dies",
+    "url": "https://www.ageuk.org.uk/information-advice/money-legal/legal-issues/what-to-do-when-someone-dies/",
+    "licence": "Proprietary; reference with attribution, check terms before caching",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "checklist_marie_curie",
+    "title": "Marie Curie: checklist when someone dies",
+    "url": "https://www.mariecurie.org.uk/information/grief/checklist-when-someone-dies",
+    "licence": "Proprietary; reference with attribution, check terms before caching",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "checklist_citizens_advice",
+    "title": "Citizens Advice: what to do after a death",
+    "url": "https://www.citizensadvice.org.uk/family/death-and-wills/what-to-do-after-a-death/",
+    "licence": "Proprietary; reference with attribution, check terms before caching",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "checklist_moneyhelper",
+    "title": "MoneyHelper: what to do when someone dies",
+    "url": "TO-RESOLVE",
+    "licence": "Proprietary; the site blocks automated fetching (403). Visit manually; do not cache.",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "death_notification_service",
+    "title": "Death Notification Service (UK Finance bulk notification for banks and building societies)",
+    "url": "https://www.deathnotificationservice.co.uk/",
+    "licence": "Proprietary; reference with attribution, check terms before caching",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "life_ledger",
+    "title": "Life Ledger (bulk death notification service)",
+    "url": "https://lifeledger.com/",
+    "licence": "Proprietary; reference with attribution, check terms before caching",
+    "jurisdiction": "UK"
+  }
+]

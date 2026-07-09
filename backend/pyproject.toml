@@ -1,0 +1,57 @@
+[project]
+name = "ad-assistant-backend"
+version = "0.1.0"
+description = "AD Assistant backend: estate administration and IHT tool (England and Wales)"
+license = "MIT"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic>=2",
+    "pydantic-settings",
+    "sqlmodel",
+    "sqlalchemy>=2",
+    "asyncpg",
+    "alembic",
+    "pgvector",
+    "langgraph",
+    "langchain-anthropic",
+    "httpx",
+    "python-multipart",
+    "pypdf",
+    "beautifulsoup4",
+    "fpdf2",
+    "pyjwt[crypto]>=2.13.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "aiosqlite",
+    "ruff",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["migrations/versions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]

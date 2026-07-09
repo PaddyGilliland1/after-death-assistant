@@ -1,0 +1,17 @@
+# Placeholder dev image for the AD Assistant frontend (Vite on 5173).
+# The frontend scaffold is owned by another agent; this image tolerates an
+# empty frontend/ directory and starts serving as soon as package.json lands
+# (compose bind-mounts the source, so rebuild only when dependencies change).
+FROM node:20-slim
+
+WORKDIR /app
+
+RUN corepack enable && corepack prepare pnpm@9 --activate
+
+COPY . .
+
+RUN if [ -f package.json ]; then pnpm install; fi
+
+EXPOSE 5173
+
+CMD ["sh", "-c", "if [ -f package.json ]; then pnpm install && pnpm dev --host 0.0.0.0 --port 5173; else echo 'Frontend not scaffolded yet; container idling.' && sleep infinity; fi"]

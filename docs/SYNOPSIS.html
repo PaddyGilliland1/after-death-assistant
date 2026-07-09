@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AD Assistant, Project Synopsis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   AD Assistant Synopsis
+   Brand: Watchdog HQ Brand System v1.0
+   Paper, not pixels. Editorial. British. Concise.
+   ============================================================ */
+:root {
+  --ink-900: #0F1217; --ink-800: #1A1F27; --ink-700: #2B313B;
+  --ink-500: #5B6472; --ink-400: #828B99; --ink-300: #B6BCC6;
+  --ink-200: #D9DDE3; --ink-100: #EDEFF3;
+  --paper-0: #FFFFFF; --paper-50: #FAF7F1; --paper-100: #F3EEE4;
+
+  --signal-600: #8C1D18;
+
+  --alert-600: #B6432A; --alert-100: #F8E6DF;
+  --watch-600: #8A6A1E; --watch-100: #F6ECCF;
+  --info-600:  #2E4E6E; --info-100:  #E1E8EF;
+  --ok-600:    #2F5D3E; --ok-100:    #DDE8DF;
+
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-sans:    'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --font-mono:    'JetBrains Mono', Menlo, Consolas, monospace;
+
+  --fs-4xl: clamp(52px, 6.5vw, 88px);
+  --fs-3xl: clamp(38px, 4.5vw, 56px);
+  --fs-2xl: clamp(26px, 3vw, 38px);
+  --fs-xl:  24px; --fs-lg: 20px; --fs-md: 17px;
+  --fs-base:16px; --fs-sm: 14px; --fs-xs: 12px;
+
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px;
+  --sp-6:24px; --sp-8:32px; --sp-10:40px; --sp-12:48px;
+  --sp-16:64px; --sp-20:80px; --sp-24:96px;
+
+  --r-xs:2px; --r-sm:4px; --r-md:6px; --r-pill:999px;
+
+  --shadow-sm: 0 1px 2px rgba(15,18,23,0.04);
+
+  --rule:        1px solid var(--ink-200);
+  --rule-strong: 2px solid var(--ink-900);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  background: var(--paper-50);
+  color: var(--ink-900);
+  font-size: var(--fs-base);
+  line-height: 1.55;
+  display: grid;
+  grid-template-columns: 272px 1fr;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--ink-900); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--signal-600); }
+
+/* ---------- Sidebar ---------- */
+aside {
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  background: var(--paper-100);
+  border-right: var(--rule);
+  padding: var(--sp-8) var(--sp-6);
+}
+.brand-mark {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fs-xl);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin-bottom: 4px;
+}
+.brand-mark .it { font-style: italic; font-weight: 400; color: var(--signal-600); }
+.brand-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+  margin-bottom: var(--sp-6);
+}
+.brand-meta {
+  border-top: var(--rule); border-bottom: var(--rule);
+  padding: var(--sp-4) 0; margin-bottom: var(--sp-6);
+}
+.brand-meta dl { display: grid; grid-template-columns: auto 1fr; gap: 4px var(--sp-4); font-size: var(--fs-xs); }
+.brand-meta dt {
+  font-family: var(--font-mono); text-transform: uppercase;
+  letter-spacing: 0.08em; font-size: 10.5px; color: var(--ink-500);
+}
+.brand-meta dd { color: var(--ink-900); font-weight: 600; }
+
+nav a {
+  display: grid; grid-template-columns: 24px 1fr;
+  align-items: baseline; gap: var(--sp-2);
+  padding: 7px var(--sp-2);
+  text-decoration: none; color: var(--ink-700);
+  font-size: 13.5px; border-left: 2px solid transparent;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+  line-height: 1.35;
+}
+nav a:hover { color: var(--ink-900); background: rgba(15,18,23,0.03); }
+nav a .num { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-400); letter-spacing: 0.06em; }
+
+/* ---------- Main ---------- */
+main { max-width: 100%; }
+.container { max-width: 920px; margin: 0 auto; padding: var(--sp-12) var(--sp-12) var(--sp-24); }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: var(--ink-900);
+}
+h1 { font-size: var(--fs-3xl); }
+h1 .it, h2 .it { font-style: italic; font-weight: 400; color: var(--signal-600); }
+h2 { font-size: var(--fs-2xl); }
+h3 { font-size: var(--fs-lg); margin: var(--sp-8) 0 var(--sp-3); font-weight: 600; }
+
+p { margin-bottom: var(--sp-3); color: var(--ink-700); }
+.lead { font-size: var(--fs-lg); line-height: 1.45; color: var(--ink-700); max-width: 62ch; }
+.eyebrow {
+  font-family: var(--font-mono); font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-500);
+}
+ul { margin: var(--sp-3) 0 var(--sp-4) var(--sp-5); color: var(--ink-700); }
+li { margin-bottom: 6px; }
+strong, li strong { color: var(--ink-900); font-weight: 600; }
+code {
+  font-family: var(--font-mono);
+  background: var(--paper-100);
+  padding: 1px 6px; border-radius: var(--r-xs);
+  font-size: 12.5px; color: var(--signal-600);
+}
+
+/* ---------- Sections ---------- */
+section { padding-top: var(--sp-16); margin-bottom: var(--sp-12); scroll-margin-top: var(--sp-4); }
+section + section { border-top: var(--rule); }
+
+.section-head {
+  display: grid; grid-template-columns: 200px 1fr; gap: var(--sp-8);
+  align-items: baseline;
+  padding-bottom: var(--sp-6);
+  border-bottom: var(--rule-strong);
+  margin-bottom: var(--sp-8);
+}
+.section-head .label {
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-500); padding-top: 8px;
+}
+.section-head h2 { margin: 0; }
+.section-head .lead { margin-top: var(--sp-3); max-width: 60ch; font-size: var(--fs-md); }
+@media (max-width: 860px) { .section-head { grid-template-columns: 1fr; gap: var(--sp-3); } }
+
+/* ---------- Hero ---------- */
+.hero { padding: var(--sp-10) 0 var(--sp-10); border-bottom: var(--rule-strong); margin-bottom: var(--sp-4); }
+.hero .eyebrow { display: block; margin-bottom: var(--sp-4); }
+.hero h1 { font-size: var(--fs-4xl); margin: 0 0 var(--sp-5); max-width: 16ch; }
+.hero .lead { margin-bottom: var(--sp-6); }
+
+.guardrails { border-top: var(--rule-strong); border-bottom: var(--rule); margin-top: var(--sp-6); }
+.guardrail {
+  display: grid; grid-template-columns: 40px 1fr; gap: var(--sp-4);
+  padding: var(--sp-4) 0; border-bottom: var(--rule); align-items: baseline;
+}
+.guardrail:last-child { border-bottom: 0; }
+.guardrail .n { font-family: var(--font-mono); font-size: 12px; color: var(--signal-600); letter-spacing: 0.06em; }
+.guardrail p { margin: 0; font-family: var(--font-display); font-size: var(--fs-md); color: var(--ink-900); line-height: 1.4; }
+.guardrail p em { font-style: italic; color: var(--signal-600); }
+
+/* ---------- Stats ---------- */
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: var(--rule); margin-top: var(--sp-8); }
+.stat { padding: var(--sp-5) var(--sp-5) var(--sp-5) 0; border-right: var(--rule); border-bottom: var(--rule); }
+.stat:nth-child(3n) { border-right: 0; }
+.stat .num {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: var(--fs-2xl); line-height: 1; letter-spacing: -0.02em; display: block;
+}
+.stat .label {
+  font-family: var(--font-mono); font-size: 10.5px;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--ink-500); margin-top: 6px; display: block;
+}
+@media (max-width: 700px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .stat:nth-child(3n) { border-right: var(--rule); }
+  .stat:nth-child(2n) { border-right: 0; }
+}
+
+/* ---------- Tags ---------- */
+.tag {
+  display: inline-flex; align-items: center;
+  font-family: var(--font-mono); font-weight: 500;
+  font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: var(--r-xs);
+  border: 1px solid var(--ink-300); color: var(--ink-700);
+  background: transparent; white-space: nowrap;
+}
+.tag.fyi  { color: var(--info-600); border-color: var(--info-600); background: var(--info-100); }
+.tag.done { color: var(--ok-600); border-color: var(--ok-600); background: var(--ok-100); }
+.tag.alert{ color: var(--alert-600); border-color: var(--alert-600); background: var(--alert-100); }
+
+/* ---------- Card grid ---------- */
+.grid { display: grid; gap: 0; margin: var(--sp-4) 0 var(--sp-6); border-top: var(--rule); }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 760px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+.card {
+  padding: var(--sp-5);
+  border-right: var(--rule); border-bottom: var(--rule);
+  background: var(--paper-0);
+}
+.grid-2 .card:nth-child(2n) { border-right: 0; }
+.grid-3 .card:nth-child(3n) { border-right: 0; }
+@media (max-width: 760px) { .card { border-right: 0 !important; } }
+.card .title {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: var(--fs-md); margin-bottom: 6px;
+  letter-spacing: -0.01em; color: var(--ink-900);
+}
+.card .desc { font-size: 13.5px; color: var(--ink-700); line-height: 1.55; }
+.card .mono { display: block; margin-top: var(--sp-3); font-family: var(--font-mono); font-size: 11px; color: var(--ink-500); letter-spacing: 0.04em; }
+
+/* ---------- Module map ---------- */
+.module-group { margin-bottom: var(--sp-6); }
+.module-group .group-label {
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-500);
+  padding-bottom: var(--sp-2); margin-bottom: 0;
+  border-bottom: var(--rule-strong);
+}
+.module-row {
+  display: grid; grid-template-columns: 36px 190px 1fr;
+  gap: var(--sp-4); padding: var(--sp-3) 0;
+  border-bottom: var(--rule); align-items: baseline;
+}
+.module-row .m-num { font-family: var(--font-mono); font-size: 11px; color: var(--ink-400); letter-spacing: 0.06em; }
+.module-row .m-name { font-family: var(--font-display); font-weight: 500; font-size: 15px; color: var(--ink-900); }
+.module-row .m-desc { font-size: 13px; color: var(--ink-700); line-height: 1.5; }
+@media (max-width: 700px) {
+  .module-row { grid-template-columns: 36px 1fr; }
+  .module-row .m-desc { grid-column: 2; }
+}
+
+/* ---------- Timeline ---------- */
+.timeline { border-left: var(--rule-strong); margin: var(--sp-6) 0 var(--sp-6) 12px; padding-left: var(--sp-6); }
+.timeline-item { position: relative; margin-bottom: var(--sp-5); padding-bottom: var(--sp-5); border-bottom: var(--rule); }
+.timeline-item:last-child { border-bottom: 0; margin-bottom: 0; }
+.timeline-item::before {
+  content: ''; position: absolute; left: -32px; top: 7px;
+  width: 10px; height: 10px;
+  background: var(--paper-50); border: 2px solid var(--ink-900); border-radius: 50%;
+}
+.timeline-item.current::before { background: var(--signal-600); border-color: var(--signal-600); }
+.timeline-item .head {
+  font-family: var(--font-display); font-weight: 500; font-size: var(--fs-md);
+  margin-bottom: 4px; display: flex; align-items: baseline; gap: var(--sp-3); flex-wrap: wrap;
+  color: var(--ink-900); letter-spacing: -0.01em;
+}
+.timeline-item .head .steps {
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-500);
+}
+.timeline-item .desc { font-size: 13.5px; color: var(--ink-700); line-height: 1.55; }
+
+/* ---------- Architecture ---------- */
+.arch {
+  background: var(--paper-0); border: var(--rule);
+  padding: var(--sp-6); margin: var(--sp-4) 0 var(--sp-6);
+  display: flex; justify-content: center;
+}
+.arch svg { max-width: 100%; height: auto; }
+
+/* ---------- Callout ---------- */
+.callout {
+  background: var(--paper-100);
+  border-left: 3px solid var(--signal-600);
+  padding: var(--sp-4) var(--sp-5);
+  margin: var(--sp-4) 0;
+  font-size: 14px; color: var(--ink-700);
+}
+.callout strong { color: var(--signal-600); }
+
+/* ---------- Tables ---------- */
+table {
+  width: 100%; border-collapse: collapse; margin: var(--sp-4) 0 var(--sp-6);
+  font-size: 13.5px; border-top: var(--rule-strong); border-bottom: var(--rule);
+}
+th, td { text-align: left; padding: 10px 14px; vertical-align: top; border-bottom: var(--rule); }
+th {
+  font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--ink-500); font-weight: 500;
+}
+td { color: var(--ink-700); }
+td:first-child { font-family: var(--font-display); font-size: 14.5px; color: var(--ink-900); }
+
+/* ---------- Footer ---------- */
+footer {
+  border-top: var(--rule-strong);
+  margin-top: var(--sp-16); padding-top: var(--sp-6);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--sp-4);
+}
+footer .tagline { font-family: var(--font-display); font-style: italic; font-size: var(--fs-md); color: var(--signal-600); }
+footer .meta { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-500); }
+
+/* ---------- Print ---------- */
+@media print {
+  aside { display: none; }
+  body { display: block; background: var(--paper-50); }
+  section, .arch, .card, table, .timeline-item { page-break-inside: avoid; }
+  a { text-decoration: none; color: var(--ink-900); }
+}
+@media (max-width: 900px) {
+  body { grid-template-columns: 1fr; }
+  aside { position: static; height: auto; border-right: none; border-bottom: var(--rule); }
+  .container { padding: var(--sp-8) var(--sp-6) var(--sp-16); }
+}
+</style>
+</head>
+<body>
+
+<aside>
+  <div class="brand-mark">AD <span class="it">Assistant</span></div>
+  <div class="brand-eyebrow">After Death Assistant</div>
+  <div class="brand-meta">
+    <dl>
+      <dt>Version</dt><dd>v0.9.0</dd>
+      <dt>Licence</dt><dd>MIT, open source</dd>
+      <dt>Scope</dt><dd>England &amp; Wales</dd>
+      <dt>Stack</dt><dd>FastAPI / React / Postgres</dd>
+    </dl>
+  </div>
+  <nav>
+    <a href="#what"><span class="num">01</span> What it is</a>
+    <a href="#safety"><span class="num">02</span> How it keeps you safe</a>
+    <a href="#architecture"><span class="num">03</span> Architecture</a>
+    <a href="#modules"><span class="num">04</span> Module map</a>
+    <a href="#process"><span class="num">05</span> The process timeline</a>
+    <a href="#not"><span class="num">06</span> What it is not</a>
+    <a href="#open"><span class="num">07</span> Open source</a>
+  </nav>
+</aside>
+
+<main>
+<div class="container">
+
+  <header class="hero" id="what">
+    <span class="eyebrow">Project synopsis / Estate administration and inheritance tax</span>
+    <h1>The executor's <span class="it">working</span> record</h1>
+    <p class="lead">
+      AD Assistant is an open-source web application for executors administering an estate
+      in England and Wales. It carries the whole job in one place: every asset, liability,
+      contact, cost, task and deadline; a live trial balance and per-beneficiary share;
+      a correct, current inheritance tax assessment; the official guidance readable in-app;
+      and drafted paperwork that always waits for a human signature.
+    </p>
+    <p class="lead">
+      It is built for a handful of trusted people, two executors and the family
+      around them, working through the hardest admin most people ever do.
+    </p>
+
+    <div class="guardrails">
+      <div class="guardrail">
+        <span class="n">G1</span>
+        <p>This tool informs and drafts. It is <em>not advice</em>, and nothing is filed automatically.</p>
+      </div>
+      <div class="guardrail">
+        <span class="n">G2</span>
+        <p>Agents draft; a person approves; a person submits or sends. <em>No filing, no dispatch, no payment</em>, ever, from code.</p>
+      </div>
+      <div class="guardrail">
+        <span class="n">G3</span>
+        <p>All tax and accounting figures come from a <em>deterministic</em>, unit-tested engine. No AI model computes a number.</p>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><span class="num">426</span><span class="label">Tests passing (307 backend, 119 frontend)</span></div>
+      <div class="stat"><span class="num">83</span><span class="label">API endpoints</span></div>
+      <div class="stat"><span class="num">19</span><span class="label">Functional modules</span></div>
+    </div>
+  </header>
+
+  <section id="safety">
+    <header class="section-head">
+      <span class="label">02 / Guardrails</span>
+      <div>
+        <h2>How it keeps you <span class="it">safe</span></h2>
+        <p class="lead">Four structural decisions, each enforced in code and covered by tests, not stated in a policy document and hoped for.</p>
+      </div>
+    </header>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="title">Deterministic money</div>
+        <div class="desc">
+          Every inheritance tax and estate accounts figure is computed by pure,
+          unit-tested Python with no I/O and no model in the loop: nil rate band,
+          residence nil rate band with the two-million-pound taper, transferred allowances,
+          the excepted-estates test, the charity rate. An executable test table locks the
+          arithmetic; the trial balance carries an always-visible reconciliation check.
+        </div>
+        <span class="mono">backend/app/domain/ &middot; test_iht_engine.py &middot; is_balanced</span>
+      </div>
+      <div class="card">
+        <div class="title">Draft and approve</div>
+        <div class="desc">
+          Five agent graphs research, explain and draft. None of them has a tool that can
+          send an email, file with HMRC or move money; a guardrail test enumerates every
+          registered tool and proves it. Every draft creates an approval-pending record,
+          and stays a draft until a named person approves it. Submission is always a human
+          act, outside the system.
+        </div>
+        <span class="mono">backend/app/agents/ &middot; test_agent_guardrails.py</span>
+      </div>
+      <div class="card">
+        <div class="title">Provenance everywhere</div>
+        <div class="desc">
+          Every tax constant and every guidance document carries its source URL and fetch
+          date. Valuations record their source and whether they are estimates or confirmed.
+          The question-answering assistant cites its sources by number and refuses to answer
+          beyond the cached corpus. When a source changes at origin, the change is flagged
+          for human review.
+        </div>
+        <span class="mono">knowledge_doc.source_url &middot; fetch_date &middot; content_hash</span>
+      </div>
+      <div class="card">
+        <div class="title">Roles enforced server-side</div>
+        <div class="desc">
+          Admin and executors write; viewers are strictly read-only, with executor-private
+          records withheld entirely. Identity comes from a validated Cloudflare Access JWT
+          (signature, audience, issuer, expiry; forged headers rejected; fail closed when
+          unconfigured). An immutable audit trail records every change, approval and
+          sensitive read.
+        </div>
+        <span class="mono">app/core/cf_access.py &middot; USER_ROLES &middot; audit_event</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="architecture">
+    <header class="section-head">
+      <span class="label">03 / System</span>
+      <div>
+        <h2>A small, well-shaped <span class="it">system</span></h2>
+        <p class="lead">One container, one database, one login layer. Deterministic logic at the core; agents at arm's length, drafting only.</p>
+      </div>
+    </header>
+
+    <div class="arch">
+      <svg viewBox="0 0 880 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Architecture diagram: browser to Cloudflare Access to FastAPI backend to PostgreSQL, with the deterministic engine and draft-only agents as side components" style="font-family:'Inter Tight',sans-serif;font-size:13px;">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#2B313B"/>
+          </marker>
+          <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#8C1D18"/>
+          </marker>
+        </defs>
+
+        <!-- Browser -->
+        <rect x="330" y="16" width="220" height="56" rx="4" fill="#FFFFFF" stroke="#0F1217" stroke-width="1.5"/>
+        <text x="440" y="40" text-anchor="middle" fill="#0F1217" font-weight="600">Browser</text>
+        <text x="440" y="58" text-anchor="middle" fill="#5B6472" font-size="11" font-family="JetBrains Mono, monospace">EXECUTORS / ADMIN / VIEWER</text>
+
+        <!-- Cloudflare Access -->
+        <rect x="330" y="112" width="220" height="56" rx="4" fill="#E1E8EF" stroke="#2E4E6E" stroke-width="1.5"/>
+        <text x="440" y="136" text-anchor="middle" fill="#2E4E6E" font-weight="600">Cloudflare Access</text>
+        <text x="440" y="154" text-anchor="middle" fill="#2E4E6E" font-size="11" font-family="JetBrains Mono, monospace">EMAIL ONE-TIME PIN + SIGNED JWT</text>
+
+        <!-- FastAPI -->
+        <rect x="280" y="208" width="320" height="120" rx="4" fill="#FFFFFF" stroke="#0F1217" stroke-width="1.5"/>
+        <text x="440" y="234" text-anchor="middle" fill="#0F1217" font-weight="600">FastAPI backend (Python 3.12)</text>
+        <text x="440" y="254" text-anchor="middle" fill="#5B6472" font-size="11" font-family="JetBrains Mono, monospace">JWT VALIDATION &middot; SERVER-SIDE ROLES</text>
+        <text x="440" y="272" text-anchor="middle" fill="#5B6472" font-size="11" font-family="JetBrains Mono, monospace">83 ENDPOINTS &middot; PYDANTIC V2 BOUNDARY</text>
+        <text x="440" y="290" text-anchor="middle" fill="#5B6472" font-size="11" font-family="JetBrains Mono, monospace">AUDIT EVENT ON EVERY WRITE</text>
+        <text x="440" y="314" text-anchor="middle" fill="#828B99" font-size="10.5" font-family="JetBrains Mono, monospace">ONE CONTAINER: API + BUILT SPA</text>
+
+        <!-- Engine side box -->
+        <rect x="40" y="218" width="200" height="100" rx="4" fill="#DDE8DF" stroke="#2F5D3E" stroke-width="1.5"/>
+        <text x="140" y="244" text-anchor="middle" fill="#2F5D3E" font-weight="600">Deterministic core</text>
+        <text x="140" y="264" text-anchor="middle" fill="#2F5D3E" font-size="11" font-family="JetBrains Mono, monospace">IHT ENGINE &middot; ACCOUNTS</text>
+        <text x="140" y="282" text-anchor="middle" fill="#2F5D3E" font-size="11" font-family="JetBrains Mono, monospace">DEADLINES &middot; JURISDICTION</text>
+        <text x="140" y="302" text-anchor="middle" fill="#2F5D3E" font-size="10.5" font-style="italic">pure functions, no I/O, no LLM</text>
+
+        <!-- Agents side box -->
+        <rect x="640" y="218" width="200" height="100" rx="4" fill="#F8E6DF" stroke="#B6432A" stroke-width="1.5"/>
+        <text x="740" y="244" text-anchor="middle" fill="#B6432A" font-weight="600">LangGraph agents</text>
+        <text x="740" y="264" text-anchor="middle" fill="#B6432A" font-size="11" font-family="JetBrains Mono, monospace">5 GRAPHS &middot; READ/DRAFT TOOLS</text>
+        <text x="740" y="282" text-anchor="middle" fill="#B6432A" font-size="11" font-family="JetBrains Mono, monospace">HUMAN APPROVAL GATES</text>
+        <text x="740" y="302" text-anchor="middle" fill="#B6432A" font-size="10.5" font-style="italic">no send, no file, no pay tools</text>
+
+        <!-- Postgres -->
+        <rect x="280" y="392" width="320" height="76" rx="4" fill="#FFFFFF" stroke="#0F1217" stroke-width="1.5"/>
+        <text x="440" y="420" text-anchor="middle" fill="#0F1217" font-weight="600">PostgreSQL 16 + pgvector</text>
+        <text x="440" y="440" text-anchor="middle" fill="#5B6472" font-size="11" font-family="JetBrains Mono, monospace">29 TABLES &middot; KNOWLEDGE EMBEDDINGS</text>
+        <text x="440" y="458" text-anchor="middle" fill="#5B6472" font-size="11" font-family="JetBrains Mono, monospace">AUDIT &middot; APPROVALS &middot; SNAPSHOTS</text>
+
+        <!-- Object storage note -->
+        <rect x="640" y="400" width="200" height="60" rx="4" fill="#F3EEE4" stroke="#B6BCC6" stroke-width="1.2"/>
+        <text x="740" y="426" text-anchor="middle" fill="#2B313B" font-weight="600" font-size="12.5">Document store</text>
+        <text x="740" y="444" text-anchor="middle" fill="#5B6472" font-size="10.5" font-family="JetBrains Mono, monospace">VAULT FILES &middot; BACKUPS</text>
+
+        <!-- Vertical flow arrows -->
+        <line x1="440" y1="72" x2="440" y2="106" stroke="#2B313B" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="440" y1="168" x2="440" y2="202" stroke="#2B313B" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="440" y1="328" x2="440" y2="386" stroke="#2B313B" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+        <!-- Engine: called by API -->
+        <line x1="280" y1="268" x2="246" y2="268" stroke="#2B313B" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <text x="263" y="256" text-anchor="middle" fill="#5B6472" font-size="10" font-family="JetBrains Mono, monospace">CALLS</text>
+
+        <!-- Agents: drafts only, back to API -->
+        <line x1="600" y1="248" x2="634" y2="248" stroke="#2B313B" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="634" y1="292" x2="600" y2="292" stroke="#8C1D18" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+        <text x="617" y="238" text-anchor="middle" fill="#5B6472" font-size="10" font-family="JetBrains Mono, monospace">READS</text>
+        <text x="617" y="310" text-anchor="middle" fill="#8C1D18" font-size="10" font-family="JetBrains Mono, monospace">DRAFTS ONLY</text>
+
+        <!-- Storage link -->
+        <line x1="600" y1="430" x2="634" y2="430" stroke="#2B313B" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+        <!-- No outbound annotation -->
+        <text x="740" y="348" text-anchor="middle" fill="#8C1D18" font-size="11" font-family="JetBrains Mono, monospace">NO PATH TO HMRC, EMAIL OR PAYMENT</text>
+        <line x1="660" y1="332" x2="820" y2="332" stroke="#8C1D18" stroke-width="1" stroke-dasharray="4 3"/>
+      </svg>
+    </div>
+
+    <p>
+      Structural choices worth naming: a single Postgres with pgvector keeps the whole system
+      in one datastore you can back up, restore and take with you; the England-and-Wales
+      rules live behind a jurisdiction interface so the core engine stays regime-agnostic;
+      and the production build is one Docker image serving both the API and the built
+      frontend, with Alembic migrations at start. UK GDPR is taken literally: a complete
+      open-format estate export, and a confirmed, admin-only erase.
+    </p>
+  </section>
+
+  <section id="modules">
+    <header class="section-head">
+      <span class="label">04 / Surface</span>
+      <div>
+        <h2>Nineteen modules, <span class="it">one</span> record</h2>
+        <p class="lead">Everything cross-links: from any asset to its contact, its tasks, its costs and its paperwork. Nothing is ever hard-deleted; archiving with a reason is the only removal.</p>
+      </div>
+    </header>
+
+    <div class="module-group">
+      <p class="group-label">Records</p>
+      <div class="module-row"><span class="m-num">M1</span><span class="m-name">Tasks and actions</span><span class="m-desc">The living action list with owners, dates, dependencies and checklists; blocked tasks explain themselves; a status donut shows the shape of open work.</span></div>
+      <div class="module-row"><span class="m-num">M2</span><span class="m-name">Assets and liabilities</span><span class="m-desc">The full register with date-of-death values, valuation provenance, ownership basis and auto-mapped IHT schedules; every edit recomputes the position.</span></div>
+      <div class="module-row"><span class="m-num">M3</span><span class="m-name">Debtors and creditors</span><span class="m-desc">Money owed to and by the estate, tracked to settlement, with the statutory Section 27 creditor-notice workflow guarding distribution.</span></div>
+      <div class="module-row"><span class="m-num">M4</span><span class="m-name">Contacts and notifications</span><span class="m-desc">A CRM for everyone involved, with the who-still-needs-telling tracker and the centralised routes (Tell Us Once, The Gazette, bulk services) built in.</span></div>
+      <div class="module-row"><span class="m-num">M5</span><span class="m-name">Cost tracking</span><span class="m-desc">Every administration cost with payer, reimbursement ledger and IHT treatment; co-executor alerts on every cost; a by-type chart with a running total.</span></div>
+      <div class="module-row"><span class="m-num">M11</span><span class="m-name">Documents vault</span><span class="m-desc">Versioned, role-restricted storage for certificates, the will, valuations and correspondence, linked to the records they belong to; downloads audited.</span></div>
+    </div>
+
+    <div class="module-group">
+      <p class="group-label">Money and tax</p>
+      <div class="module-row"><span class="m-num">M6</span><span class="m-name">Estate accounts</span><span class="m-desc">The transparent trial balance across capital, administration, income and distribution accounts, with live beneficiary shares and the is_balanced check.</span></div>
+      <div class="module-row"><span class="m-num">M9</span><span class="m-name">IHT workbench</span><span class="m-desc">The deterministic assessment, the excepted-estate versus IHT400 route, the derived schedules checklist, and a snapshot of every recompute.</span></div>
+      <div class="module-row"><span class="m-num">M14</span><span class="m-name">Reliefs and reclaims</span><span class="m-desc">Watches the IHT35 and IHT38 loss-relief windows and the RNRB downsizing addition, with deadlines and estimated reclaims.</span></div>
+      <div class="module-row"><span class="m-num">M15</span><span class="m-name">Administration tax</span><span class="m-desc">Income tax and CGT during administration: the informal-route test, the estate's annual exempt amount, and the hard 60-day property rule.</span></div>
+    </div>
+
+    <div class="module-group">
+      <p class="group-label">Guidance and drafting</p>
+      <div class="module-row"><span class="m-num">M10</span><span class="m-name">Knowledge library</span><span class="m-desc">HMRC forms and official guidance cached in-app with provenance, hybrid search, and cited Q&amp;A that refuses beyond its sources.</span></div>
+      <div class="module-row"><span class="m-num">M7</span><span class="m-name">Process timeline</span><span class="m-desc">The ordered England-and-Wales process, death certificate to clearance, seeded as a 41-step worked checklist.</span></div>
+      <div class="module-row"><span class="m-num">M8</span><span class="m-name">Deadlines and reminders</span><span class="m-desc">Statutory dates derived from the death and grant dates, driving reminders and auto-created tasks.</span></div>
+      <div class="module-row"><span class="m-num">M13</span><span class="m-name">Audit, activity and search</span><span class="m-desc">The immutable audit log, the approvals register, an activity feed and global search.</span></div>
+    </div>
+
+    <div class="module-group">
+      <p class="group-label">Further work</p>
+      <div class="module-row"><span class="m-num">M12</span><span class="m-name">Dashboard</span><span class="m-desc">The at-a-glance home: open work, money in and out, the estate position, deadline countdowns, tax status and data completeness.</span></div>
+      <div class="module-row"><span class="m-num">M16</span><span class="m-name">Asset tracing</span><span class="m-desc">The free official search services worked as tasks, with a completeness indicator and a warning never to pay a reclaim firm.</span></div>
+      <div class="module-row"><span class="m-num">M17</span><span class="m-name">Digital assets</span><span class="m-desc">Email, photos, social media, subscriptions and memberships, each with an action and a status; recurring costs surface for cancellation.</span></div>
+      <div class="module-row"><span class="m-num">M18</span><span class="m-name">Veteran benefits</span><span class="m-desc">Service-specific notifications and support routes, worked and logged as contacts and tasks.</span></div>
+      <div class="module-row"><span class="m-num">M19</span><span class="m-name">Executor protection</span><span class="m-desc">The Section 27 notice, the immutable decision log, the executor's year and the deed-of-variation window.</span></div>
+    </div>
+  </section>
+
+  <section id="process">
+    <header class="section-head">
+      <span class="label">05 / Process</span>
+      <div>
+        <h2>The process, <span class="it">worked</span> not read</h2>
+        <p class="lead">The administration follows a broadly standard order. AD Assistant seeds it as a 41-step checklist of real tasks with dependencies, so the process is something you work through, not a page you read once. Eight phases, in outline:</p>
+      </div>
+    </header>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="head">Registration and the first days <span class="steps">confirm and register the death, order certificates</span></div>
+        <div class="desc">Verification and the medical certificate; registering within five days; certified copies; the funeral, checking for a prepaid plan and recorded wishes.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="head">Securing and notifying <span class="steps">property, Tell Us Once, the notification round</span></div>
+        <div class="desc">Insuring the empty home and telling the insurer it is unoccupied; the council tax exemption; Tell Us Once within its 28-day window; then the long tail of organisations it does not cover, tracked contact by contact.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="head">Valuing the estate <span class="steps">the will, the registers, date-of-death values</span></div>
+        <div class="desc">Locating the will and confirming the executors; building the asset and liability registers with provenance on every value; estimates replaced by confirmed figures as statements arrive.</div>
+      </div>
+      <div class="timeline-item current">
+        <div class="head">Assessing the tax <span class="steps">the deterministic engine decides the route</span></div>
+        <div class="desc">Excepted estate or full IHT400; the schedules checklist derived from what the estate actually contains; payment arranged by the end of the sixth month; a professional-review checkpoint on by default.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="head">Probate <span class="steps">submit, wait, receive the grant</span></div>
+        <div class="desc">The IHT400 submitted by a person; the HMRC code; the probate application and the grant.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="head">Collection and debts <span class="steps">collect assets, Section 27 notice, settle creditors</span></div>
+        <div class="desc">Closing accounts and realising assets; the Gazette and local-paper creditor notice opening its two-month window; the tool blocks safe-to-distribute until the window closes.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="head">Accounts and distribution <span class="steps">estate accounts, interim then final distributions</span></div>
+        <div class="desc">Administration-period tax finalised; the four-account estate accounts approved by the residuary beneficiaries; distributions guarded by the claims window and the executor's year.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="head">Clearance and closure <span class="steps">IHT30, record retention</span></div>
+        <div class="desc">The clearance certificate confirming HMRC has no further claim; records retained for around twelve years, then purged.</div>
+      </div>
+    </div>
+
+    <p>
+      Deadlines are never typed in by hand: the statutory dates (IHT payment, IHT400 delivery,
+      Tell Us Once, the creditor and claims windows, the 60-day CGT rule, the loss-relief and
+      deed-of-variation windows) are derived from the date of death and the grant date, and
+      each drives reminders and auto-created tasks.
+    </p>
+  </section>
+
+  <section id="not">
+    <header class="section-head">
+      <span class="label">06 / Boundaries</span>
+      <div>
+        <h2>What it is <span class="it">not</span></h2>
+        <p class="lead">The boundaries are the design. Each of these is deliberate, permanent, and covered by tests where code could cross it.</p>
+      </div>
+    </header>
+
+    <div class="grid grid-3">
+      <div class="card">
+        <div class="title">Not advice</div>
+        <div class="desc">
+          It reports what the official guidance says, with citations, and computes what the
+          published rules imply. It does not, and will not, tell you what you should decide.
+          The Q&amp;A assistant refuses questions its cached sources do not cover rather than
+          improvising.
+        </div>
+      </div>
+      <div class="card">
+        <div class="title">Not a filing service</div>
+        <div class="desc">
+          Nothing is ever transmitted to HMRC, the probate service, a bank or anyone else.
+          Drafts are prepared and approved inside the tool; submission is a human act outside
+          it. There is no send button, and no code path that could act as one.
+        </div>
+      </div>
+      <div class="card">
+        <div class="title">Not a replacement for professionals</div>
+        <div class="desc">
+          A near-threshold estate, an unusual will, a trust, a dispute: these are exactly
+          when a solicitor or tax adviser earns their fee. The tool makes their job cheaper
+          by keeping a complete, provenance-tracked record, and it ships with a
+          professional-review checkpoint switched on by default.
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Also out of scope by design:</strong> jurisdictions beyond England and Wales
+      (extension point provided), will drafting, trust administration, and bank or HMRC API
+      integrations. Manual entry with provenance is the v1 posture.
+    </div>
+  </section>
+
+  <section id="open">
+    <header class="section-head">
+      <span class="label">07 / Open source</span>
+      <div>
+        <h2>Built to be <span class="it">given</span> away</h2>
+        <p class="lead">MIT licensed, self-hostable in one command, and structured so the next family, and the next jurisdiction, can use it.</p>
+      </div>
+    </header>
+
+    <table>
+      <tr><th>Aspect</th><th>Position</th></tr>
+      <tr><td>Licence</td><td>MIT. UK Government content in the knowledge library is used under the Open Government Licence with attribution; each installation fetches it from the canonical sources rather than the repository redistributing it.</td></tr>
+      <tr><td>Your data</td><td>The repository holds schema and synthetic seed only. Real estate data lives in your own self-hosted database, exports as open-format JSON, and can be erased completely. Your data stays yours, and it can leave with you.</td></tr>
+      <tr><td>Self-hosting</td><td><code>cp .env.example .env</code> then <code>docker compose up</code>. A single production image deploys to Railway or anywhere that runs a container. See the installation and deployment guides.</td></tr>
+      <tr><td>Jurisdictions</td><td>England-and-Wales rules live behind <code>domain/jurisdiction/</code>; the engine is regime-agnostic. Adding Scotland or Northern Ireland means implementing the same interface with its own executable test table, without touching the core.</td></tr>
+      <tr><td>Contributing</td><td>Ground rules in <code>CONTRIBUTING.md</code>: no personal data ever, deterministic money, tests for domain logic, no send/file/pay tools, UK English, WCAG 2.2 AA. Pull requests that respect the guardrails are welcome.</td></tr>
+      <tr><td>Versioning</td><td>Semantic versioning from v0.9.0: a complete, tested tool that has not yet earned its 1.0 stability promises.</td></tr>
+    </table>
+
+    <p>
+      The documentation set: a plain-words <strong>user guide</strong> for executors, an
+      <strong>installation guide</strong>, a production <strong>deployment guide</strong> with
+      a tested backup and restore drill, a <strong>security policy</strong> with an honest
+      known-limits list, and the canonical <strong>design masters</strong> (architecture, features,
+      data model, agent design, processes).
+    </p>
+  </section>
+
+  <footer>
+    <div class="tagline">It informs and drafts. A person decides.</div>
+    <div class="meta">AD Assistant &middot; v0.9.0 &middot; MIT &middot; England and Wales</div>
+  </footer>
+
+</div>
+</main>
+
+</body>
+</html>

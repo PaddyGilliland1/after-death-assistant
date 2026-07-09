@@ -1,0 +1,45 @@
+# Keep the production build context minimal and free of personal data.
+
+# Personal data: gitignored symlinks into the private overlay. Never in an image.
+seed
+seed/
+claude-code-build-prompt.md
+requirements-spec.html
+technical-thesis.html
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Version control and docs
+.git
+.github
+.claude
+docs
+
+# Dependencies and build output (rebuilt inside the stages)
+node_modules
+frontend/node_modules
+frontend/dist
+backend/.venv
+.venv
+
+# Tests, caches, local databases and storage
+backend/tests
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+.mypy_cache
+*.sqlite
+*.db
+storage
+backend/storage
+
+# Local tooling
+Makefile
+pyrightconfig.json
+docker-compose.yml

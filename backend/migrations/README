@@ -1,0 +1,9 @@
+Async Alembic migrations for the AD Assistant backend.
+
+Usage (from backend/):
+    uv run alembic revision --autogenerate -m "describe change"
+    uv run alembic upgrade head
+
+The database URL comes from the DATABASE_URL environment variable via
+app.core.config. No revisions are generated at scaffold time; the first
+revision lands with the models package.

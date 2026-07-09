@@ -1,0 +1,14 @@
+# Railway deployment configuration for AD Assistant.
+# Builds the root Dockerfile (backend + built frontend in one image).
+# Full deployment guide, env vars and Cloudflare Access setup: docs/DEPLOY.md.
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+# The image CMD runs Alembic migrations, then uvicorn app.prod:app on $PORT.
+healthcheckPath = "/health"
+healthcheckTimeout = 120
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 5

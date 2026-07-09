@@ -1,0 +1,94 @@
+{
+  "_meta": {
+    "description": "SYNTHETIC demo seed for AD Assistant. Every name, date and value is fictional and chosen for demonstration only. Safe to commit; contains no real personal data.",
+    "schema_version": 1,
+    "created": "2026-07-06"
+  },
+  "estate": {
+    "name": "Estate of Alex Example (demo)",
+    "date_of_death": "2026-01-15",
+    "grant_date": null,
+    "constants_version": "england_wales_2026_27",
+    "tnrb_pct": 1.0,
+    "trnrb_pct": 1.0,
+    "residence_to_descendants_value": 300000,
+    "charity_share_pct": 0.0
+  },
+  "assets": [
+    {
+      "category": "property",
+      "sub_type": "residential_house",
+      "description": "Demo house, 1 Example Street",
+      "ownership": "sole",
+      "dod_value": 300000,
+      "value_basis": "estimate",
+      "rnrb_qualifying": true,
+      "iht_schedule": "IHT405",
+      "status": "held"
+    },
+    {
+      "category": "cash_and_savings",
+      "sub_type": "cash_and_isa",
+      "description": "Demo cash and ISA holdings",
+      "ownership": "sole",
+      "dod_value": 250000,
+      "value_basis": "estimate",
+      "rnrb_qualifying": false,
+      "iht_schedule": "IHT406",
+      "status": "held"
+    },
+    {
+      "category": "vehicle",
+      "sub_type": "car",
+      "description": "Demo car",
+      "ownership": "sole",
+      "dod_value": 10000,
+      "value_basis": "estimate",
+      "rnrb_qualifying": false,
+      "iht_schedule": "IHT407",
+      "status": "held"
+    },
+    {
+      "category": "shares_unlisted",
+      "sub_type": "club_shares",
+      "description": "Demo club shares",
+      "ownership": "sole",
+      "dod_value": 1000,
+      "value_basis": "estimate",
+      "rnrb_qualifying": false,
+      "iht_schedule": "IHT412",
+      "status": "held"
+    }
+  ],
+  "beneficiary_legacies": [
+    {
+      "beneficiary_name": "Bailey Example",
+      "legacy_type": "pecuniary",
+      "amount_or_share": 50000,
+      "exempt_or_chargeable": "chargeable",
+      "status": "pending"
+    },
+    {
+      "beneficiary_name": "Casey Example",
+      "legacy_type": "residuary",
+      "amount_or_share": 0.5,
+      "exempt_or_chargeable": "chargeable",
+      "status": "pending"
+    },
+    {
+      "beneficiary_name": "Riley Example",
+      "legacy_type": "residuary",
+      "amount_or_share": 0.5,
+      "exempt_or_chargeable": "chargeable",
+      "status": "pending"
+    }
+  ],
+  "gifts": [
+    { "description": "Demo annual exemption gift 1", "amount": 3000, "value_basis": "estimate" },
+    { "description": "Demo annual exemption gift 2", "amount": 3000, "value_basis": "estimate" }
+  ],
+  "tasks": {
+    "seed_from": "backend/seed_templates/section25_checklist.json",
+    "note": "The Section 25 master checklist loads from the packaged template."
+  }
+}

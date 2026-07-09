@@ -1,0 +1,98 @@
+[
+  {
+    "order": 1,
+    "title": "Notify Veterans UK (Defence Business Services) of the death",
+    "description": "Veterans UK, part of Defence Business Services, is the central point for armed forces pensions, compensation and welfare. Tell them the veteran has died and quote any service or pension reference held. Ask them to confirm in writing what was in payment and what stops.",
+    "url": "https://www.gov.uk/government/organisations/veterans-uk"
+  },
+  {
+    "order": 2,
+    "title": "Tell the armed forces pensions payment team so pension payments stop cleanly",
+    "description": "If an Armed Forces Pension Scheme pension was in payment, tell the pensions payment team promptly so payments stop from the correct date. Overpayments made after death become a debt the estate must repay, and arrears due up to the date of death are an asset of the estate.",
+    "url": "https://www.gov.uk/guidance/pensions-and-compensation-for-veterans"
+  },
+  {
+    "order": 3,
+    "title": "Claim any Armed Forces Pension Scheme dependants' benefits",
+    "description": "A surviving spouse, civil partner, eligible partner or dependent children may be entitled to a dependant's pension or a lump sum under the scheme the veteran served in (AFPS 75, AFPS 05 or AFPS 15). Ask Veterans UK for the claim forms and what evidence they need.",
+    "url": "https://www.gov.uk/guidance/pensions-and-compensation-for-veterans"
+  },
+  {
+    "order": 4,
+    "title": "Check for a preserved or deferred service pension not yet in payment",
+    "description": "If the veteran left the forces before pension age, a preserved or deferred pension may exist that was never claimed. Arrears or dependants' entitlements may still be due. Veterans UK can trace the service pension record from the service number.",
+    "url": "https://www.gov.uk/guidance/pensions-and-compensation-for-veterans"
+  },
+  {
+    "order": 5,
+    "title": "Notify the War Pension Scheme if a War Pension was in payment",
+    "description": "Where a War Pension (for injury or illness caused by service before 6 April 2005) was in payment, tell the scheme of the death. Payments stop, and a surviving partner may be able to claim a War Widow's or Widower's Pension where the death or the earlier injury was due to service.",
+    "url": "https://www.gov.uk/war-pension-scheme"
+  },
+  {
+    "order": 6,
+    "title": "Check Armed Forces Compensation Scheme awards",
+    "description": "If the veteran had an Armed Forces Compensation Scheme award (for injury or illness caused by service on or after 6 April 2005), notify the scheme. Only do this if an award was actually in payment; survivors' benefits can apply where death was due to service.",
+    "url": "https://www.gov.uk/guidance/armed-forces-compensation-scheme-afcs"
+  },
+  {
+    "order": 7,
+    "title": "Ask Veterans UK about help with funeral costs where death was due to service",
+    "description": "Where the death was caused or hastened by service, a contribution towards funeral expenses may be available through the war pensions arrangements. Ask Veterans UK whether the estate qualifies before the funeral account is settled if possible.",
+    "url": "https://www.gov.uk/war-pension-scheme"
+  },
+  {
+    "order": 8,
+    "title": "Contact the RAF Benevolent Fund for bereavement and welfare support",
+    "description": "The RAF Benevolent Fund supports serving and former RAF personnel and their families, including bereavement support, welfare advice and in some cases financial help. Contact them with brief details of the veteran's RAF service.",
+    "url": "https://www.rafbf.org"
+  },
+  {
+    "order": 9,
+    "title": "Notify the Royal Air Forces Association (RAFA)",
+    "description": "If the veteran was a RAFA member, tell the branch or head office so membership records are closed and any branch tributes can be arranged. RAFA also offers bereavement and welfare support to the family regardless of membership.",
+    "url": "https://rafa.org.uk"
+  },
+  {
+    "order": 10,
+    "title": "Contact SSAFA, the Armed Forces charity, for practical support",
+    "description": "SSAFA provides practical and emotional support to veterans' families, and can in some circumstances help with funeral costs where the estate cannot meet them. A local branch caseworker can visit and assess what help applies.",
+    "url": "https://www.ssafa.org.uk"
+  },
+  {
+    "order": 11,
+    "title": "Contact the Royal British Legion for support and guidance",
+    "description": "The Royal British Legion offers bereavement guidance, welfare support and, in cases of hardship, possible help towards funeral costs for veterans' families. Their contact centre can signpost the right service.",
+    "url": "https://www.britishlegion.org.uk"
+  },
+  {
+    "order": 12,
+    "title": "Notify any squadron, station or unit association",
+    "description": "If the veteran belonged to a squadron, station or other unit association, tell the secretary so the membership is closed, subscriptions stop and the association can mark the death in its newsletter if the family wishes.",
+    "url": null
+  },
+  {
+    "order": 13,
+    "title": "Request the veteran's service records from the Ministry of Defence",
+    "description": "The next of kin can request a copy of the veteran's service records from the MOD. The records confirm dates of service, rank, postings and medal entitlement, which supports pension queries and medal claims. A copy of the death certificate is required.",
+    "url": "https://www.gov.uk/get-copy-military-service-records"
+  },
+  {
+    "order": 14,
+    "title": "Locate medals and apply for any never claimed",
+    "description": "Find the veteran's medals and record them in the estate's asset register with the other personal effects. If service records show an entitlement that was never claimed, the next of kin can apply to the MOD Medal Office for the medal to be issued.",
+    "url": "https://www.gov.uk/apply-medal-or-veterans-badge"
+  },
+  {
+    "order": 15,
+    "title": "Check dependants' entitlements with the Forces Pension Society if a member",
+    "description": "If the veteran was a member of the Forces Pension Society, the family can ask it to check that every pension entitlement, arrears payment and dependant's benefit has been correctly identified and paid.",
+    "url": "https://forcespensionsociety.org"
+  },
+  {
+    "order": 16,
+    "title": "Use the Veterans' Gateway to find further bereavement support",
+    "description": "The Veterans' Gateway is the single point of contact for veterans' services in the UK and can signpost the family to bereavement counselling, welfare and financial support beyond the organisations already contacted.",
+    "url": "https://www.veteransgateway.org.uk"
+  }
+]
