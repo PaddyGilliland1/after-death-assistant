@@ -64,32 +64,37 @@ GUIDANCE_NOTE = "This is guidance drawn from the cited sources, not legal or tax
 
 NOT_COVERED_HEADING = "What the library does not cover:"
 
-_QA_SYSTEM_PROMPT = f"""You are the knowledge assistant of an estate administration tool \
-for England and Wales. You answer questions using ONLY the numbered extracts supplied \
-in the user message. Follow these rules exactly:
-1. Use only the supplied extracts. Never use outside knowledge.
-2. Cite every claim with the number of the extract that supports it, in square \
-brackets, for example [1] or [2][3]. Every citation number must exist in the extracts.
-3. If no part of the question is covered by the extracts, reply with exactly this \
-sentence and nothing else: "{REFUSAL_TEXT}"
-3a. EVERY answer (except a refusal) must close with a clearly separated section \
-headed exactly "What the library does not cover:" placed just before the final \
-guidance note. List plainly, in a short paragraph or bullets, each part of the \
-question the extracts do not answer; if the extracts covered the question fully, \
-the section must say so in one sentence (for example: "Nothing material; the \
-extracts covered this question."). Never omit this section.
-4. Never calculate, estimate or derive a figure. You may only repeat a figure that \
+_QA_SYSTEM_PROMPT = f"""You are the knowledge assistant inside an estate administration \
+tool for England and Wales. You answer using ONLY the numbered extracts supplied in the \
+user message. Each extract number identifies one source document.
+
+CITATION RULES
+- Place each citation immediately after the specific claim, label or name it supports, \
+for example: valuing the estate comes first [5], then applying for probate, Step 6 of \
+the process [3]. Do not gather citations at the end of a sentence when they support \
+different parts of it.
+- When you mention a document, give its title in quotes followed by its number, for \
+example: the "Applying for probate: before you apply" page [3]. Only documents that \
+appear in the numbered extracts may be named. Some extracts are marked as referenced \
+by the others; use them so every document you mention is numbered and named.
+- When you use a label that comes from inside a document (a step number of a guide, a \
+numbered form box), put that document's citation directly after the label, for \
+example: Step 6 [6].
+
+CONTENT RULES
+- Use only the supplied extracts. Never use outside knowledge.
+- Never calculate, estimate or derive a figure. You may only repeat a figure that \
 appears verbatim in an extract, with its citation.
-5. End every answer (except a refusal) with exactly: "{GUIDANCE_NOTE}"
-6. Only ever name documents that are among the numbered extracts. If an extract \
-mentions another document or a parent guide that is NOT a numbered extract, do \
-not name it; describe it generically instead, for example: the wider gov.uk \
-process that this page is part of [3]. When an extract uses its own internal \
-numbering or labels (for example "Step 6", or a numbered form box), attribute \
-the label to the CITED document by its extract title, for example: the \
-"Applying for probate" page, which sits at Step 6 of the wider gov.uk process \
-[3]. Never leave a bare label like (Step 6).
-7. Write in UK English. Do not use em dashes."""
+- If NO part of the question is covered by the extracts, reply with exactly this \
+sentence and nothing else: "{REFUSAL_TEXT}"
+- Every other answer MUST end with a section headed exactly \
+"What the library does not cover:" listing plainly what the extracts do not answer \
+(or one sentence saying they covered the question fully), followed by the final line \
+exactly: "{GUIDANCE_NOTE}"
+
+STYLE
+- UK English, plain and calm. No em dashes. Short headings and bullet lists are \
+welcome."""
 
 
 # ---------------------------------------------------------------------------
@@ -369,11 +374,59 @@ async def knowledge_qa(payload: QARequest, session: SessionDep, user: ReadUser) 
                     form_code=hit.form_code,
                 )
             )
-    extracts = "\n\n".join(
+    extract_parts = [
         f"[{doc_numbers[hit.doc_id]}] From \"{hit.doc_title}\" "
         f"({hit.source_url}):\n{hit.chunk_text}"
         for hit in hits
+    ]
+
+    # Referenced-document expansion: if the retrieved pages mention another
+    # library document by title (for example the parent step-by-step guide),
+    # add that document as a numbered supplementary source so the answer can
+    # name it, cite it, and the reader gets its link.
+    retrieved_text = " ".join(hit.chunk_text for hit in hits).lower()
+    listed_ids = set(doc_numbers)
+    docs_result = await session.execute(
+        select(KnowledgeDoc)
+        .where(KnowledgeDoc.estate_id == estate.id)
+        .where(KnowledgeDoc.archived_at.is_(None))
     )
+    supplements = 0
+    for doc in docs_result.scalars().all():
+        if supplements >= 2 or doc.id in listed_ids:
+            continue
+        core_title = doc.title.split("(")[0].strip().lower()
+        if len(core_title) <= 12 or core_title not in retrieved_text:
+            continue
+        first_chunk = (
+            await session.execute(
+                select(KnowledgeChunk)
+                .where(KnowledgeChunk.knowledge_doc_id == doc.id)
+                .where(KnowledgeChunk.archived_at.is_(None))
+                .order_by(KnowledgeChunk.chunk_index)
+                .limit(1)
+            )
+        ).scalars().first()
+        if first_chunk is None:
+            continue
+        number = len(doc_numbers) + 1
+        doc_numbers[doc.id] = number
+        listed_ids.add(doc.id)
+        supplements += 1
+        sources.append(
+            QASource(
+                n=number,
+                doc_title=doc.title,
+                source_url=doc.source_url,
+                form_code=doc.form_code,
+            )
+        )
+        extract_parts.append(
+            f"[{number}] (referenced by the pages above) From \"{doc.title}\" "
+            f"({doc.source_url}):\n{first_chunk.text}"
+        )
+
+    extracts = "\n\n".join(extract_parts)
     user_prompt = f"Extracts:\n\n{extracts}\n\nQuestion: {payload.question}"
 
     async def _unlisted_named_titles(text: str) -> list[str]:
