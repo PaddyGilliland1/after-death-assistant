@@ -131,11 +131,20 @@ export function AskSection() {
           <div className="max-w-2xl space-y-4">
             <div className="rounded-lg border px-4 py-3">
               <h3 className="mb-2 text-sm font-semibold">Answer</h3>
-              <AnswerText
+              {/* Long answers scroll inside the pane rather than being cut
+                  or swamping the page; the region is keyboard focusable. */}
+              <div
+                className="max-h-96 overflow-y-auto pr-1"
+                tabIndex={0}
+                role="region"
+                aria-label="Full answer"
+              >
+                <AnswerText
                 answer={result.answer}
                 sources={result.sources}
                 anchorPrefix={anchorPrefix}
-              />
+                />
+              </div>
             </div>
 
             {result.sources.length > 0 ? (

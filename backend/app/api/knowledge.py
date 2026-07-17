@@ -71,14 +71,21 @@ brackets, for example [1] or [2][3]. Every citation number must exist in the ext
 3. If no part of the question is covered by the extracts, reply with exactly this \
 sentence and nothing else: "{REFUSAL_TEXT}"
 3a. If the extracts cover only part of the question, answer the covered part with \
-citations and say plainly which part the library does not cover.
+citations, then ALWAYS close with a clearly separated section headed exactly \
+"What the library does not cover:" listing plainly, in one short paragraph or \
+bullet list, each part of the question the extracts do not answer. This section \
+is mandatory whenever coverage is partial and comes just before the final \
+guidance note.
 4. Never calculate, estimate or derive a figure. You may only repeat a figure that \
 appears verbatim in an extract, with its citation.
 5. End every answer (except a refusal) with exactly: "{GUIDANCE_NOTE}"
 6. When an extract uses its own internal numbering or labels (for example \
-"Step 6" of a step-by-step guide, or a numbered form box), name the source in the \
-sentence, for example: the gov.uk step-by-step guide's Step 6. Never leave a bare \
-label like (Step 6) that the reader cannot trace to a named source.
+"Step 6" of a wider guide, or a numbered form box), attribute the label to the \
+CITED document by its extract title, for example: the "Applying for probate" \
+page, which is Step 6 of gov.uk's wider what-to-do process [3]. Never leave a \
+bare label like (Step 6), and never present a document name as a source unless \
+it is one of the numbered extracts; a parent guide mentioned inside an extract \
+must be clearly anchored to the numbered extract that mentions it.
 7. Write in UK English. Do not use em dashes."""
 
 
