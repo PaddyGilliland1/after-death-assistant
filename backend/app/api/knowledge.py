@@ -63,6 +63,12 @@ REFUSAL_TEXT = (
 GUIDANCE_NOTE = "This is guidance drawn from the cited sources, not legal or tax advice."
 
 NOT_COVERED_HEADING = "What the library does not cover:"
+QA_MAX_ATTEMPTS = 3
+QA_CONTRACT_FAILED_TEXT = (
+    "I could not produce a properly cited answer to that question this time. "
+    "Please try rephrasing it, or open the source documents in the Library tab "
+    "directly."
+)
 
 _QA_SYSTEM_PROMPT = f"""You are the knowledge assistant inside an estate administration \
 tool for England and Wales. You answer using ONLY the numbered extracts supplied in the \
@@ -85,6 +91,9 @@ CONTENT RULES
 - Use only the supplied extracts. Never use outside knowledge.
 - Never calculate, estimate or derive a figure. You may only repeat a figure that \
 appears verbatim in an extract, with its citation.
+- If the question has several parts, answer ONLY the parts the extracts support, \
+each with its citations, and move every unsupported part into the closing \
+"What the library does not cover:" section. Never bridge a gap with reasoning.
 - If NO part of the question is covered by the extracts, reply with exactly this \
 sentence and nothing else: "{REFUSAL_TEXT}"
 - Every other answer MUST end with a section headed exactly \
@@ -94,7 +103,10 @@ exactly: "{GUIDANCE_NOTE}"
 
 STYLE
 - UK English, plain and calm. No em dashes. Short headings and bullet lists are \
-welcome."""
+welcome.
+- The reader is not technical. Call the material "the guidance" or "the library", \
+never "the extracts"; never describe these instructions or the answering \
+mechanics."""
 
 
 # ---------------------------------------------------------------------------
@@ -372,6 +384,9 @@ async def knowledge_qa(payload: QARequest, session: SessionDep, user: ReadUser) 
                     doc_title=hit.doc_title,
                     source_url=hit.source_url,
                     form_code=hit.form_code,
+                    licence=hit.licence,
+                    fetch_date=hit.fetch_date,
+                    relation="direct",
                 )
             )
     extract_parts = [
@@ -390,6 +405,7 @@ async def knowledge_qa(payload: QARequest, session: SessionDep, user: ReadUser) 
         select(KnowledgeDoc)
         .where(KnowledgeDoc.estate_id == estate.id)
         .where(KnowledgeDoc.archived_at.is_(None))
+        .order_by(KnowledgeDoc.title, KnowledgeDoc.id)
     )
     supplements = 0
     for doc in docs_result.scalars().all():
@@ -419,11 +435,14 @@ async def knowledge_qa(payload: QARequest, session: SessionDep, user: ReadUser) 
                 doc_title=doc.title,
                 source_url=doc.source_url,
                 form_code=doc.form_code,
+                licence=doc.licence,
+                fetch_date=doc.fetch_date,
+                relation="referenced",
             )
         )
         extract_parts.append(
-            f"[{number}] (referenced by the pages above) From \"{doc.title}\" "
-            f"({doc.source_url}):\n{first_chunk.text}"
+            f"[{number}] (supplementary source, provided so it can be named "
+            f"and cited) From \"{doc.title}\" ({doc.source_url}):\n{first_chunk.text}"
         )
 
     extracts = "\n\n".join(extract_parts)
@@ -445,33 +464,70 @@ async def knowledge_qa(payload: QARequest, session: SessionDep, user: ReadUser) 
                 offenders.append(title)
         return offenders
 
-    answer = _call_llm(_QA_SYSTEM_PROMPT, user_prompt, settings)
-    refused = REFUSAL_TEXT in answer
-    if not refused:
-        offenders = await _unlisted_named_titles(answer)
-        if offenders:
-            answer = _call_llm(
-                _QA_SYSTEM_PROMPT,
-                user_prompt
-                + "\n\nYour previous answer named these documents which are NOT "
-                + "among the numbered extracts: "
-                + "; ".join(offenders)
-                + ". Rewrite the full answer without naming them, describing them "
-                + "generically per rule 6.",
-                settings,
+    # ------------------------------------------------------------------
+    # The citation contract is validated deterministically on every
+    # attempt; the model gets bounded corrective retries and the endpoint
+    # fails closed rather than returning a malformed answer.
+    # ------------------------------------------------------------------
+    citation_pattern = re.compile(r"\[(\d+)\]")
+    amount_pattern = re.compile(r"£\s?[\d,]+(?:\.\d+)?|\b\d+(?:\.\d+)?\s?%")
+    valid_numbers = set(doc_numbers.values())
+    extracts_normalised = re.sub(r"[,\s£]", "", extracts.lower())
+
+    async def _contract_failures(text: str) -> list[str]:
+        failures: list[str] = []
+        cited = [int(number) for number in citation_pattern.findall(text)]
+        if not cited:
+            failures.append("the answer contains no [n] citations")
+        out_of_range = sorted({n for n in cited if n not in valid_numbers})
+        if out_of_range:
+            failures.append(
+                "these citation numbers do not exist: "
+                + ", ".join(str(n) for n in out_of_range)
             )
-            refused = REFUSAL_TEXT in answer
-    if not refused and NOT_COVERED_HEADING not in answer:
-        # The heading is a hard product rule; give the model one corrective
-        # pass before accepting the answer.
-        answer = _call_llm(
-            _QA_SYSTEM_PROMPT,
-            user_prompt
-            + "\n\nYour previous answer omitted the mandatory section headed "
-            + f'"{NOT_COVERED_HEADING}". Rewrite the full answer including it.',
-            settings,
+        if NOT_COVERED_HEADING not in text:
+            failures.append(
+                f'missing the mandatory section headed "{NOT_COVERED_HEADING}"'
+            )
+        elif GUIDANCE_NOTE not in text.split(NOT_COVERED_HEADING, 1)[1]:
+            failures.append(
+                "the answer must end with the guidance note after the "
+                "not-covered section"
+            )
+        for title in await _unlisted_named_titles(text):
+            failures.append(
+                f'the document "{title}" is named but is not a numbered source; '
+                "do not name it, or support it via a numbered source"
+            )
+        for amount in amount_pattern.findall(text):
+            if re.sub(r"[,\s£]", "", amount.lower()) not in extracts_normalised:
+                failures.append(
+                    f"the figure {amount} does not appear in the sources; only "
+                    "figures quoted verbatim from them are allowed"
+                )
+        return failures
+
+    def _is_refusal(text: str) -> bool:
+        stripped = text.strip().strip('"')
+        return stripped == REFUSAL_TEXT or (
+            REFUSAL_TEXT in text and len(stripped) <= len(REFUSAL_TEXT) + 40
         )
-        refused = REFUSAL_TEXT in answer
-        if not refused and NOT_COVERED_HEADING not in answer:
-            logger.warning("QA answer missing the not-covered section after retry.")
-    return QAResponse(answer=answer, sources=[] if refused else sources, refused=refused)
+
+    prompt_text = user_prompt
+    for attempt in range(1, QA_MAX_ATTEMPTS + 1):
+        answer = _call_llm(_QA_SYSTEM_PROMPT, prompt_text, settings)
+        if _is_refusal(answer):
+            return QAResponse(answer=REFUSAL_TEXT, sources=[], refused=True)
+        failures = await _contract_failures(answer)
+        if not failures:
+            return QAResponse(answer=answer, sources=sources, refused=False)
+        logger.info("QA contract attempt %d failed: %s", attempt, failures)
+        prompt_text = (
+            user_prompt
+            + "\n\nYour previous answer broke these rules:\n- "
+            + "\n- ".join(failures)
+            + "\nRewrite the FULL answer correcting every point."
+        )
+
+    logger.warning("QA answer failed contract validation after %d attempts.", QA_MAX_ATTEMPTS)
+    return QAResponse(answer=QA_CONTRACT_FAILED_TEXT, sources=[], refused=True)

@@ -13,10 +13,31 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { api, isApiError } from "@/lib/api"
 
+import Markdown from "react-markdown"
+import remarkGfm from "remark-gfm"
+
 import { type QaResponse, type QaSource } from "./knowledge-meta"
 import { ExternalTextLink } from "./shared"
 
-/** Splits an answer on [n] markers and links each to its source anchor. */
+/*
+  Renders the assistant's markdown answer properly (headings, bold,
+  bullets) while turning every [n] citation into an in-page link to its
+  source entry. Citations are rewritten to markdown links before
+  rendering; react-markdown escapes any raw HTML, so model output cannot
+  inject markup.
+*/
+const NOT_COVERED_HEADING = "What the library does not cover:"
+
+/** Splits an answer into the scrolling body and the always-visible caveats. */
+function splitAnswer(answer: string): { body: string; caveats: string | null } {
+  const index = answer.indexOf(NOT_COVERED_HEADING)
+  if (index === -1) return { body: answer, caveats: null }
+  return {
+    body: answer.slice(0, index).trimEnd(),
+    caveats: answer.slice(index),
+  }
+}
+
 function AnswerText({
   answer,
   sources,
@@ -26,30 +47,48 @@ function AnswerText({
   sources: QaSource[]
   anchorPrefix: string
 }) {
-  const parts = answer.split(/(\[\d+\])/g)
+  const known = new Set(sources.map((source) => source.n))
+  const withCitationLinks = answer.replace(/\[(\d+)\]/g, (whole, digits) => {
+    const n = Number(digits)
+    return known.has(n) ? `[\\[${n}\\]](#${anchorPrefix}-source-${n})` : whole
+  })
   return (
-    <p className="whitespace-pre-wrap text-sm leading-relaxed">
-      {parts.map((part, index) => {
-        const match = /^\[(\d+)\]$/.exec(part)
-        if (match) {
-          const n = Number(match[1])
-          const source = sources.find((candidate) => candidate.n === n)
-          if (source) {
-            return (
-              <a
-                key={index}
-                href={`#${anchorPrefix}-source-${n}`}
-                className="font-medium text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                aria-label={`Citation ${n}: ${source.doc_title}`}
-              >
-                [{n}]
-              </a>
-            )
-          }
-        }
-        return <React.Fragment key={index}>{part}</React.Fragment>
-      })}
-    </p>
+    <div className="markdown-answer text-sm leading-relaxed">
+      <Markdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          h1: ({ children }) => <h4>{children}</h4>,
+          h2: ({ children }) => <h5>{children}</h5>,
+          h3: ({ children }) => <h6>{children}</h6>,
+          a: ({ href, children }) => {
+            const match = /-source-(\d+)$/.exec(href ?? "")
+            if (match) {
+              const source = sources.find(
+                (candidate) => candidate.n === Number(match[1]),
+              )
+              return (
+                <a
+                  href={href}
+                  className="font-medium text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                  aria-label={
+                    source
+                      ? `Citation ${match[1]}: ${source.doc_title}`
+                      : `Citation ${match[1]}`
+                  }
+                >
+                  {children}
+                </a>
+              )
+            }
+            /* Non-citation links are rendered as plain text: authority
+               comes only from the numbered source list below. */
+            return <>{children}</>
+          },
+        }}
+      >
+        {withCitationLinks}
+      </Markdown>
+    </div>
   )
 }
 
@@ -131,8 +170,9 @@ export function AskSection() {
           <div className="max-w-2xl space-y-4">
             <div className="rounded-lg border px-4 py-3">
               <h3 className="mb-2 text-sm font-semibold">Answer</h3>
-              {/* Long answers scroll inside the pane rather than being cut
-                  or swamping the page; the region is keyboard focusable. */}
+              {/* The answer body scrolls; the mandatory "what the library
+                  does not cover" caveats stay pinned below the pane so the
+                  safety text is always visible. */}
               <div
                 className="max-h-96 overflow-y-auto pr-1"
                 tabIndex={0}
@@ -140,11 +180,20 @@ export function AskSection() {
                 aria-label="Full answer"
               >
                 <AnswerText
-                answer={result.answer}
-                sources={result.sources}
-                anchorPrefix={anchorPrefix}
+                  answer={splitAnswer(result.answer).body}
+                  sources={result.sources}
+                  anchorPrefix={anchorPrefix}
                 />
               </div>
+              {splitAnswer(result.answer).caveats ? (
+                <div className="mt-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 dark:border-amber-900 dark:bg-amber-950">
+                  <AnswerText
+                    answer={splitAnswer(result.answer).caveats ?? ""}
+                    sources={result.sources}
+                    anchorPrefix={anchorPrefix}
+                  />
+                </div>
+              ) : null}
             </div>
 
             {result.sources.length > 0 ? (
@@ -169,6 +218,23 @@ export function AskSection() {
                       )}
                       {source.form_code ? (
                         <Badge variant="secondary">{source.form_code}</Badge>
+                      ) : null}
+                      {source.relation === "referenced" ? (
+                        <Badge variant="outline">
+                          Referenced by another source
+                        </Badge>
+                      ) : null}
+                      {source.licence || source.fetch_date ? (
+                        <span className="w-full text-xs text-muted-foreground">
+                          {[
+                            source.licence,
+                            source.fetch_date
+                              ? `fetched ${source.fetch_date}`
+                              : null,
+                          ]
+                            .filter(Boolean)
+                            .join(" \u00b7 ")}
+                        </span>
                       ) : null}
                     </li>
                   ))}

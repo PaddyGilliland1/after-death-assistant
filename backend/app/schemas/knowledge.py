@@ -7,6 +7,7 @@ answer (build contract guardrail 3).
 
 import datetime as dt
 import uuid
+from datetime import date
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -93,6 +94,9 @@ class QASource(BaseModel):
     doc_title: str
     source_url: str
     form_code: str | None
+    licence: str | None = None
+    fetch_date: date | None = None
+    relation: Literal["direct", "referenced"] = "direct"
 
 
 class QAResponse(BaseModel):

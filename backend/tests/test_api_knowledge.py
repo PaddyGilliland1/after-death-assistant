@@ -384,7 +384,9 @@ async def test_qa_returns_cited_answer(session_factory, estate_id, client_for, m
         seen["user"] = user_prompt
         return (
             "You must complete form IHT400 when the estate is not an excepted "
-            f"estate [1]. {knowledge_api.GUIDANCE_NOTE}"
+            f"estate [1].\n\n{knowledge_api.NOT_COVERED_HEADING}\n"
+            "Nothing material; the guidance covered this question.\n\n"
+            f"{knowledge_api.GUIDANCE_NOTE}"
         )
 
     monkeypatch.setattr(knowledge_api, "_call_llm", _fake_llm)
@@ -402,6 +404,9 @@ async def test_qa_returns_cited_answer(session_factory, estate_id, client_for, m
             "doc_title": "Inheritance Tax account (IHT400)",
             "source_url": "https://example.test/iht400",
             "form_code": "IHT400",
+            "licence": "Open Government Licence v3.0",
+            "fetch_date": "2026-07-01",
+            "relation": "direct",
         }
     ]
     # The LLM only ever sees the cached extracts, with citation numbering.
@@ -449,3 +454,94 @@ async def test_qa_marks_model_refusal(session_factory, estate_id, client_for, mo
     body = response.json()
     assert body["refused"] is True
     assert body["sources"] == []
+
+
+async def test_qa_rejects_out_of_range_citation_then_fails_closed(
+    session_factory, estate_id, client_for, monkeypatch
+):
+    await _add_doc(
+        session_factory,
+        estate_id,
+        title="Inheritance Tax account (IHT400)",
+        form_code="IHT400",
+        source_url="https://example.test/iht400",
+        chunks=[("Use form IHT400 for non-excepted estates.", None)],
+    )
+    _enable_qa_key(monkeypatch)
+    calls = {"n": 0}
+
+    def _fake_llm(system_prompt: str, user_prompt: str, settings) -> str:
+        calls["n"] += 1
+        return (
+            f"See the rules [9].\n\n{knowledge_api.NOT_COVERED_HEADING}\n"
+            f"Nothing further.\n\n{knowledge_api.GUIDANCE_NOTE}"
+        )
+
+    monkeypatch.setattr(knowledge_api, "_call_llm", _fake_llm)
+    response = client_for(EXECUTOR).post("/knowledge/qa", json={"question": "Which form?"})
+    body = response.json()
+    assert calls["n"] == knowledge_api.QA_MAX_ATTEMPTS
+    assert body["refused"] is True
+    assert body["sources"] == []
+    assert "properly cited" in body["answer"]
+
+
+async def test_qa_corrective_retry_fixes_missing_section(
+    session_factory, estate_id, client_for, monkeypatch
+):
+    await _add_doc(
+        session_factory,
+        estate_id,
+        title="Inheritance Tax account (IHT400)",
+        form_code="IHT400",
+        source_url="https://example.test/iht400",
+        chunks=[("Use form IHT400 for non-excepted estates.", None)],
+    )
+    _enable_qa_key(monkeypatch)
+    calls = {"n": 0}
+
+    def _fake_llm(system_prompt: str, user_prompt: str, settings) -> str:
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return f"Use form IHT400 [1]. {knowledge_api.GUIDANCE_NOTE}"
+        return (
+            f"Use form IHT400 [1].\n\n{knowledge_api.NOT_COVERED_HEADING}\n"
+            f"Nothing further.\n\n{knowledge_api.GUIDANCE_NOTE}"
+        )
+
+    monkeypatch.setattr(knowledge_api, "_call_llm", _fake_llm)
+    response = client_for(EXECUTOR).post("/knowledge/qa", json={"question": "Which form?"})
+    body = response.json()
+    assert calls["n"] == 2
+    assert body["refused"] is False
+    assert knowledge_api.NOT_COVERED_HEADING in body["answer"]
+
+
+async def test_qa_rejects_invented_figures(
+    session_factory, estate_id, client_for, monkeypatch
+):
+    await _add_doc(
+        session_factory,
+        estate_id,
+        title="Inheritance Tax account (IHT400)",
+        form_code="IHT400",
+        source_url="https://example.test/iht400",
+        chunks=[("The nil rate band is 325,000 pounds for most estates.", None)],
+    )
+    _enable_qa_key(monkeypatch)
+    calls = {"n": 0}
+
+    def _fake_llm(system_prompt: str, user_prompt: str, settings) -> str:
+        calls["n"] += 1
+        return (
+            f"The threshold is £999,999 [1].\n\n{knowledge_api.NOT_COVERED_HEADING}\n"
+            f"Nothing further.\n\n{knowledge_api.GUIDANCE_NOTE}"
+        )
+
+    monkeypatch.setattr(knowledge_api, "_call_llm", _fake_llm)
+    response = client_for(EXECUTOR).post(
+        "/knowledge/qa", json={"question": "What is the nil rate band?"}
+    )
+    body = response.json()
+    assert body["refused"] is True
+    assert calls["n"] == knowledge_api.QA_MAX_ATTEMPTS

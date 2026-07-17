@@ -32,6 +32,9 @@ export interface KnowledgeDoc {
 
 /** One cited source in a QA answer. */
 export interface QaSource {
+  licence?: string | null
+  fetch_date?: string | null
+  relation?: "direct" | "referenced"
   n: number
   doc_title: string
   source_url: string | null
