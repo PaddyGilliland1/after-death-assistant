@@ -81,13 +81,14 @@ extracts covered this question."). Never omit this section.
 4. Never calculate, estimate or derive a figure. You may only repeat a figure that \
 appears verbatim in an extract, with its citation.
 5. End every answer (except a refusal) with exactly: "{GUIDANCE_NOTE}"
-6. When an extract uses its own internal numbering or labels (for example \
-"Step 6" of a wider guide, or a numbered form box), attribute the label to the \
-CITED document by its extract title, for example: the "Applying for probate" \
-page, which is Step 6 of gov.uk's wider what-to-do process [3]. Never leave a \
-bare label like (Step 6), and never present a document name as a source unless \
-it is one of the numbered extracts; a parent guide mentioned inside an extract \
-must be clearly anchored to the numbered extract that mentions it.
+6. Only ever name documents that are among the numbered extracts. If an extract \
+mentions another document or a parent guide that is NOT a numbered extract, do \
+not name it; describe it generically instead, for example: the wider gov.uk \
+process that this page is part of [3]. When an extract uses its own internal \
+numbering or labels (for example "Step 6", or a numbered form box), attribute \
+the label to the CITED document by its extract title, for example: the \
+"Applying for probate" page, which sits at Step 6 of the wider gov.uk process \
+[3]. Never leave a bare label like (Step 6).
 7. Write in UK English. Do not use em dashes."""
 
 
@@ -375,8 +376,38 @@ async def knowledge_qa(payload: QARequest, session: SessionDep, user: ReadUser) 
     )
     user_prompt = f"Extracts:\n\n{extracts}\n\nQuestion: {payload.question}"
 
+    async def _unlisted_named_titles(text: str) -> list[str]:
+        """Library document titles named in the answer without a source entry."""
+        listed = {source.doc_title.lower() for source in sources}
+        result = await session.execute(
+            select(KnowledgeDoc.title)
+            .where(KnowledgeDoc.estate_id == estate.id)
+            .where(KnowledgeDoc.archived_at.is_(None))
+        )
+        lowered = text.lower()
+        offenders = []
+        for (title,) in result.all():
+            core = title.split("(")[0].strip().lower()
+            if len(core) > 12 and core in lowered and title.lower() not in listed:
+                offenders.append(title)
+        return offenders
+
     answer = _call_llm(_QA_SYSTEM_PROMPT, user_prompt, settings)
     refused = REFUSAL_TEXT in answer
+    if not refused:
+        offenders = await _unlisted_named_titles(answer)
+        if offenders:
+            answer = _call_llm(
+                _QA_SYSTEM_PROMPT,
+                user_prompt
+                + "\n\nYour previous answer named these documents which are NOT "
+                + "among the numbered extracts: "
+                + "; ".join(offenders)
+                + ". Rewrite the full answer without naming them, describing them "
+                + "generically per rule 6.",
+                settings,
+            )
+            refused = REFUSAL_TEXT in answer
     if not refused and NOT_COVERED_HEADING not in answer:
         # The heading is a hard product rule; give the model one corrective
         # pass before accepting the answer.
