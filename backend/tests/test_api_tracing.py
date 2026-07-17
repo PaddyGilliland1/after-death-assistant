@@ -214,7 +214,7 @@ class TestCompleteness:
             "My Lost Account",
             "NS&I tracing service",
             "Pension Tracing Service (DWP)",
-            "Unclaimed Assets Register (Experian)",
+            "Gretel unclaimed assets search",
         }
         for item in suggestions:
             assert item["url"].startswith("https://")

@@ -370,7 +370,7 @@ TRACING_SEARCH_SUGGESTIONS: tuple[TracingSearchSuggestion, ...] = (
     ),
     TracingSearchSuggestion(
         name="NS&I tracing service",
-        url="https://www.nsandi.com/get-to-know-us/why-nsi/tracing-service",
+        url="https://www.mylostaccount.org.uk",
         covers="Premium Bonds and other NS&I holdings, including unclaimed prizes",
     ),
     TracingSearchSuggestion(
@@ -379,8 +379,8 @@ TRACING_SEARCH_SUGGESTIONS: tuple[TracingSearchSuggestion, ...] = (
         covers="Contact details for lost workplace and personal pension schemes",
     ),
     TracingSearchSuggestion(
-        name="Unclaimed Assets Register (Experian)",
-        url="https://www.uar.co.uk",
+        name="Gretel unclaimed assets search",
+        url="https://www.gretel.co.uk",
         covers="Lost life policies, pensions, unit trusts and share dividends",
     ),
 )

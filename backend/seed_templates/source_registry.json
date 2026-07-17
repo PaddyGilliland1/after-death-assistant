@@ -264,5 +264,131 @@
     "url": "https://lifeledger.com/",
     "licence": "Proprietary; reference with attribution, check terms before caching",
     "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "estate_managing_assets",
+    "title": "Dealing with the estate: managing and selling assets",
+    "url": "https://www.gov.uk/probate-estate/managing-and-selling-assets",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "cgt_allowances",
+    "title": "Capital Gains Tax allowances",
+    "url": "https://www.gov.uk/capital-gains-tax/allowances",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "register_estate",
+    "title": "Register an estate as a personal representative",
+    "url": "https://www.gov.uk/guidance/register-an-estate-as-a-personal-representative",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "pension_tracing",
+    "title": "Find pension contact details (Pension Tracing Service)",
+    "url": "https://www.gov.uk/find-pension-contact-details",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "veterans_uk",
+    "title": "Veterans UK (Defence Business Services)",
+    "url": "https://www.gov.uk/government/organisations/veterans-uk",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "veteran_pensions",
+    "title": "Pensions and compensation for veterans",
+    "url": "https://www.gov.uk/guidance/pensions-and-compensation-for-veterans",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "war_pension_scheme",
+    "title": "War Pension Scheme",
+    "url": "https://www.gov.uk/guidance/war-pension-scheme-wps",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "afcs",
+    "title": "Armed Forces Compensation Scheme (AFCS)",
+    "url": "https://www.gov.uk/guidance/armed-forces-compensation-scheme-afcs",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "military_service_records",
+    "title": "Get a copy of military service records",
+    "url": "https://www.gov.uk/get-copy-military-service-records",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "medals_veterans_badge",
+    "title": "Apply for a medal or veterans badge",
+    "url": "https://www.gov.uk/apply-medal-or-veterans-badge",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "my_lost_account",
+    "title": "My Lost Account (UK Finance): trace lost bank accounts",
+    "url": "https://www.mylostaccount.org.uk",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "raf_benevolent_fund",
+    "title": "RAF Benevolent Fund: bereavement support",
+    "url": "https://www.rafbf.org",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "rafa",
+    "title": "Royal Air Forces Association",
+    "url": "https://rafa.org.uk",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "ssafa",
+    "title": "SSAFA, the Armed Forces charity",
+    "url": "https://www.ssafa.org.uk",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "royal_british_legion",
+    "title": "Royal British Legion: bereavement support",
+    "url": "https://www.britishlegion.org.uk",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "forces_pension_society",
+    "title": "Forces Pension Society",
+    "url": "https://forcespensionsociety.org",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "veterans_gateway",
+    "title": "Veterans' Gateway",
+    "url": "https://www.veteransgateway.org.uk",
+    "licence": "Proprietary; site certificate currently invalid, visit manually",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "gretel",
+    "title": "Gretel: free unclaimed assets search (successor to the Experian UAR)",
+    "url": "https://www.gretel.co.uk",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "UK"
   }
 ]
