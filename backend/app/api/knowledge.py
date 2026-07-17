@@ -75,7 +75,11 @@ citations and say plainly which part the library does not cover.
 4. Never calculate, estimate or derive a figure. You may only repeat a figure that \
 appears verbatim in an extract, with its citation.
 5. End every answer (except a refusal) with exactly: "{GUIDANCE_NOTE}"
-6. Write in UK English. Do not use em dashes."""
+6. When an extract uses its own internal numbering or labels (for example \
+"Step 6" of a step-by-step guide, or a numbered form box), name the source in the \
+sentence, for example: the gov.uk step-by-step guide's Step 6. Never leave a bare \
+label like (Step 6) that the reader cannot trace to a named source.
+7. Write in UK English. Do not use em dashes."""
 
 
 # ---------------------------------------------------------------------------
@@ -339,18 +343,26 @@ async def knowledge_qa(payload: QARequest, session: SessionDep, user: ReadUser) 
     if not hits:
         return QAResponse(answer=REFUSAL_TEXT, sources=[], refused=True)
 
-    sources = [
-        QASource(
-            n=number,
-            doc_title=hit.doc_title,
-            source_url=hit.source_url,
-            form_code=hit.form_code,
-        )
-        for number, hit in enumerate(hits, start=1)
-    ]
+    # One numbered source per DOCUMENT, not per chunk: several chunks of
+    # the same page share a number, so the reader never sees the same
+    # title listed four times with different numbers.
+    doc_numbers: dict[uuid.UUID, int] = {}
+    sources = []
+    for hit in hits:
+        if hit.doc_id not in doc_numbers:
+            doc_numbers[hit.doc_id] = len(doc_numbers) + 1
+            sources.append(
+                QASource(
+                    n=doc_numbers[hit.doc_id],
+                    doc_title=hit.doc_title,
+                    source_url=hit.source_url,
+                    form_code=hit.form_code,
+                )
+            )
     extracts = "\n\n".join(
-        f"[{number}] From \"{hit.doc_title}\" ({hit.source_url}):\n{hit.chunk_text}"
-        for number, hit in enumerate(hits, start=1)
+        f"[{doc_numbers[hit.doc_id]}] From \"{hit.doc_title}\" "
+        f"({hit.source_url}):\n{hit.chunk_text}"
+        for hit in hits
     )
     user_prompt = f"Extracts:\n\n{extracts}\n\nQuestion: {payload.question}"
 
