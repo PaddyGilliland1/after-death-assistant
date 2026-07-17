@@ -495,5 +495,26 @@
     "url": "https://www.mariecurie.org.uk/information/money-and-work/claiming-on-life-insurance",
     "licence": "Proprietary; reference with attribution",
     "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "nsandi_customer_died",
+    "title": "NS&I: what to do if an NS&I customer has died (Premium Bonds and savings)",
+    "url": "https://www.nsandi.com/help/manage-money-for-others/customers-who-have-died",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "nsandi_bereavement_brochure",
+    "title": "NS&I: guidance after a bereavement (PDF brochure)",
+    "url": "https://www.nsandi.com/files/asset/pdf/death-claims-brochure.pdf",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "nsandi_tracing_brochure",
+    "title": "NS&I: tracing service, how to find lost savings (PDF brochure)",
+    "url": "https://www.nsandi.com/files/asset/pdf/tracing-service-brochure-print-friendly.pdf",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "UK"
   }
 ]
