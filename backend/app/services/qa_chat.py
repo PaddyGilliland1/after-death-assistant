@@ -98,8 +98,9 @@ guidance itself says about how the figure is arrived at.
 Write in calm, plain UK English. Use short sentences and everyday words; explain any
 official term the first time it appears. Be warm but not effusive, and never breezy
 about the death. Do not use em dashes anywhere. Do not use exclamation marks. Address
-the reader as "you". Prefer short paragraphs; use a list only when the guidance itself
-sets out discrete steps. Do not write your own sources list: the application renders
+the reader as "you". Your readers are stressed: when you are giving actions, options
+or steps, use a short bullet list rather than a paragraph, and keep any paragraph to
+three sentences or fewer. Do not write your own sources list: the application renders
 sources from the citation data automatically.
 </tone_and_language>
 
@@ -114,6 +115,13 @@ followed by one short paragraph or list naming the parts of the question the pro
 guidance does not address. If everything was covered, write: The provided guidance
 covered all parts of your question.
 </answer_format>
+
+<estate_progress>
+Some messages include a block headed "Current progress in this estate". Use it ONLY to
+tailor your answer to where the reader is in the process (for example, pointing to the
+next step rather than ones already done, or acknowledging a task they mentioned).
+Never cite it, never treat it as guidance, and never compute figures from it.
+</estate_progress>
 
 <conversation_behaviour>
 This is a multi-turn chat. Carry forward what the user has already told you, but ground
@@ -148,6 +156,7 @@ class ChatTurn:
     pins: list[QaPinnedSnippet] = field(default_factory=list)
     hits: list[SearchHit] = field(default_factory=list)
     supplied: list[SuppliedResult] = field(default_factory=list)
+    progress_text: str | None = None
     answer_text: str = ""
     sources_cited: list[ChatSource] = field(default_factory=list)
     related_sources: list[ChatSource] = field(default_factory=list)
@@ -205,6 +214,8 @@ def _build_messages(turn: ChatTurn) -> list[dict]:
     final_content: list[dict] = [
         _search_result_block(result) for result in turn.supplied
     ]
+    if turn.progress_text:
+        final_content.append({"type": "text", "text": turn.progress_text})
     final_content.append({"type": "text", "text": turn.question})
     messages.append({"role": "user", "content": final_content})
     return messages
@@ -301,6 +312,63 @@ def _contract_failures(turn: ChatTurn) -> list[str]:
     return failures
 
 
+async def _estate_progress_text(session: AsyncSession, estate_id: uuid.UUID) -> str | None:
+    """A short plain-text picture of where this estate is, for tailoring.
+
+    Timeline position plus the soonest open tasks with their latest
+    comment. Supplied as context only; the prompt forbids citing it.
+    """
+    from app.models import ProcessStep, Task, TaskComment
+
+    steps = (
+        await session.execute(
+            select(ProcessStep)
+            .where(ProcessStep.estate_id == estate_id)
+            .where(ProcessStep.archived_at.is_(None))
+            .order_by(ProcessStep.order)
+        )
+    ).scalars().all()
+    tasks = (
+        await session.execute(
+            select(Task)
+            .where(Task.estate_id == estate_id)
+            .where(Task.archived_at.is_(None))
+            .where(Task.status != "done")
+            .order_by(Task.due_date.nulls_last(), Task.created_at)
+            .limit(10)
+        )
+    ).scalars().all()
+    if not steps and not tasks:
+        return None
+    lines = ["Current progress in this estate (context only, never cite):"]
+    if steps:
+        done = sum(1 for s in steps if (s.status or "").lower() == "done")
+        current = next(
+            (s for s in steps if (s.status or "").lower() != "done"), None
+        )
+        lines.append(f"- Timeline: {done} of {len(steps)} steps complete.")
+        if current is not None:
+            lines.append(f"- Current step: {current.name}.")
+    for task in tasks:
+        comment = (
+            await session.execute(
+                select(TaskComment)
+                .where(TaskComment.task_id == task.id)
+                .where(TaskComment.archived_at.is_(None))
+                .order_by(TaskComment.created_at.desc())
+                .limit(1)
+            )
+        ).scalars().first()
+        line = f"- Open task: {task.title} (status {task.status or 'todo'}"
+        if task.due_date:
+            line += f", due {task.due_date}"
+        line += ")"
+        if comment is not None:
+            line += f'; latest note: "{comment.body[:140]}"'
+        lines.append(line)
+    return "\n".join(lines)
+
+
 async def run_chat_turn(
     session: AsyncSession,
     *,
@@ -348,6 +416,8 @@ async def run_chat_turn(
             .order_by(QaPinnedSnippet.created_at)
         )
         turn.pins = list(pins.scalars().all())
+
+    turn.progress_text = await _estate_progress_text(session, estate_id)
 
     # retrieve ----------------------------------------------------------
     turn.hits = await hybrid_search(session, estate_id, question, RETRIEVAL_LIMIT)

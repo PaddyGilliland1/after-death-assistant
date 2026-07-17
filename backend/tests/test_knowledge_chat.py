@@ -138,6 +138,9 @@ def harness(monkeypatch):
                 "qa_pinned_snippet",
                 "qa_message",
                 "qa_conversation",
+                "task_comment",
+                "task",
+                "process_step",
                 "knowledge_chunk",
                 "knowledge_doc",
                 "estate",
@@ -328,3 +331,63 @@ def test_conversation_from_another_estate_is_not_found(harness, monkeypatch):
         "DELETE", f"/knowledge/chats/{cid}", json={"reason": "test"}
     )
     assert archived.status_code == 404
+
+
+def test_estate_progress_context_supplied_and_tailoring_only(harness, monkeypatch):
+    import asyncio
+
+    engine = create_async_engine(TEST_URL, poolclass=NullPool)
+    factory = async_sessionmaker(engine, expire_on_commit=False)
+
+    async def seed_progress():
+        from app.models import ProcessStep, Task, TaskComment
+
+        async with factory() as session:
+            estate = (
+                await session.execute(text('SELECT id FROM estate LIMIT 1'))
+            ).scalar_one()
+            step = ProcessStep(
+                estate_id=estate, order=1, name="Value the estate",
+                status="not_started", created_by="seed",
+            )
+            session.add(step)
+            await session.flush()
+            task = Task(
+                estate_id=estate, title="Ask the bank for balances",
+                status="in_progress", created_by="seed",
+            )
+            session.add(task)
+            await session.flush()
+            session.add(
+                TaskComment(
+                    estate_id=estate, task_id=task.id,
+                    body="Bank says allow ten working days", created_by="seed",
+                )
+            )
+            await session.commit()
+        await engine.dispose()
+
+    asyncio.run(seed_progress())
+
+    captured: dict = {}
+
+    def fake_api(system, messages, settings):
+        captured["messages"] = messages
+        return _answer_with_citation(0)
+
+    monkeypatch.setattr(qa_chat, "_call_chat_api", fake_api)
+    response = harness(EXECUTOR).post(
+        "/knowledge/chat", json={"question": "Do I need probate before selling?"}
+    )
+    assert response.status_code == 200
+    final_content = captured["messages"][-1]["content"]
+    progress_blocks = [
+        b for b in final_content
+        if b["type"] == "text" and "Current progress in this estate" in b["text"]
+    ]
+    assert len(progress_blocks) == 1
+    text_block = progress_blocks[0]["text"]
+    assert "Ask the bank for balances" in text_block
+    assert "allow ten working days" in text_block
+    # question remains the FINAL block, after the progress context
+    assert final_content[-1]["text"] == "Do I need probate before selling?"

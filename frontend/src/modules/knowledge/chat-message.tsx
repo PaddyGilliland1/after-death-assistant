@@ -137,16 +137,22 @@ function CitedSources({
               <PinnedBadge source={source} />
             </div>
             <LicenceLine licence={source.licence} fetchDate={source.fetch_date} />
-            {source.quotes.map((quote, quoteIndex) => (
+            {source.quotes.slice(0, 2).map((quote, quoteIndex) => (
               <p
                 key={quoteIndex}
                 className="mt-1 border-l-2 border-muted pl-2 text-xs italic text-muted-foreground"
               >
                 {"“"}
-                {quote}
+                {quote.length > 220 ? quote.slice(0, 220).trimEnd() + "…" : quote}
                 {"”"}
               </p>
             ))}
+            {source.quotes.length > 2 ? (
+              <p className="mt-1 text-xs text-muted-foreground">
+                and {source.quotes.length - 2} more passage
+                {source.quotes.length - 2 === 1 ? "" : "s"} from this source
+              </p>
+            ) : null}
           </li>
         ))}
       </ol>

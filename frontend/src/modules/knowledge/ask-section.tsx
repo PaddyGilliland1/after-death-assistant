@@ -115,10 +115,17 @@ export function AskSection() {
     },
   })
 
-  /* Keep the newest message in view as the thread grows. */
+  /* Scroll the START of the newest message into view, so a long answer
+     is read from its beginning rather than its end. */
   React.useEffect(() => {
     const node = threadRef.current
-    if (node) node.scrollTop = node.scrollHeight
+    if (!node) return
+    const last = node.querySelector("[data-message]:last-of-type")
+    if (last && typeof (last as HTMLElement).scrollIntoView === "function") {
+      ;(last as HTMLElement).scrollIntoView({ block: "start" })
+    } else {
+      node.scrollTop = node.scrollHeight
+    }
   }, [messages.length, ask.isPending])
 
   function submitQuestion() {
@@ -266,7 +273,9 @@ export function AskSection() {
             </p>
           ) : null}
           {messages.map((message) => (
-            <ChatMessageItem key={message.id} message={message} />
+            <div key={message.id} data-message>
+              <ChatMessageItem message={message} />
+            </div>
           ))}
           {ask.isPending && ask.variables ? (
             <div className="flex justify-end">
