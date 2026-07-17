@@ -390,5 +390,110 @@
     "url": "https://www.gretel.co.uk",
     "licence": "Proprietary; reference with attribution",
     "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "benefits_tax_pension_after_partner_death",
+    "title": "Your benefits, tax and pension after the death of a partner",
+    "url": "https://www.gov.uk/death-spouse-benefits-tax-pension",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "bereavement_support_payment",
+    "title": "Bereavement Support Payment",
+    "url": "https://www.gov.uk/bereavement-support-payment",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "stepchange_debt_after_death",
+    "title": "StepChange: Debt after death - dealing with a deceased person's debts",
+    "url": "https://www.stepchange.org/debt-info/debt-after-death.aspx",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "marie_curie_benefits_after_death",
+    "title": "Marie Curie: What happens to benefits when someone dies?",
+    "url": "https://www.mariecurie.org.uk/information/money-and-work/benefits-after-death",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "ca_deceased_financial_affairs",
+    "title": "Citizens Advice: Dealing with the financial affairs of someone who has died",
+    "url": "https://www.citizensadvice.org.uk/family/death-and-wills/dealing-with-the-financial-affairs-of-someone-who-has-died/",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "age_uk_fs14_dealing_with_estate",
+    "title": "Age UK Factsheet 14: Dealing with an estate (PDF)",
+    "url": "https://www.ageuk.org.uk/siteassets/documents/factsheets/fs14_dealing_with_an_estate_fcs.pdf",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "age_uk_ig03_when_someone_dies",
+    "title": "Age UK Guide IG03: When someone dies - a step-by-step guide (PDF)",
+    "url": "https://www.ageuk.org.uk/siteassets/documents/information-guides/ageukig03_when_someone_dies.inf.pdf",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "nbs_covering_funeral_costs",
+    "title": "National Bereavement Service: Covering funeral costs",
+    "url": "https://thenbs.org/practical-support/covering-funeral-costs",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "down_to_earth_funeral_costs",
+    "title": "Down to Earth (Quaker Social Action): help with funeral costs",
+    "url": "https://quakersocialaction.org.uk/we-can-help/helping-funerals/down-earth",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "childrens_funeral_fund",
+    "title": "Children's Funeral Fund for England",
+    "url": "https://www.gov.uk/child-funeral-costs",
+    "licence": "Open Government Licence v3.0",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "marie_curie_help_funeral_costs",
+    "title": "Marie Curie: Help with funeral costs (Funeral Expenses Payment)",
+    "url": "https://www.mariecurie.org.uk/information/money-and-work/help-with-funeral-costs",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "ca_arranging_a_funeral",
+    "title": "Citizens Advice: Arranging a funeral",
+    "url": "https://www.citizensadvice.org.uk/family/death-and-wills/arranging-a-funeral/",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "nbs_debts_after_death",
+    "title": "National Bereavement Service: Debts after death",
+    "url": "https://thenbs.org/practical-support/debts-after-death",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "England and Wales"
+  },
+  {
+    "form_code_or_topic": "cruse_death_of_partner",
+    "title": "Cruse Bereavement Support: Losing a partner or spouse",
+    "url": "https://www.cruse.org.uk/understanding-grief/grief-experiences/coping-death-partner/",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "UK"
+  },
+  {
+    "form_code_or_topic": "marie_curie_life_insurance_claims",
+    "title": "Marie Curie: Claiming on life insurance after someone has died",
+    "url": "https://www.mariecurie.org.uk/information/money-and-work/claiming-on-life-insurance",
+    "licence": "Proprietary; reference with attribution",
+    "jurisdiction": "UK"
   }
 ]
