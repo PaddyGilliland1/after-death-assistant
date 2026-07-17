@@ -81,7 +81,9 @@ async def _run_seed(path: Path, force_fresh: bool) -> int:
     if report.estate_created:
         logger.info(
             "Reminder: run POST /iht/recompute and POST /deadlines/recompute "
-            "so the assessment and statutory deadlines are derived."
+            "so the assessment and statutory deadlines are derived, and "
+            "scripts/fetch-knowledge.sh to cache the guidance library. "
+            "Semantic search is optional: switch it on from Admin, Parameters."
         )
     return 0
 

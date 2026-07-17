@@ -69,7 +69,7 @@ Copy `.env.example` to `.env` and never commit `.env`. The variables that matter
 | `DEV_AUTH` | `true` enables the development sign-in (the `X-Dev-User` shim). **MUST be `false` in production.** | `true` |
 | `USER_ROLES` | Server-side email-to-role mapping, `email:role` pairs separated by commas; roles are `admin`, `executor`, `viewer` | `admin@example.com:admin,exec@example.com:executor` |
 | `ANTHROPIC_API_KEY` | Only for the Ask assistant, letter drafting and narration. Leave empty and those features report "not configured" calmly; everything else works. | empty |
-| `EMBEDDING_MODEL` | Embedding model id for knowledge-library vectors; without it, search falls back to full-text ranking | empty |
+| `EMBEDDING_MODEL` | Embedding provider for semantic search; `local` uses a free on-device model. Embeddings only ever run when switched on from Admin, Parameters (off by default: the local model is a ~0.6 GB one-time download and not every machine can run it); search falls back to full-text while off | `local` |
 | `STORAGE_BACKEND` / `STORAGE_LOCAL_PATH` | Where uploaded documents and backups are stored | `local` / `./storage` |
 | `BACKEND_PORT` | Backend port | `8471` |
 | `FRONTEND_ORIGIN` | CORS origin for the dev frontend | `http://localhost:5173` |

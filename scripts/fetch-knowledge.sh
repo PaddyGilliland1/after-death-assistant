@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Fetch the starter knowledge library: every official source in the
-# registry (HMRC forms IHT400 and schedules, RNRB guidance, Tell Us Once,
-# Gazette Section 27, clearance, loss reliefs, administration-period tax,
-# NHS, Gazette, Age UK, Marie Curie and Citizens Advice references),
-# pulled directly from each official or support-organisation source into
-# your own database.
+# Fetch the starter knowledge library: every source in the registry
+# (backend/seed_templates/source_registry.json; 50+ entries covering the
+# HMRC forms and guidance, probate, tracing services, veterans support
+# and bereavement organisations), pulled directly from each official or
+# support-organisation site into your own database. The registry is the
+# single source of truth; this script always fetches whatever it lists.
 #
 # Why a script rather than shipping the content: most documents are Crown
 # copyright under the Open Government Licence and each source records its
