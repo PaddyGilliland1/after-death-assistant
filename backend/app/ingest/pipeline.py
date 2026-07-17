@@ -145,7 +145,15 @@ async def ingest(
     Fetch or processing failures are reported, never raised.
     """
     fetcher = fetcher or fetch_url
-    provider = provider or get_embedding_provider()
+    if provider is None:
+        from app.services.app_settings import embeddings_enabled
+
+        if await embeddings_enabled(session):
+            provider = get_embedding_provider()
+        else:
+            from app.ingest.embedder import NoneProvider
+
+            provider = NoneProvider()
     storage = storage or get_storage()
 
     try:

@@ -46,6 +46,12 @@ def _build_parser() -> argparse.ArgumentParser:
     demo_parser.add_argument("--force-fresh", action="store_true")
 
     subparsers.add_parser(
+        "embed-backfill",
+        help="Embed knowledge chunks that have no embedding yet (no network "
+        "fetch; uses the configured EMBEDDING_MODEL provider)",
+    )
+
+    subparsers.add_parser(
         "reconcile-steps",
         help="Recompute every timeline step's status from its linked tasks "
         "(one-time repair for data written before task-step sync existed)",
@@ -106,9 +112,52 @@ async def _run_reconcile() -> int:
     return 0
 
 
+async def _run_embed_backfill() -> int:
+    from sqlalchemy import select
+
+    from app.ingest.embedder import get_embedding_provider
+    from app.models import KnowledgeChunk
+
+    provider = get_embedding_provider()
+    factory = get_session_factory()
+    done = 0
+    try:
+        async with factory() as session:
+            result = await session.execute(
+                select(KnowledgeChunk)
+                .where(KnowledgeChunk.embedding.is_(None))
+                .where(KnowledgeChunk.archived_at.is_(None))
+            )
+            chunks = list(result.scalars().all())
+            if not chunks:
+                logger.info("Nothing to embed: every chunk already has a vector.")
+                return 0
+            batch = 64
+            for start in range(0, len(chunks), batch):
+                part = chunks[start : start + batch]
+                vectors = provider.embed_texts([chunk.text for chunk in part])
+                if vectors is None:
+                    logger.error(
+                        "Embeddings are switched off (EMBEDDING_MODEL is empty)."
+                    )
+                    return 1
+                for chunk, vector in zip(part, vectors, strict=True):
+                    chunk.embedding = vector
+                    session.add(chunk)
+                done += len(part)
+                logger.info("Embedded %d/%d chunks", done, len(chunks))
+            await session.commit()
+    finally:
+        await dispose_engine()
+    logger.info("Backfill complete: %d chunk(s) embedded.", done)
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
     args = _build_parser().parse_args(argv)
+    if args.command == "embed-backfill":
+        return asyncio.run(_run_embed_backfill())
     if args.command == "reconcile-steps":
         return asyncio.run(_run_reconcile())
     if args.command == "seed":

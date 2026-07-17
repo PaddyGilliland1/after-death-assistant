@@ -1,9 +1,13 @@
 """Embedding provider abstraction (dimension 1024, pgvector).
 
-When settings.EMBEDDING_MODEL is empty the NoneProvider is selected: it
-returns None, the pipeline stores NULL embeddings, and retrieval falls
-back to Postgres full-text search only. VoyageProvider is a stub until an
-embedding key and model are wired in.
+EMBEDDING_MODEL selects the provider:
+- "local" (the default): a local model via fastembed
+  (mixedbread-ai/mxbai-embed-large-v1, 1024 dimensions). No key, no
+  cost, nothing leaves the machine; the model file (~0.6 GB) downloads
+  once on first use into the fastembed cache.
+- "" (empty): embeddings off; the pipeline stores NULL and retrieval
+  falls back to Postgres full-text search only.
+- "voyage:<model>": stub for the Voyage AI API until key handling lands.
 """
 
 from typing import Protocol
@@ -28,6 +32,23 @@ class NoneProvider:
         return None
 
 
+LOCAL_MODEL = "mixedbread-ai/mxbai-embed-large-v1"
+
+
+class LocalProvider:
+    """Local embeddings via fastembed. Lazy singleton: the model loads on
+    first use, not at import or provider construction."""
+
+    _embedder = None
+
+    def embed_texts(self, texts: list[str]) -> list[list[float]] | None:
+        if LocalProvider._embedder is None:
+            from fastembed import TextEmbedding
+
+            LocalProvider._embedder = TextEmbedding(model_name=LOCAL_MODEL)
+        return [vector.tolist() for vector in LocalProvider._embedder.embed(texts)]
+
+
 class VoyageProvider:
     """Voyage AI embeddings stub. Not implemented yet (no key handling)."""
 
@@ -49,4 +70,6 @@ def get_embedding_provider(settings: Settings | None = None) -> EmbeddingProvide
     model = (settings.EMBEDDING_MODEL or "").strip()
     if not model:
         return NoneProvider()
+    if model == "local":
+        return LocalProvider()
     return VoyageProvider(model)

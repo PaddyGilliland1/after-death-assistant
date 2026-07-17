@@ -22,6 +22,7 @@ dependencies = [
     "beautifulsoup4",
     "fpdf2",
     "pyjwt[crypto]>=2.13.0",
+    "fastembed>=0.8.0",
 ]
 
 [dependency-groups]

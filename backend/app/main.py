@@ -39,6 +39,7 @@ from app.api import (
     liabilities,
     me,
     notifications,
+    params,
     process,
     reliefs,
     tasks,
@@ -130,6 +131,7 @@ def create_app() -> FastAPI:
     app.include_router(knowledge_chat.router)
     app.include_router(agent_drafts.router)
     app.include_router(exports.router)
+    app.include_router(params.router)
 
     return app
 

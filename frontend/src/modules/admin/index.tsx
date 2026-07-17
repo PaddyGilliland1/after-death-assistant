@@ -12,6 +12,8 @@
 import * as React from "react"
 import { useQuery } from "@tanstack/react-query"
 import { Activity, ScrollText, Search } from "lucide-react"
+
+import { ParamsSection } from "./params-section"
 import { Link } from "react-router-dom"
 
 import {
@@ -396,6 +398,8 @@ export default function AdminPage() {
       {section === "activity" ? <ActivitySection /> : null}
       {section === "audit" ? <AuditSection /> : null}
       {section === "search" ? <SearchSection /> : null}
+
+      <ParamsSection />
     </section>
   )
 }

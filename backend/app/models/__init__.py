@@ -5,6 +5,7 @@ what Alembic autogenerate and create_all consume.
 """
 
 from .admin_tax import AdminTax
+from .app_settings import AppSetting
 from .assets import Asset, ValuationEvent
 from .audit import Approval, AuditEvent
 from .base import (
@@ -86,6 +87,7 @@ __all__ = [
     "IhtAssessment",
     "Relief",
     "AdminTax",
+    "AppSetting",
     "DigitalItem",
     "KnowledgeDoc",
     "KnowledgeChunk",

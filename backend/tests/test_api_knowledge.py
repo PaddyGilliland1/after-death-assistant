@@ -230,6 +230,13 @@ async def test_search_merges_vector_hits_with_fts(
 
     monkeypatch.setattr(knowledge_api, "_embed_query", lambda question: query_vector)
 
+    # The vector arm only runs when the admin toggle is on (params page).
+    from app.services.app_settings import EMBEDDINGS_ENABLED_KEY, set_setting
+
+    async with session_factory() as session:
+        await set_setting(session, EMBEDDINGS_ENABLED_KEY, True)
+        await session.commit()
+
     response = client_for(EXECUTOR).get(
         "/knowledge/search", params={"q": "residence nil rate band"}
     )

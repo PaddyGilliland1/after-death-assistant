@@ -233,6 +233,21 @@ def _to_hit(chunk: KnowledgeChunk, doc: KnowledgeDoc, score: float) -> SearchHit
     )
 
 
+async def _query_vector_if_enabled(
+    session: AsyncSession, question: str
+) -> list[float] | None:
+    """Embed the query only when the admin toggle is on; never otherwise."""
+    from app.services.app_settings import embeddings_enabled
+
+    if not await embeddings_enabled(session):
+        return None
+    try:
+        return _embed_query(question)
+    except Exception as exc:  # noqa: BLE001 - embedding failure must not kill search
+        logger.warning("Query embedding failed; using full-text only: %s", exc)
+        return None
+
+
 async def hybrid_search(
     session: AsyncSession, estate_id: uuid.UUID, q: str, limit: int
 ) -> list[SearchHit]:
@@ -240,7 +255,7 @@ async def hybrid_search(
     pool = max(limit * 2, limit)
     ranked_lists = [await _fts_rows(session, estate_id, q, pool)]
 
-    query_vector = _embed_query(q)
+    query_vector = await _query_vector_if_enabled(session, q)
     if query_vector is not None:
         ranked_lists.append(await _vector_rows(session, estate_id, query_vector, pool))
 
