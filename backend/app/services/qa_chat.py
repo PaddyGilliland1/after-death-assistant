@@ -116,12 +116,20 @@ guidance does not address. If everything was covered, write: The provided guidan
 covered all parts of your question.
 </answer_format>
 
-<estate_progress>
-Some messages include a block headed "Current progress in this estate". Use it ONLY to
-tailor your answer to where the reader is in the process (for example, pointing to the
-next step rather than ones already done, or acknowledging a task they mentioned).
-Never cite it, never treat it as guidance, and never compute figures from it.
-</estate_progress>
+<estate_context>
+Some messages include a block headed "Current details of this estate". It holds the
+reader's live position: timeline progress, open tasks, and the estate's recorded
+figures (values, liabilities, the application's tax assessment). Use it to tailor your
+answer and to assess qualitatively, for example noting that the app's assessment shows
+the estate below its allowance, or that a valuation is still marked as an estimate.
+Rules for this block:
+1. Never cite it with [n] markers and never treat it as guidance.
+2. You may repeat its figures, always attributed in the sentence to the application's
+   records, for example: according to the app's current records, the estate is valued
+   at 960,000 pounds. Add the caveat when a value is marked estimate.
+3. Never combine, total, subtract or otherwise compute NEW figures from it; the
+   application's assessment pages do that.
+</estate_context>
 
 <conversation_behaviour>
 This is a multi-turn chat. Carry forward what the user has already told you, but ground
@@ -301,9 +309,10 @@ def _contract_failures(turn: ChatTurn) -> list[str]:
         failures.append(
             f'missing the closing section headed "{NOT_COVERED_HEADING}"'
         )
-    supplied_normalised = re.sub(
-        r"[,\s£]", "", " ".join(result.text for result in turn.supplied).lower()
-    )
+    allowed_texts = [result.text for result in turn.supplied]
+    if turn.progress_text:
+        allowed_texts.append(turn.progress_text)
+    supplied_normalised = re.sub(r"[,\s£]", "", " ".join(allowed_texts).lower())
     for amount in _AMOUNT_PATTERN.findall(turn.answer_text):
         if re.sub(r"[,\s£]", "", amount.lower()) not in supplied_normalised:
             failures.append(
@@ -313,12 +322,25 @@ def _contract_failures(turn: ChatTurn) -> list[str]:
 
 
 async def _estate_progress_text(session: AsyncSession, estate_id: uuid.UUID) -> str | None:
-    """A short plain-text picture of where this estate is, for tailoring.
+    """A plain-text picture of this estate for tailoring answers.
 
-    Timeline position plus the soonest open tasks with their latest
-    comment. Supplied as context only; the prompt forbids citing it.
+    Timeline position, open tasks with their latest comment, and the
+    recorded financial profile (asset/liability figures as stored, the
+    latest engine assessment). Supplied as context only; the prompt
+    forbids citing it and forbids computing new figures from it. All
+    figures here come from stored records or the deterministic engine,
+    never from a model.
     """
-    from app.models import ProcessStep, Task, TaskComment
+    from app.models import (
+        Asset,
+        Creditor,
+        Debtor,
+        IhtAssessment,
+        Liability,
+        ProcessStep,
+        Task,
+        TaskComment,
+    )
 
     steps = (
         await session.execute(
@@ -338,9 +360,51 @@ async def _estate_progress_text(session: AsyncSession, estate_id: uuid.UUID) -> 
             .limit(10)
         )
     ).scalars().all()
-    if not steps and not tasks:
+    assets = (
+        await session.execute(
+            select(Asset)
+            .where(Asset.estate_id == estate_id)
+            .where(Asset.archived_at.is_(None))
+            .order_by(Asset.dod_value.desc().nulls_last())
+            .limit(8)
+        )
+    ).scalars().all()
+    liabilities = (
+        await session.execute(
+            select(Liability)
+            .where(Liability.estate_id == estate_id)
+            .where(Liability.archived_at.is_(None))
+            .limit(8)
+        )
+    ).scalars().all()
+    debtors = (
+        await session.execute(
+            select(Debtor)
+            .where(Debtor.estate_id == estate_id)
+            .where(Debtor.archived_at.is_(None))
+            .limit(8)
+        )
+    ).scalars().all()
+    creditors = (
+        await session.execute(
+            select(Creditor)
+            .where(Creditor.estate_id == estate_id)
+            .where(Creditor.archived_at.is_(None))
+            .limit(8)
+        )
+    ).scalars().all()
+    assessment = (
+        await session.execute(
+            select(IhtAssessment)
+            .where(IhtAssessment.estate_id == estate_id)
+            .order_by(IhtAssessment.created_at.desc())
+            .limit(1)
+        )
+    ).scalars().first()
+
+    if not steps and not tasks and not assets and assessment is None:
         return None
-    lines = ["Current progress in this estate (context only, never cite):"]
+    lines = ["Current details of this estate (context only, never cite):"]
     if steps:
         done = sum(1 for s in steps if (s.status or "").lower() == "done")
         current = next(
@@ -366,6 +430,38 @@ async def _estate_progress_text(session: AsyncSession, estate_id: uuid.UUID) -> 
         if comment is not None:
             line += f'; latest note: "{comment.body[:140]}"'
         lines.append(line)
+    for asset in assets:
+        line = f"- Asset: {asset.description}"
+        if asset.dod_value is not None:
+            basis = asset.value_basis or "estimate"
+            line += f", value at death {asset.dod_value} ({basis})"
+        lines.append(line)
+    for liability in liabilities:
+        line = f"- Liability: {liability.type or 'liability'}"
+        if liability.amount is not None:
+            line += f", {liability.amount}"
+        lines.append(line)
+    for debtor in debtors:
+        expected = debtor.amount_expected or 0
+        received = debtor.amount_received or 0
+        lines.append(
+            f"- Debtor (money owed to the estate): {debtor.type or 'debt'}, "
+            f"expected {expected}, received so far {received}"
+        )
+    for creditor in creditors:
+        lines.append(
+            f"- Creditor (money the estate owes): {creditor.type or 'claim'}, "
+            f"claimed {creditor.amount_claimed}"
+        )
+    if assessment is not None:
+        result = assessment.snapshot.get("result", {}) if assessment.snapshot else {}
+        if result:
+            lines.append(
+                "- The application's current tax assessment (deterministic "
+                f"engine): net value {result.get('net_value')}, allowance "
+                f"{result.get('allowance')}, tax due {result.get('tax')}, "
+                f"IHT400 required: {result.get('must_file_iht400')}."
+            )
     return "\n".join(lines)
 
 

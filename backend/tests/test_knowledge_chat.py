@@ -141,6 +141,7 @@ def harness(monkeypatch):
                 "task_comment",
                 "task",
                 "process_step",
+                "asset",
                 "knowledge_chunk",
                 "knowledge_doc",
                 "estate",
@@ -340,7 +341,9 @@ def test_estate_progress_context_supplied_and_tailoring_only(harness, monkeypatc
     factory = async_sessionmaker(engine, expire_on_commit=False)
 
     async def seed_progress():
-        from app.models import ProcessStep, Task, TaskComment
+        from decimal import Decimal
+
+        from app.models import Asset, ProcessStep, Task, TaskComment
 
         async with factory() as session:
             estate = (
@@ -364,6 +367,14 @@ def test_estate_progress_context_supplied_and_tailoring_only(harness, monkeypatc
                     body="Bank says allow ten working days", created_by="seed",
                 )
             )
+            session.add(
+                Asset(
+                    estate_id=estate, category="property",
+                    description="Example house", ownership="sole",
+                    dod_value=Decimal("250000"), value_basis="estimate",
+                    created_by="seed",
+                )
+            )
             await session.commit()
         await engine.dispose()
 
@@ -383,11 +394,14 @@ def test_estate_progress_context_supplied_and_tailoring_only(harness, monkeypatc
     final_content = captured["messages"][-1]["content"]
     progress_blocks = [
         b for b in final_content
-        if b["type"] == "text" and "Current progress in this estate" in b["text"]
+        if b["type"] == "text" and "Current details of this estate" in b["text"]
     ]
     assert len(progress_blocks) == 1
     text_block = progress_blocks[0]["text"]
     assert "Ask the bank for balances" in text_block
     assert "allow ten working days" in text_block
+    assert "Example house" in text_block
+    assert "250000" in text_block
+    assert "estimate" in text_block
     # question remains the FINAL block, after the progress context
     assert final_content[-1]["text"] == "Do I need probate before selling?"
