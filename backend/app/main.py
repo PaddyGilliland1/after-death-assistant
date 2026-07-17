@@ -35,6 +35,7 @@ from app.api import (
     iht,
     iht_schedule_tasks,
     knowledge,
+    knowledge_chat,
     liabilities,
     me,
     notifications,
@@ -126,6 +127,7 @@ def create_app() -> FastAPI:
     app.include_router(iht_schedule_tasks.router)
     app.include_router(veteran.router)
     app.include_router(knowledge.router)
+    app.include_router(knowledge_chat.router)
     app.include_router(agent_drafts.router)
     app.include_router(exports.router)
 

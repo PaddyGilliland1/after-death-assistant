@@ -68,6 +68,57 @@ export const OGL_LINE =
 export const GUIDANCE_DISCLAIMER =
   "Guidance only, not legal or tax advice. Answers cite the cached official sources."
 
+/* ----------------------------------------------------------------- chat */
+
+/*
+  Conversational Q&A shapes. The backend contract is authoritative:
+  backend/app/schemas/qa_chat.py (ChatRequest, ChatSource, ChatMessageOut,
+  ChatResponse, ConversationOut).
+*/
+
+/** A source shown with an assistant chat message. Cited sources carry a
+ *  number and the exact quoted passages; related (retrieved, not cited)
+ *  sources have no number. */
+export interface ChatSource {
+  n: number | null
+  doc_title: string
+  source_url: string
+  licence?: string | null
+  fetch_date?: string | null
+  quotes: string[]
+  relation: "retrieved" | "pinned"
+}
+
+/** One message in a conversation (GET /knowledge/chats/{id}/messages). */
+export interface ChatMessage {
+  id: string
+  role: string
+  content: string
+  sources_cited: ChatSource[]
+  related_sources: ChatSource[]
+  created_at: string
+}
+
+/** Response of POST /knowledge/chat. */
+export interface ChatResponse {
+  conversation_id: string
+  message: ChatMessage
+}
+
+/** One conversation from GET /knowledge/chats (most recent first). */
+export interface ChatConversation {
+  id: string
+  title: string
+  created_at: string
+  updated_at: string
+}
+
+/** The exact closing heading every assistant answer ends with; the text
+ *  after it is pinned below the message body so the safety caveats stay
+ *  visible. Must match NOT_COVERED_HEADING in
+ *  backend/app/services/qa_chat.py. */
+export const NOT_COVERED_HEADING = "What the retrieved guidance does not cover"
+
 /* --------------------------------------------------------------- ingest */
 
 /** One per-source outcome from POST /knowledge/ingest (IngestReport in

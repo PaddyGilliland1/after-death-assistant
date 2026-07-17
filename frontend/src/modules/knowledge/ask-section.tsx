@@ -1,107 +1,107 @@
 /*
-  Ask the knowledge assistant: a question box over POST /knowledge/qa.
-  Answers render with [n] citations linked to the numbered sources list
-  below; a refusal is shown calmly; a 503 means the assistant is not
-  configured yet. The guidance disclaimer is always visible.
+  Ask the knowledge assistant: a conversational chat thread over
+  POST /knowledge/chat. A slim sidebar lists recent conversations (a
+  select on small screens); the thread pane shows messages oldest to
+  newest with the question input pinned at the bottom. Questions need a
+  write role, so viewers see a calm read-only note instead of the input.
+  A 503 means the assistant is not configured yet. The guidance
+  disclaimer stays visible at the top of the module.
 */
 
 import * as React from "react"
-import { useMutation } from "@tanstack/react-query"
-import { MessageCircleQuestion } from "lucide-react"
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query"
+import { Archive, SendHorizontal } from "lucide-react"
 
-import { Badge } from "@/components/ui/badge"
+import { ArchiveDialog } from "@/components/shared/archive-dialog"
+import { formatDate } from "@/components/shared/formatters"
 import { Button } from "@/components/ui/button"
 import { api, isApiError } from "@/lib/api"
+import { canWrite, useMe } from "@/lib/auth"
+import { cn } from "@/lib/utils"
 
-import Markdown from "react-markdown"
-import remarkGfm from "remark-gfm"
+import { ChatMessageItem } from "./chat-message"
+import {
+  type ChatConversation,
+  type ChatMessage,
+  type ChatResponse,
+} from "./knowledge-meta"
 
-import { type QaResponse, type QaSource } from "./knowledge-meta"
-import { ExternalTextLink } from "./shared"
+const CONVERSATIONS_KEY = ["knowledge-chat-conversations"] as const
 
-/*
-  Renders the assistant's markdown answer properly (headings, bold,
-  bullets) while turning every [n] citation into an in-page link to its
-  source entry. Citations are rewritten to markdown links before
-  rendering; react-markdown escapes any raw HTML, so model output cannot
-  inject markup.
-*/
-const NOT_COVERED_HEADING = "What the library does not cover:"
-
-/** Splits an answer into the scrolling body and the always-visible caveats. */
-function splitAnswer(answer: string): { body: string; caveats: string | null } {
-  const index = answer.indexOf(NOT_COVERED_HEADING)
-  if (index === -1) return { body: answer, caveats: null }
-  return {
-    body: answer.slice(0, index).trimEnd(),
-    caveats: answer.slice(index),
-  }
-}
-
-function AnswerText({
-  answer,
-  sources,
-  anchorPrefix,
-}: {
-  answer: string
-  sources: QaSource[]
-  anchorPrefix: string
-}) {
-  const known = new Set(sources.map((source) => source.n))
-  const withCitationLinks = answer.replace(/\[(\d+)\]/g, (whole, digits) => {
-    const n = Number(digits)
-    return known.has(n) ? `[\\[${n}\\]](#${anchorPrefix}-source-${n})` : whole
-  })
-  return (
-    <div className="markdown-answer text-sm leading-relaxed">
-      <Markdown
-        remarkPlugins={[remarkGfm]}
-        components={{
-          h1: ({ children }) => <h4>{children}</h4>,
-          h2: ({ children }) => <h5>{children}</h5>,
-          h3: ({ children }) => <h6>{children}</h6>,
-          a: ({ href, children }) => {
-            const match = /-source-(\d+)$/.exec(href ?? "")
-            if (match) {
-              const source = sources.find(
-                (candidate) => candidate.n === Number(match[1]),
-              )
-              return (
-                <a
-                  href={href}
-                  className="font-medium text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                  aria-label={
-                    source
-                      ? `Citation ${match[1]}: ${source.doc_title}`
-                      : `Citation ${match[1]}`
-                  }
-                >
-                  {children}
-                </a>
-              )
-            }
-            /* Non-citation links are rendered as plain text: authority
-               comes only from the numbered source list below. */
-            return <>{children}</>
-          },
-        }}
-      >
-        {withCitationLinks}
-      </Markdown>
-    </div>
-  )
+function messagesKey(conversationId: string) {
+  return ["knowledge-chat-messages", conversationId] as const
 }
 
 export function AskSection() {
+  const { role } = useMe()
+  const writer = canWrite(role)
+  const queryClient = useQueryClient()
+
+  /** null means a fresh conversation not yet created on the server. */
+  const [activeId, setActiveId] = React.useState<string | null>(null)
   const [question, setQuestion] = React.useState("")
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null)
-  const textareaId = React.useId()
-  const anchorPrefix = React.useId().replaceAll(":", "")
+  const [archiveOpen, setArchiveOpen] = React.useState(false)
 
-  const qa = useMutation({
+  const textareaId = React.useId()
+  const selectId = React.useId()
+  const threadRef = React.useRef<HTMLDivElement>(null)
+
+  const conversationsQuery = useQuery({
+    queryKey: CONVERSATIONS_KEY,
+    queryFn: () => api.get<ChatConversation[]>("/knowledge/chats"),
+  })
+  const conversations = conversationsQuery.data ?? []
+  const activeConversation =
+    conversations.find((conversation) => conversation.id === activeId) ?? null
+
+  const messagesQuery = useQuery({
+    queryKey: activeId ? messagesKey(activeId) : ["knowledge-chat-messages"],
+    queryFn: () =>
+      api.get<ChatMessage[]>(`/knowledge/chats/${activeId}/messages`),
+    enabled: activeId !== null,
+  })
+  const messages = React.useMemo(
+    () => (activeId ? (messagesQuery.data ?? []) : []),
+    [activeId, messagesQuery.data],
+  )
+
+  const ask = useMutation({
     mutationFn: (asked: string) =>
-      api.post<QaResponse>("/knowledge/qa", { question: asked }),
-    onSuccess: () => setErrorMessage(null),
+      api.post<ChatResponse>(
+        "/knowledge/chat",
+        activeId
+          ? { conversation_id: activeId, question: asked }
+          : { question: asked },
+      ),
+    onSuccess: (response, asked) => {
+      setErrorMessage(null)
+      setQuestion("")
+      /* Seed the thread cache with the turn just completed: the API
+         returns only the assistant message, so the question is echoed
+         locally until the server copy is refetched. */
+      queryClient.setQueryData<ChatMessage[]>(
+        messagesKey(response.conversation_id),
+        (existing = []) => [
+          ...existing,
+          {
+            id: `local-question-${response.message.id}`,
+            role: "user",
+            content: asked,
+            sources_cited: [],
+            related_sources: [],
+            created_at: response.message.created_at,
+          },
+          response.message,
+        ],
+      )
+      setActiveId(response.conversation_id)
+      void queryClient.invalidateQueries({ queryKey: CONVERSATIONS_KEY })
+    },
     onError: (error) => {
       if (isApiError(error) && error.status === 503) {
         setErrorMessage("The assistant is not configured yet.")
@@ -115,135 +115,228 @@ export function AskSection() {
     },
   })
 
-  function handleSubmit(event: React.FormEvent) {
-    event.preventDefault()
+  /* Keep the newest message in view as the thread grows. */
+  React.useEffect(() => {
+    const node = threadRef.current
+    if (node) node.scrollTop = node.scrollHeight
+  }, [messages.length, ask.isPending])
+
+  function submitQuestion() {
     const trimmed = question.trim()
-    if (!trimmed) return
-    qa.mutate(trimmed)
+    if (!trimmed || ask.isPending) return
+    ask.mutate(trimmed)
   }
 
-  const result = qa.data
+  function handleSubmit(event: React.FormEvent) {
+    event.preventDefault()
+    submitQuestion()
+  }
+
+  function handleKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault()
+      submitQuestion()
+    }
+  }
+
+  function selectConversation(conversationId: string | null) {
+    setActiveId(conversationId)
+    setErrorMessage(null)
+  }
+
+  async function archiveActiveConversation(reason: string) {
+    if (!activeId) return
+    await api.delete(`/knowledge/chats/${activeId}`, { reason })
+    queryClient.removeQueries({ queryKey: messagesKey(activeId) })
+    setActiveId(null)
+    await queryClient.invalidateQueries({ queryKey: CONVERSATIONS_KEY })
+  }
 
   return (
-    <div className="space-y-6">
-      <form onSubmit={handleSubmit} className="max-w-2xl space-y-3" noValidate>
-        <div className="space-y-1.5">
-          <label htmlFor={textareaId} className="text-sm font-medium">
-            Your question
-          </label>
-          <textarea
-            id={textareaId}
-            value={question}
-            onChange={(event) => setQuestion(event.target.value)}
-            rows={3}
-            placeholder="For example: when is form IHT400 needed instead of IHT205?"
-            className="flex min-h-20 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring md:text-sm"
-          />
-        </div>
-        <Button type="submit" disabled={qa.isPending || !question.trim()}>
-          <MessageCircleQuestion aria-hidden="true" />
-          {qa.isPending ? "Asking" : "Ask"}
+    <div className="flex flex-col gap-4 md:flex-row">
+      {/* Small screens: a labelled select stands in for the sidebar. */}
+      <div className="space-y-1.5 md:hidden">
+        <label htmlFor={selectId} className="text-sm font-medium">
+          Conversation
+        </label>
+        <select
+          id={selectId}
+          value={activeId ?? ""}
+          onChange={(event) =>
+            selectConversation(event.target.value || null)
+          }
+          className="flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+        >
+          <option value="">New conversation</option>
+          {conversations.map((conversation) => (
+            <option key={conversation.id} value={conversation.id}>
+              {conversation.title}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Wider screens: a slim conversation sidebar. */}
+      <aside className="hidden w-56 shrink-0 md:block">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="mb-3 w-full"
+          onClick={() => selectConversation(null)}
+        >
+          New conversation
         </Button>
-      </form>
-
-      {errorMessage ? (
-        <p role="alert" className="text-sm text-muted-foreground">
-          {errorMessage}
-        </p>
-      ) : null}
-
-      {result ? (
-        result.refused ? (
-          <div
-            role="status"
-            className="max-w-2xl rounded-lg border bg-muted/30 px-4 py-3"
-          >
-            <p className="text-sm font-medium">
-              The assistant did not answer this one.
+        <nav aria-label="Conversations">
+          {conversationsQuery.isError ? (
+            <p className="text-sm text-muted-foreground">
+              Conversations could not be loaded.
             </p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {result.answer ||
-                "It only answers from the cached official sources, and they do not cover this question."}
+          ) : conversations.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              No conversations yet.
             </p>
-          </div>
-        ) : (
-          <div className="max-w-2xl space-y-4">
-            <div className="rounded-lg border px-4 py-3">
-              <h3 className="mb-2 text-sm font-semibold">Answer</h3>
-              {/* The answer body scrolls; the mandatory "what the library
-                  does not cover" caveats stay pinned below the pane so the
-                  safety text is always visible. */}
-              <div
-                className="max-h-96 overflow-y-auto pr-1"
-                tabIndex={0}
-                role="region"
-                aria-label="Full answer"
-              >
-                <AnswerText
-                  answer={splitAnswer(result.answer).body}
-                  sources={result.sources}
-                  anchorPrefix={anchorPrefix}
-                />
+          ) : (
+            <ul className="space-y-1">
+              {conversations.map((conversation) => (
+                <li key={conversation.id}>
+                  <button
+                    type="button"
+                    onClick={() => selectConversation(conversation.id)}
+                    aria-current={
+                      activeId === conversation.id ? "true" : undefined
+                    }
+                    className={cn(
+                      "w-full rounded-md px-2 py-1.5 text-left text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+                      activeId === conversation.id
+                        ? "bg-muted font-medium"
+                        : "text-muted-foreground hover:bg-muted/50 hover:text-foreground",
+                    )}
+                  >
+                    <span className="block truncate">{conversation.title}</span>
+                    <span className="block text-xs font-normal text-muted-foreground">
+                      {formatDate(conversation.updated_at)}
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </nav>
+      </aside>
+
+      {/* The thread pane: messages oldest to newest, input pinned below. */}
+      <div className="flex h-[36rem] max-h-[75vh] min-w-0 flex-1 flex-col rounded-lg border">
+        <div className="flex items-center justify-between gap-2 border-b px-4 py-2">
+          <h3 className="truncate text-sm font-semibold">
+            {activeConversation ? activeConversation.title : "New conversation"}
+          </h3>
+          {activeId && writer ? (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              aria-label="Archive conversation"
+              onClick={() => setArchiveOpen(true)}
+            >
+              <Archive aria-hidden="true" />
+              Archive
+            </Button>
+          ) : null}
+        </div>
+
+        <div
+          ref={threadRef}
+          role="log"
+          aria-live="polite"
+          aria-label="Conversation messages"
+          className="flex-1 space-y-4 overflow-y-auto p-4"
+          tabIndex={0}
+        >
+          {activeId && messagesQuery.isError ? (
+            <p className="text-sm text-muted-foreground">
+              The conversation could not be loaded. Please try again.
+            </p>
+          ) : null}
+          {!activeId && messages.length === 0 && !ask.isPending ? (
+            <p className="max-w-prose text-sm text-muted-foreground">
+              Ask a question about the cached HMRC forms and official
+              guidance. Answers cite their sources, and each conversation is
+              kept so you can return to it.
+            </p>
+          ) : null}
+          {messages.map((message) => (
+            <ChatMessageItem key={message.id} message={message} />
+          ))}
+          {ask.isPending && ask.variables ? (
+            <div className="flex justify-end">
+              <div className="max-w-[85%] whitespace-pre-wrap rounded-lg bg-muted px-3 py-2 text-sm">
+                <span className="sr-only">You asked: </span>
+                {ask.variables}
               </div>
-              {splitAnswer(result.answer).caveats ? (
-                <div className="mt-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 dark:border-amber-900 dark:bg-amber-950">
-                  <AnswerText
-                    answer={splitAnswer(result.answer).caveats ?? ""}
-                    sources={result.sources}
-                    anchorPrefix={anchorPrefix}
-                  />
-                </div>
-              ) : null}
             </div>
+          ) : null}
+          {ask.isPending ? (
+            <p
+              role="status"
+              className="animate-pulse text-sm text-muted-foreground"
+            >
+              Thinking
+            </p>
+          ) : null}
+        </div>
 
-            {result.sources.length > 0 ? (
-              <div>
-                <h3 className="mb-2 text-sm font-semibold">Sources</h3>
-                <ol aria-label="Sources" className="space-y-2">
-                  {result.sources.map((source) => (
-                    <li
-                      key={source.n}
-                      id={`${anchorPrefix}-source-${source.n}`}
-                      className="flex flex-wrap items-center gap-2 text-sm"
-                    >
-                      <span className="font-medium text-muted-foreground">
-                        [{source.n}]
-                      </span>
-                      {source.source_url ? (
-                        <ExternalTextLink href={source.source_url}>
-                          {source.doc_title}
-                        </ExternalTextLink>
-                      ) : (
-                        <span>{source.doc_title}</span>
-                      )}
-                      {source.form_code ? (
-                        <Badge variant="secondary">{source.form_code}</Badge>
-                      ) : null}
-                      {source.relation === "referenced" ? (
-                        <Badge variant="outline">
-                          Referenced by another source
-                        </Badge>
-                      ) : null}
-                      {source.licence || source.fetch_date ? (
-                        <span className="w-full text-xs text-muted-foreground">
-                          {[
-                            source.licence,
-                            source.fetch_date
-                              ? `fetched ${source.fetch_date}`
-                              : null,
-                          ]
-                            .filter(Boolean)
-                            .join(" \u00b7 ")}
-                        </span>
-                      ) : null}
-                    </li>
-                  ))}
-                </ol>
-              </div>
+        {writer ? (
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-2 border-t p-3"
+            noValidate
+          >
+            {errorMessage ? (
+              <p role="alert" className="text-sm text-muted-foreground">
+                {errorMessage}
+              </p>
             ) : null}
-          </div>
-        )
-      ) : null}
+            <label htmlFor={textareaId} className="sr-only">
+              Your question
+            </label>
+            <div className="flex items-end gap-2">
+              <textarea
+                id={textareaId}
+                value={question}
+                onChange={(event) => setQuestion(event.target.value)}
+                onKeyDown={handleKeyDown}
+                rows={2}
+                disabled={ask.isPending}
+                placeholder="For example: when is form IHT400 needed instead of IHT205?"
+                className="flex min-h-16 w-full min-w-0 flex-1 rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm transition-colors placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring md:text-sm"
+              />
+              <Button
+                type="submit"
+                disabled={ask.isPending || !question.trim()}
+              >
+                <SendHorizontal aria-hidden="true" />
+                Ask
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Press Enter to ask, Shift and Enter for a new line.
+            </p>
+          </form>
+        ) : role ? (
+          <p className="border-t px-4 py-3 text-sm text-muted-foreground">
+            Your access is read only, so you can read these conversations but
+            not ask new questions.
+          </p>
+        ) : null}
+      </div>
+
+      <ArchiveDialog
+        open={archiveOpen}
+        onOpenChange={setArchiveOpen}
+        itemLabel="conversation"
+        onConfirm={archiveActiveConversation}
+      />
     </div>
   )
 }

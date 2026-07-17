@@ -89,3 +89,5 @@ Append new rows as items are deferred, decided or closed. Do not delete rows; st
 | 2026-07-06 | Agent graphs use per-request MemorySaver; approval completes via endpoint rather than literal thread resumption; persistent checkpointer would enable resume | P3 agents agent | Open |
 | 2026-07-06 | POST /knowledge/ingest commits changed doc versions immediately; routing through the knowledge_ingest graph would add the approval gate | P3 agents agent | Open |
 | 2026-07-06 | relief.window_basis returned as derived field; consider a model column; IHT35/38 window derivations should migrate from schemas/trackers.py into the domain module | P2 trackers agent | Open |
+| 2026-07-17 | POST /knowledge/qa (one-shot) retained for API compatibility; the UI now uses the conversational /knowledge/chat with native citations. Consider deprecation once external users confirm no dependence | knowledge chat rebuild | Open |
+| 2026-07-17 | ChatSource lacks form_code (old QASource had it); chat sources cannot show the form badge | chat frontend agent | Open |

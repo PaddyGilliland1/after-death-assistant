@@ -39,6 +39,7 @@ from .liabilities import Liability
 from .links import Link
 from .notifications import Notification
 from .process import Deadline, ProcessStep
+from .qa_chat import QaConversation, QaMessage, QaPinnedSnippet
 from .reliefs import Relief
 from .tasks import Task, TaskComment
 
@@ -77,6 +78,9 @@ __all__ = [
     "Task",
     "TaskComment",
     "ProcessStep",
+    "QaConversation",
+    "QaMessage",
+    "QaPinnedSnippet",
     "Deadline",
     "Document",
     "IhtAssessment",
