@@ -226,7 +226,7 @@ export function AskSection() {
       </aside>
 
       {/* The thread pane: messages oldest to newest, input pinned below. */}
-      <div className="flex h-[36rem] max-h-[75vh] min-w-0 flex-1 flex-col rounded-lg border">
+      <div className="flex h-[50.4rem] max-h-[85vh] min-w-0 flex-1 flex-col rounded-lg border">
         <div className="flex items-center justify-between gap-2 border-b px-4 py-2">
           <h3 className="truncate text-sm font-semibold">
             {activeConversation ? activeConversation.title : "New conversation"}
