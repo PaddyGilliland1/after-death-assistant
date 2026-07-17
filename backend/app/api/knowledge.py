@@ -62,6 +62,8 @@ REFUSAL_TEXT = (
 
 GUIDANCE_NOTE = "This is guidance drawn from the cited sources, not legal or tax advice."
 
+NOT_COVERED_HEADING = "What the library does not cover:"
+
 _QA_SYSTEM_PROMPT = f"""You are the knowledge assistant of an estate administration tool \
 for England and Wales. You answer questions using ONLY the numbered extracts supplied \
 in the user message. Follow these rules exactly:
@@ -70,12 +72,12 @@ in the user message. Follow these rules exactly:
 brackets, for example [1] or [2][3]. Every citation number must exist in the extracts.
 3. If no part of the question is covered by the extracts, reply with exactly this \
 sentence and nothing else: "{REFUSAL_TEXT}"
-3a. If the extracts cover only part of the question, answer the covered part with \
-citations, then ALWAYS close with a clearly separated section headed exactly \
-"What the library does not cover:" listing plainly, in one short paragraph or \
-bullet list, each part of the question the extracts do not answer. This section \
-is mandatory whenever coverage is partial and comes just before the final \
-guidance note.
+3a. EVERY answer (except a refusal) must close with a clearly separated section \
+headed exactly "What the library does not cover:" placed just before the final \
+guidance note. List plainly, in a short paragraph or bullets, each part of the \
+question the extracts do not answer; if the extracts covered the question fully, \
+the section must say so in one sentence (for example: "Nothing material; the \
+extracts covered this question."). Never omit this section.
 4. Never calculate, estimate or derive a figure. You may only repeat a figure that \
 appears verbatim in an extract, with its citation.
 5. End every answer (except a refusal) with exactly: "{GUIDANCE_NOTE}"
@@ -375,4 +377,17 @@ async def knowledge_qa(payload: QARequest, session: SessionDep, user: ReadUser) 
 
     answer = _call_llm(_QA_SYSTEM_PROMPT, user_prompt, settings)
     refused = REFUSAL_TEXT in answer
+    if not refused and NOT_COVERED_HEADING not in answer:
+        # The heading is a hard product rule; give the model one corrective
+        # pass before accepting the answer.
+        answer = _call_llm(
+            _QA_SYSTEM_PROMPT,
+            user_prompt
+            + "\n\nYour previous answer omitted the mandatory section headed "
+            + f'"{NOT_COVERED_HEADING}". Rewrite the full answer including it.',
+            settings,
+        )
+        refused = REFUSAL_TEXT in answer
+        if not refused and NOT_COVERED_HEADING not in answer:
+            logger.warning("QA answer missing the not-covered section after retry.")
     return QAResponse(answer=answer, sources=[] if refused else sources, refused=refused)
