@@ -2,7 +2,7 @@
 
 **AD Assistant (After Death Assistant), a shared web application for executors administering an estate in England and Wales.**
 
-Track every asset, liability, debtor, creditor, cost, contact and action; keep a live, transparent trial balance and per-beneficiary share; keep a correct, current inheritance tax assessment; hold the HMRC forms and guidance in-app; and draft the paperwork for human approval.
+Track every asset, liability, debtor, creditor, cost, contact and action; keep a live, transparent trial balance and per-beneficiary share; keep a correct, current inheritance tax assessment; hold the HMRC forms and guidance in-app with a cited, conversation-aware assistant to ask about them; and draft the paperwork for human approval. A verified directory of support organisations is built in, for the moments when an app is not what is needed.
 
 ## What it is (and is not)
 
@@ -31,7 +31,7 @@ The repository contains schema and synthetic seed data only. Real estate data li
 
 ## Versioning
 
-Current release: **v0.9.0**. The project follows [semantic versioning](https://semver.org/); pre-1.0, breaking changes bump the minor version and are noted in the changelog.
+Current release: **v0.10.0**. The project follows [semantic versioning](https://semver.org/); pre-1.0, breaking changes bump the minor version and are noted in the changelog.
 
 ## Stack
 

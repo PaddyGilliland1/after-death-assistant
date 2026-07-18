@@ -1,7 +1,7 @@
 {
   "name": "ad-assistant-frontend",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.10.0",
   "type": "module",
   "description": "Frontend for AD Assistant, an estate administration and inheritance tax tool for executors.",
   "license": "MIT",

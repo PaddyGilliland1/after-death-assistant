@@ -1,6 +1,6 @@
 [project]
 name = "ad-assistant-backend"
-version = "0.1.0"
+version = "0.10.0"
 description = "AD Assistant backend: estate administration and IHT tool (England and Wales)"
 license = "MIT"
 requires-python = ">=3.12,<3.13"

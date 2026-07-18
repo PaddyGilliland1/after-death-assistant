@@ -23,12 +23,13 @@ Three things to hold on to before anything else:
 7. [Costs](#7-costs)
 8. [Estate accounts](#8-estate-accounts)
 9. [The inheritance tax workbench](#9-the-inheritance-tax-workbench)
-10. [The knowledge library and Ask](#10-the-knowledge-library-and-ask)
+10. [The knowledge library and the assistant](#10-the-knowledge-library-and-the-assistant)
 11. [Drafts and approval](#11-drafts-and-approval)
 12. [PDF exports](#12-pdf-exports)
 13. [Further modules](#13-further-modules)
-14. [Roles and privacy](#14-roles-and-privacy)
-15. [The audit trail](#15-the-audit-trail)
+14. [When you need help](#14-when-you-need-help)
+15. [Roles and privacy](#15-roles-and-privacy)
+16. [The audit trail](#16-the-audit-trail)
 
 ---
 
@@ -38,7 +39,7 @@ Three things to hold on to before anything else:
 
 There are no passwords to remember. When you open the app's address in your browser, a sign-in page asks for your email address and sends you a **one-time PIN** by email. Type the PIN in and you are signed in. This is provided by Cloudflare Access, a login service that sits in front of the app; only email addresses on the estate's approved list can get in at all.
 
-Behind the scenes your email address also decides what you are allowed to do: administrator, executor or viewer. Section 14 explains the roles.
+Behind the scenes your email address also decides what you are allowed to do: administrator, executor or viewer. Section 15 explains the roles.
 
 If your PIN email does not arrive, check your spam folder, and check with whoever set the tool up that your email address is on the approved list.
 
@@ -169,9 +170,9 @@ When IHT400 is required, the workbench derives the **schedules checklist** from 
 
 One more safeguard: a **professional review checkpoint** sits on the tax output and is switched on by default. It is a reminder that a near-threshold estate deserves a professional's eye before anything is submitted. You can record that review as done, or decide with your co-executor that it is not needed; the tool will not make that judgement for you.
 
-## 10. The knowledge library and Ask
+## 10. The knowledge library and the assistant
 
-The **Knowledge library** page holds the HMRC forms, form notes and guidance the administration relies on, fetched from the official and support-organisation sources (gov.uk, The Gazette, NHS England, and bereavement references from organisations such as Age UK, Marie Curie and Citizens Advice) and cached inside the tool. That means:
+The **Knowledge library** page holds the HMRC forms, form notes and guidance the administration relies on, fetched from the official and support-organisation sources (gov.uk, The Gazette, NHS England, NS&I, and bereavement references from organisations such as Age UK, Marie Curie and Citizens Advice) and cached inside the tool. That means:
 
 - You can **read the guidance in-app**, alongside your own records, even if gov.uk is temporarily unavailable.
 - Every document shows its **source address and the date it was fetched**, so you always know what you are reading and how current it is.
@@ -179,11 +180,14 @@ The **Knowledge library** page holds the HMRC forms, form notes and guidance the
 
 **Search** finds passages across the whole cached corpus.
 
-**Ask** lets you put a question in plain English, such as "how do I complete box 91 on the IHT400" or "when is the tax due". Its answers follow three strict rules:
+**The assistant** (the Ask tab) is a conversation, not a one-shot question box. Put a question in plain English, such as "how do I complete box 91 on the IHT400" or "when is the tax due", and follow up naturally; it remembers the conversation. Its answers follow strict rules:
 
-1. **Every answer cites its sources.** Numbered citations link to the exact cached documents, with their fetch dates.
-2. **It only answers from the cached official guidance.** If the guidance does not cover your question, it says so plainly and suggests checking gov.uk or speaking to a professional. It will not improvise an answer from general knowledge.
+1. **Every answer cites its sources.** Numbered citations sit next to the statements they support, each source lists the exact passages it was quoted for, and anything the assistant retrieved but did not rely on is listed separately as *related sources*, so you can always tell the two apart.
+2. **It only answers from the cached official guidance.** Every answer ends by saying plainly **what the retrieved guidance does not cover**, and it will suggest gov.uk or a professional rather than improvise from general knowledge.
 3. **It gives guidance, not advice.** It can tell you what the official guidance says; it cannot tell you what you should decide. A disclaimer to that effect is always visible.
+4. **It knows where you are, but never invents a figure.** Alongside the guidance, the assistant sees your estate's current position: the registers, task and timeline progress including your comments, and the latest tax assessment, with anything still an estimate clearly flagged as such. It carries key passages and facts forward between conversations until your records change. Every figure it mentions comes from your registers and the deterministic tax engine, never from the AI model itself.
+
+Two simple guardrails sit around it: a question that looks unrelated to estate administration is paused for your confirmation before anything is spent or stored, and there is a daily question limit as a cost ceiling. An administrator can adjust both on the **Settings** page under **Parameters**, and every change is recorded in the audit trail. The same page offers optional **semantic search**: switched off by default because it downloads and runs a local language model that not every machine can manage; when on, it improves how well the library matches questions phrased in your own words, and nothing leaves your machine. The assistant itself needs an AI service key to be configured (see the installation guide); the library and search work fully without one.
 
 An administrator keeps the library up to date with the **Ingest** button on the Library tab, or with the bundled `scripts/fetch-knowledge.sh` helper that fetches the whole starter library from the official sources (see the installation guide). Ingest needs an internet connection because it fetches from the source websites.
 
@@ -229,7 +233,20 @@ Every export is recorded in the audit trail.
 
 **Executor protection and decisions.** Two protections for you personally. First, the **Section 27 creditor notice**: placing a notice in The Gazette and a local paper opens a two-month window for unknown creditors to come forward; distribute after it closes and you are protected from personal liability for debts you did not know about. The tool derives the deadline and blocks "safe to distribute" until the window has closed. Second, the **decision log**: an immutable record of the significant decisions the executors take, with the date, the rationale and who agreed. Entries cannot be edited or deleted, which is exactly what makes the log worth having; to correct one, record a new entry that refers to it.
 
-## 14. Roles and privacy
+## 14. When you need help
+
+Even with the tool to lean on, some moments in an administration are simply too much, and some people are doing all of this alone. The **When you need help** page (in the Guidance section) is a plain directory of organisations that can help when the app cannot: who they are, what they help with, their phone number (tap it on a phone to dial), their hours, and a link to their website.
+
+It is organised the way need tends to arrive:
+
+- **Someone to talk to**: Samaritans, NHS urgent mental health support, bereavement charities, and lines for older and younger bereaved people.
+- **Practical help and money**: free advice on the paperwork, the benefits you may be owed, and money worries.
+- **Armed forces families**: support routes when the person who died served.
+- **Tax and probate**: the official HMRC and probate helplines.
+
+Everything listed is free to contact. Each number was checked against the organisation's own website, and the page says when; where a number could not be fully verified, the page says to check the organisation's website rather than guessing.
+
+## 15. Roles and privacy
 
 Every user has one of three roles, fixed on the server, decided by email address:
 
@@ -247,7 +264,7 @@ Individual records can be marked **executor-private**, which hides them from the
 
 These rules are enforced on the server, not just hidden in the browser, so they cannot be bypassed.
 
-## 15. The audit trail
+## 16. The audit trail
 
 Everything that happens in the tool is recorded, permanently:
 

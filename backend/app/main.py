@@ -77,7 +77,7 @@ def create_app() -> FastAPI:
             "Estate administration and IHT tool (England and Wales). "
             "Informs and drafts; nothing is filed or sent automatically."
         ),
-        version="0.1.0",
+        version="0.10.0",
         lifespan=lifespan,
     )
 
