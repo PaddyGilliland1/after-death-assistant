@@ -127,6 +127,10 @@
     color: var(--muted);
   }
 
+  .brief { margin: 1.2rem 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.7rem; }
+  .brief li { padding-left: 0.3rem; }
+  .brief li::marker { color: var(--accent); }
+
   .areas { margin: 1.4rem 0 0.4rem; padding: 0; }
   .area {
     display: grid;
@@ -205,6 +209,17 @@
   <p>It was built from the published official guidance and one family's experience. That is a real foundation, but it is not the same as seeing hundreds of estates professionally, and it is no substitute for trade experience. That gap is exactly what this page asks you to help close.</p>
   <p>It is not legal or financial advice, and it never claims to be. It is the tool I wished had existed, given away so the next family does not start from a blank page.</p>
 
+  <h2>What the tool does</h2>
+  <p>So you can judge from this page alone, this is what AD Assistant currently does. Every claim here is reviewable; if one is wrong or dangerous, that is exactly the feedback wanted.</p>
+  <ul class="brief">
+    <li><strong>Registers for the whole administration:</strong> assets with a valuation history that distinguishes estimates from confirmed figures, liabilities, money owed to and by the estate, contacts with a who-has-been-notified tracker, costs, documents, and tasks with dependencies arranged on the standard administration timeline.</li>
+    <li><strong>Estate accounts that must balance:</strong> the four-account structure (capital, administration, income, distribution) with an always-visible reconciliation check and live residuary shares per beneficiary.</li>
+    <li><strong>A deterministic inheritance tax assessment</strong>, recomputed whenever a material figure changes: nil rate band 325,000; residence nil rate band 175,000 with the taper above 2,000,000; transferred allowances; the 36 per cent charity rate; the excepted-estates tests; and the rule that claiming the residence nil rate band forces a full IHT400. The required schedules checklist (IHT402 to IHT436) is derived from what the estate actually contains.</li>
+    <li><strong>Statutory protections built in:</strong> the Section 27 creditor notice window is derived and "safe to distribute" is blocked until it has closed; recording a residential property sale creates the 60-day capital gains reporting task automatically; loss-relief windows (IHT35, IHT38) are watched.</li>
+    <li><strong>Official guidance cached in-app:</strong> 77 sources (gov.uk, The Gazette, NS&amp;I, support organisations) with source address and fetch date on every document, plus an AI assistant that answers only from that corpus, cites the exact passages it relied on, and ends every answer by saying what the guidance does not cover.</li>
+    <li><strong>Drafting with a human gate:</strong> notification letters, tax narrations and form content are drafted by AI, but every draft requires a recorded human approval, and the software has no ability to send, file or pay anything. No AI model ever calculates a tax figure; all tax maths is fixed, tested code.</li>
+  </ul>
+
   <h2>What I need</h2>
   <p>I am not looking for investment, customers or endorsement. I am asking people who know this domain, professionally or from lived experience, to spend <strong>about fifteen minutes</strong> on one area and answer three questions:</p>
   <div class="questions">
@@ -221,27 +236,27 @@
   <dl class="areas">
     <div class="area">
       <dt>The probate process and timeline</dt>
-      <dd><span class="who">Probate practitioner · STEP member</span>Is the sequence right, and are the warnings in the right places?</dd>
+      <dd><span class="who">Probate practitioner · STEP member</span>The tool seeds the standard after-death checklist as ordered tasks, derives statutory deadlines from the date of death, and tracks progress on a timeline. Is the sequence right, are the deadlines right, and are the warnings in the right places?</dd>
     </div>
     <div class="area">
       <dt>Inheritance tax and the excepted-estates logic</dt>
-      <dd><span class="who">Private client solicitor · Tax adviser</span>The thresholds, the residence nil rate band rules, the route determination.</dd>
+      <dd><span class="who">Private client solicitor · Tax adviser</span>The tool applies the thresholds, taper and transfer rules listed above, determines excepted estate versus IHT400, and derives the schedules checklist from the estate's contents. Would you trust its route determination, and where would it mislead a lay executor?</dd>
     </div>
     <div class="area">
       <dt>Estate accounts and beneficiary shares</dt>
-      <dd><span class="who">Estate accountant</span>The four-account structure, reconciliation, and interim distribution guards.</dd>
+      <dd><span class="who">Estate accountant</span>Four accounts, an always-visible reconciliation check, live residuary shares, and interim distributions blocked until the creditor notice window closes. Is the structure sound, and what would a professional preparing estate accounts add or object to?</dd>
     </div>
     <div class="area">
       <dt>Bereavement support and tone</dt>
-      <dd><span class="who">Bereavement adviser · Counsellor</span>Does the language hold up for someone grieving, and is the signposting right?</dd>
+      <dd><span class="who">Bereavement adviser · Counsellor</span>A calm, plain interface, and a "When you need help" directory of seventeen support organisations with verified phone numbers. Does the language hold up for someone grieving, and is the signposting right and complete?</dd>
     </div>
     <div class="area">
       <dt>Executor experience and clarity</dt>
-      <dd><span class="who">Anyone who has been an executor</span>Where would you have been confused, and what did your administration need that this lacks?</dd>
+      <dd><span class="who">Anyone who has been an executor</span>A dashboard of open tasks, deadlines, money position, tax headroom and outstanding notifications. Where would you have been confused, and what did your administration need that this lacks?</dd>
     </div>
     <div class="area">
       <dt>Legal caveats and safeguards</dt>
-      <dd><span class="who">Solicitor</span>The disclaimers, the human-approval gates, and what a cautious professional would add.</dd>
+      <dd><span class="who">Solicitor</span>Not-advice disclaimers throughout, a professional-review checkpoint on by default, recorded approvals on every draft, no ability to send or file, and a permanent audit trail. Are the caveats sufficient, and what would a cautious professional add?</dd>
     </div>
   </dl>
   <p>The user guide and every document referenced here live at the address in the footer; the review guide there links each area to its exact starting section.</p>

@@ -24,6 +24,17 @@ I am not looking for investment, customers or endorsement. I am looking for peop
 
 Blunt is useful. Every piece of feedback directly improves a free tool for future executors.
 
+## What the tool does
+
+So you can judge from this page alone, this is what AD Assistant currently does. Every claim is reviewable; if one is wrong or dangerous, that is exactly the feedback wanted.
+
+- **Registers for the whole administration:** assets with a valuation history that distinguishes estimates from confirmed figures, liabilities, money owed to and by the estate, contacts with a who-has-been-notified tracker, costs, documents, and tasks with dependencies arranged on the standard administration timeline.
+- **Estate accounts that must balance:** the four-account structure (capital, administration, income, distribution) with an always-visible reconciliation check and live residuary shares per beneficiary.
+- **A deterministic inheritance tax assessment**, recomputed whenever a material figure changes: nil rate band 325,000; residence nil rate band 175,000 with the taper above 2,000,000; transferred allowances; the 36 per cent charity rate; the excepted-estates tests; and the rule that claiming the residence nil rate band forces a full IHT400. The required schedules checklist (IHT402 to IHT436) is derived from what the estate actually contains.
+- **Statutory protections built in:** the Section 27 creditor notice window is derived and "safe to distribute" is blocked until it has closed; recording a residential property sale creates the 60-day capital gains reporting task automatically; loss-relief windows (IHT35, IHT38) are watched.
+- **Official guidance cached in-app:** 77 sources (gov.uk, The Gazette, NS&I, support organisations) with source address and fetch date on every document, plus an AI assistant that answers only from that corpus, cites the exact passages it relied on, and ends every answer by saying what the guidance does not cover.
+- **Drafting with a human gate:** notification letters, tax narrations and form content are drafted by AI, but every draft requires a recorded human approval, and the software has no ability to send, file or pay anything. No AI model ever calculates a tax figure; all tax maths is fixed, tested code.
+
 ## Pick one area
 
 | Area | Good reviewer | Start here (no installation needed) |
