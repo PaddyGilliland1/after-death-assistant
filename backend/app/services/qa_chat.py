@@ -192,7 +192,7 @@ def _call_chat_api(system: list[dict], messages: list[dict], settings: Settings)
 def _search_result_block(result: SuppliedResult) -> dict:
     title = result.doc_title
     if result.relation == "pinned":
-        title = f"{title} (pinned from earlier in this conversation)"
+        title = f"{title} (pinned from earlier conversations in this estate)"
     return {
         "type": "search_result",
         "source": result.source_url,
@@ -505,15 +505,28 @@ async def run_chat_turn(
             turn.history = all_messages[-HISTORY_LIMIT:]
         else:
             turn.history = all_messages
-        pins = await session.execute(
-            select(QaPinnedSnippet)
-            .where(QaPinnedSnippet.conversation_id == conversation.id)
-            .where(QaPinnedSnippet.archived_at.is_(None))
-            .order_by(QaPinnedSnippet.created_at)
-        )
-        turn.pins = list(pins.scalars().all())
 
     turn.progress_text = await _estate_progress_text(session, estate_id)
+
+    # Context harness: the estate-wide pin pool. Every conversation
+    # contributes cited passages and every conversation draws on them, so
+    # facts established once remain a reference point until the pool is
+    # updated. Newest first, deduped by passage, capped.
+    pin_rows = await session.execute(
+        select(QaPinnedSnippet)
+        .where(QaPinnedSnippet.estate_id == estate_id)
+        .where(QaPinnedSnippet.archived_at.is_(None))
+        .order_by(QaPinnedSnippet.created_at.desc())
+        .limit(PIN_LIMIT * 3)
+    )
+    seen_snippets: set[tuple[str, str]] = set()
+    for pin in pin_rows.scalars().all():
+        key = (pin.source_url, pin.snippet)
+        if key in seen_snippets or len(turn.pins) >= PIN_LIMIT:
+            continue
+        seen_snippets.add(key)
+        turn.pins.append(pin)
+    turn.pins.reverse()  # oldest first, stable ordering for the model
 
     # retrieve ----------------------------------------------------------
     turn.hits = await hybrid_search(session, estate_id, question, RETRIEVAL_LIMIT)

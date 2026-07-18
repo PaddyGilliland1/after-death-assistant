@@ -231,7 +231,7 @@ def test_second_turn_supplies_pinned_snippet(harness, monkeypatch):
     titles = [
         block["title"] for block in final_content if block["type"] == "search_result"
     ]
-    assert any("pinned from earlier" in title for title in titles)
+    assert any("pinned from earlier conversations" in title for title in titles)
     # history replayed as plain turns
     assert calls[-1][0]["role"] == "user"
     assert calls[-1][1]["role"] == "assistant"
@@ -405,3 +405,29 @@ def test_estate_progress_context_supplied_and_tailoring_only(harness, monkeypatc
     assert "estimate" in text_block
     # question remains the FINAL block, after the progress context
     assert final_content[-1]["text"] == "Do I need probate before selling?"
+
+
+
+def test_pins_carry_across_conversations(harness, monkeypatch):
+    """The context harness: facts pinned in one thread serve new threads."""
+    calls: list = []
+
+    def fake_api(system, messages, settings):
+        calls.append(messages)
+        return _answer_with_citation(0)
+
+    monkeypatch.setattr(qa_chat, "_call_chat_api", fake_api)
+    client = harness(EXECUTOR)
+    client.post(
+        "/knowledge/chat", json={"question": "Do I need probate before selling?"}
+    )
+    # A brand NEW conversation still receives the earlier pin.
+    response = client.post(
+        "/knowledge/chat", json={"question": "Do I need probate before selling?"}
+    )
+    assert response.status_code == 200
+    final_content = calls[-1][-1]["content"]
+    titles = [
+        block["title"] for block in final_content if block["type"] == "search_result"
+    ]
+    assert any("pinned from earlier conversations" in title for title in titles)
