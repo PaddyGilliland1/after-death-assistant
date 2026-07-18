@@ -45,6 +45,11 @@ export function AskSection() {
   const [activeId, setActiveId] = React.useState<string | null>(null)
   const [question, setQuestion] = React.useState("")
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null)
+  const [confirmedQuestion, setConfirmedQuestion] = React.useState<string | null>(null)
+  const [confirmation, setConfirmation] = React.useState<{
+    question: string
+    notice: string
+  } | null>(null)
   const [archiveOpen, setArchiveOpen] = React.useState(false)
 
   const textareaId = React.useId()
@@ -75,12 +80,24 @@ export function AskSection() {
       api.post<ChatResponse>(
         "/knowledge/chat",
         activeId
-          ? { conversation_id: activeId, question: asked }
-          : { question: asked },
+          ? {
+              conversation_id: activeId,
+              question: asked,
+              confirmed: confirmedQuestion === asked,
+            }
+          : { question: asked, confirmed: confirmedQuestion === asked },
       ),
     onSuccess: (response, asked) => {
       setErrorMessage(null)
+      if (response.needs_confirmation) {
+        /* Scope guard: the question looked unrelated; nothing was stored.
+           Keep the question in the box and offer to ask anyway. */
+        setConfirmation({ question: asked, notice: response.notice ?? "" })
+        return
+      }
+      setConfirmation(null)
       setQuestion("")
+      if (!response.conversation_id || !response.message) return
       /* Seed the thread cache with the turn just completed: the API
          returns only the assistant message, so the question is echoed
          locally until the server copy is refetched. */
@@ -301,7 +318,31 @@ export function AskSection() {
             className="space-y-2 border-t p-3"
             noValidate
           >
-            {errorMessage ? (
+            {confirmation ? (
+            <div className="mb-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm dark:border-amber-900 dark:bg-amber-950">
+              <p>{confirmation.notice}</p>
+              <div className="mt-2 flex gap-2">
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    setConfirmedQuestion(confirmation.question)
+                    setConfirmation(null)
+                    ask.mutate(confirmation.question)
+                  }}
+                >
+                  Ask anyway
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setConfirmation(null)}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          ) : null}
+          {errorMessage ? (
               <p role="alert" className="text-sm text-muted-foreground">
                 {errorMessage}
               </p>

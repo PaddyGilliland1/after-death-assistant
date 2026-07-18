@@ -41,6 +41,7 @@ from app.services.seeding import record_audit
 logger = logging.getLogger(__name__)
 
 CHAT_MODEL = "claude-sonnet-5"
+GUARD_MODEL = "claude-haiku-4-5"
 MAX_ANSWER_TOKENS = 6000
 HISTORY_LIMIT = 12
 PIN_LIMIT = 12
@@ -171,6 +172,40 @@ class ChatTurn:
     refused: bool = False
 
 
+def is_question_on_topic(question: str, settings: Settings) -> bool:
+    """Cheap scope guard before the expensive call (monkeypatched in tests).
+
+    A small, fast model classifies whether the question belongs to estate
+    administration and bereavement. Fails OPEN on any error: the grounding
+    rules still protect the answer, so a broken guard must not block a
+    grieving user.
+    """
+    import anthropic
+
+    try:
+        client = anthropic.Anthropic(
+            api_key=settings.ANTHROPIC_API_KEY, timeout=10, max_retries=1
+        )
+        response = client.messages.create(
+            model=GUARD_MODEL,
+            max_tokens=5,
+            system=(
+                "You classify questions for an assistant that only covers "
+                "estate administration, bereavement, probate, inheritance tax "
+                "and related practical or financial matters after a death in "
+                "the UK. Reply with exactly ON_TOPIC or OFF_TOPIC."
+            ),
+            messages=[{"role": "user", "content": question}],
+        )
+        text = "".join(
+            block.text for block in response.content if getattr(block, "type", "") == "text"
+        )
+        return "OFF_TOPIC" not in text
+    except Exception as exc:  # noqa: BLE001 - fail open by design
+        logger.warning("Topic guard unavailable, allowing question: %s", exc)
+        return True
+
+
 def _call_chat_api(system: list[dict], messages: list[dict], settings: Settings):
     """Single seam for the Anthropic call (monkeypatched in tests).
 
@@ -180,7 +215,9 @@ def _call_chat_api(system: list[dict], messages: list[dict], settings: Settings)
     """
     import anthropic
 
-    client = anthropic.Anthropic(api_key=settings.ANTHROPIC_API_KEY, timeout=120)
+    client = anthropic.Anthropic(
+        api_key=settings.ANTHROPIC_API_KEY, timeout=120, max_retries=1
+    )
     return client.messages.create(
         model=CHAT_MODEL,
         max_tokens=MAX_ANSWER_TOKENS,

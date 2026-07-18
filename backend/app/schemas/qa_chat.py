@@ -10,6 +10,10 @@ from pydantic import BaseModel, Field
 class ChatRequest(BaseModel):
     conversation_id: uuid.UUID | None = None
     question: str = Field(min_length=3, max_length=2000)
+    confirmed: bool = Field(
+        default=False,
+        description="True when the user has confirmed an off-topic question",
+    )
 
 
 class ChatSource(BaseModel):
@@ -39,8 +43,10 @@ class ChatMessageOut(BaseModel):
 
 
 class ChatResponse(BaseModel):
-    conversation_id: uuid.UUID
-    message: ChatMessageOut
+    conversation_id: uuid.UUID | None = None
+    message: ChatMessageOut | None = None
+    needs_confirmation: bool = False
+    notice: str | None = None
 
 
 class ConversationOut(BaseModel):

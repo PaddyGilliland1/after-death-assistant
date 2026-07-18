@@ -114,6 +114,8 @@ def harness(monkeypatch):
 
     asyncio.run(seed())
 
+    monkeypatch.setattr(chat_api, "is_question_on_topic", lambda q, s: True)
+
     app = FastAPI()
     app.include_router(chat_api.router)
 
@@ -431,3 +433,51 @@ def test_pins_carry_across_conversations(harness, monkeypatch):
         block["title"] for block in final_content if block["type"] == "search_result"
     ]
     assert any("pinned from earlier conversations" in title for title in titles)
+
+
+
+def test_off_topic_stops_for_confirmation_and_confirmed_proceeds(harness, monkeypatch):
+    def fake_api(system, messages, settings):
+        return _answer_with_citation(0)
+
+    monkeypatch.setattr(qa_chat, "_call_chat_api", fake_api)
+    monkeypatch.setattr(chat_api, "is_question_on_topic", lambda q, s: False)
+    client = harness(EXECUTOR)
+    stopped = client.post(
+        "/knowledge/chat", json={"question": "write me a poem about the sea"}
+    )
+    assert stopped.status_code == 200
+    body = stopped.json()
+    assert body["needs_confirmation"] is True
+    assert body["message"] is None
+    # nothing persisted
+    assert client.get("/knowledge/chats").json() == []
+    # confirmed: proceeds despite the guard
+    confirmed = client.post(
+        "/knowledge/chat",
+        json={"question": "write me a poem about the sea", "confirmed": True},
+    )
+    assert confirmed.status_code == 200
+    assert confirmed.json()["needs_confirmation"] is False
+    assert confirmed.json()["message"] is not None
+
+
+def test_daily_limit_returns_429(harness, monkeypatch):
+    def fake_api(system, messages, settings):
+        return _answer_with_citation(0)
+
+    monkeypatch.setattr(qa_chat, "_call_chat_api", fake_api)
+    monkeypatch.setenv("CHAT_DAILY_LIMIT", "1")
+    from app.core.config import get_settings
+
+    get_settings.cache_clear()
+    client = harness(EXECUTOR)
+    first = client.post(
+        "/knowledge/chat", json={"question": "Do I need probate before selling?"}
+    )
+    assert first.status_code == 200
+    second = client.post(
+        "/knowledge/chat", json={"question": "And who applies for it?"}
+    )
+    assert second.status_code == 429
+    assert "daily question limit" in second.json()["detail"]

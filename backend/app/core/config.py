@@ -37,6 +37,7 @@ class Settings(BaseSettings):
     # Agents / knowledge library
     ANTHROPIC_API_KEY: str = ""
     EMBEDDING_MODEL: str = "local"
+    CHAT_DAILY_LIMIT: int = 200
 
     # Object storage (dev: local path; prod: Cloudflare R2 or Railway volume)
     STORAGE_BACKEND: str = "local"

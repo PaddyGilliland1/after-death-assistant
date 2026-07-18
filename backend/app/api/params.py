@@ -19,12 +19,15 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.auth import AdminUser, ReadUser
+from app.core.config import get_settings
 from app.db import get_session, get_session_factory
 from app.ingest.embedder import LOCAL_MODEL, get_embedding_provider
 from app.models import KnowledgeChunk
 from app.services.app_settings import (
+    CHAT_DAILY_LIMIT_KEY,
     EMBEDDINGS_ENABLED_KEY,
     EMBEDDINGS_STATUS_KEY,
+    TOPIC_GUARD_KEY,
     embeddings_enabled,
     get_setting,
     set_setting,
@@ -44,10 +47,16 @@ class ParamsOut(BaseModel):
     embedding_model: str
     embedded_chunks: int
     total_chunks: int
+    chat_daily_limit: int
+    topic_guard_enabled: bool
 
 
 class ParamsUpdate(BaseModel):
-    embeddings_enabled: bool
+    """All fields optional: only supplied parameters change."""
+
+    embeddings_enabled: bool | None = None
+    chat_daily_limit: int | None = None
+    topic_guard_enabled: bool | None = None
 
 
 async def _counts(session: AsyncSession) -> tuple[int, int]:
@@ -77,6 +86,12 @@ async def _params_out(session: AsyncSession) -> ParamsOut:
         embedding_model=LOCAL_MODEL,
         embedded_chunks=embedded,
         total_chunks=total,
+        chat_daily_limit=int(
+            await get_setting(
+                session, CHAT_DAILY_LIMIT_KEY, get_settings().CHAT_DAILY_LIMIT
+            )
+        ),
+        topic_guard_enabled=bool(await get_setting(session, TOPIC_GUARD_KEY, True)),
     )
 
 
@@ -126,24 +141,36 @@ async def update_params(
     session: SessionDep,
     user: AdminUser,
 ) -> ParamsOut:
-    was_enabled = await embeddings_enabled(session)
-    await set_setting(
-        session, EMBEDDINGS_ENABLED_KEY, payload.embeddings_enabled, actor=user.email
-    )
-    if payload.embeddings_enabled and not was_enabled:
-        await set_setting(session, EMBEDDINGS_STATUS_KEY, "running", actor=user.email)
-        background.add_task(_backfill_job)
-    if not payload.embeddings_enabled:
-        await set_setting(session, EMBEDDINGS_STATUS_KEY, "idle", actor=user.email)
     estate = await get_active_estate(session)
-    if estate is not None:
-        await record_audit(
-            session,
-            estate.id,
-            user.email,
-            "update",
-            "app_setting:embeddings_enabled",
-            after={"enabled": payload.embeddings_enabled},
-        )
+
+    async def apply(key: str, value, extra=None) -> None:
+        before = await get_setting(session, key)
+        if before == value:
+            return
+        await set_setting(session, key, value, actor=user.email)
+        if estate is not None:
+            await record_audit(
+                session,
+                estate.id,
+                user.email,
+                "update",
+                f"app_setting:{key}",
+                before={"value": before},
+                after={"value": value, **(extra or {})},
+            )
+
+    if payload.embeddings_enabled is not None:
+        was_enabled = await embeddings_enabled(session)
+        await apply(EMBEDDINGS_ENABLED_KEY, payload.embeddings_enabled)
+        if payload.embeddings_enabled and not was_enabled:
+            await set_setting(session, EMBEDDINGS_STATUS_KEY, "running", actor=user.email)
+            background.add_task(_backfill_job)
+        if not payload.embeddings_enabled:
+            await set_setting(session, EMBEDDINGS_STATUS_KEY, "idle", actor=user.email)
+    if payload.chat_daily_limit is not None:
+        limit = max(1, min(payload.chat_daily_limit, 10000))
+        await apply(CHAT_DAILY_LIMIT_KEY, limit)
+    if payload.topic_guard_enabled is not None:
+        await apply(TOPIC_GUARD_KEY, payload.topic_guard_enabled)
     await session.commit()
     return await _params_out(session)

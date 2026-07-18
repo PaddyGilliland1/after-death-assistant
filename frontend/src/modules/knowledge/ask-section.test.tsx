@@ -232,7 +232,7 @@ describe("AskSection", () => {
     const firstPost = calls.find(
       (call) => call.method === "POST" && call.path === "/knowledge/chat",
     )
-    expect(firstPost?.body).toEqual({ question: "When is IHT400 needed?" })
+    expect(firstPost?.body).toEqual({ question: "When is IHT400 needed?", confirmed: false })
 
     /* The follow-up submits on Enter and carries the conversation id. */
     await user.type(
@@ -250,10 +250,7 @@ describe("AskSection", () => {
     const secondPost = calls.filter(
       (call) => call.method === "POST" && call.path === "/knowledge/chat",
     )[1]
-    expect(secondPost.body).toEqual({
-      conversation_id: NEW_CONV_ID,
-      question: "What about jointly owned assets?",
-    })
+    expect(secondPost.body).toEqual({ conversation_id: NEW_CONV_ID, question: "What about jointly owned assets?", confirmed: false })
   })
 
   it("shows a viewer the read-only note and no question input", async () => {

@@ -32,6 +32,28 @@ Every create, change and approval writes an immutable audit event (actor, action
 
 `python -m app.cli_backup` produces `pg_dump` archives with sha256 manifests; `verify` recomputes the hash and structurally checks the archive. The restore path is tested in CI where the client tools are present, and a quarterly restore drill is documented in `docs/DEPLOY.md`.
 
+## AI usage guardrails
+
+The knowledge chat calls an external model API (Anthropic). Basic
+protections are built in and the tunable ones are parameters on the
+admin Params page, audited on change:
+
+- Scope check: a small, fast model classifies each question; unrelated
+  questions stop and ask for confirmation before any expensive call runs
+  or anything is stored. Fails open so a broken check never blocks a
+  grieving user. Toggleable (default on).
+- Daily question limit per estate (default 200, adjustable): a hard
+  ceiling on usage and cost, HTTP 429 beyond it, resets at midnight UTC.
+- Bounded calls: 120 second client timeout, one SDK retry, capped answer
+  tokens, at most two contract-validation attempts per answer, question
+  length capped at 2,000 characters.
+- No-retrieval short-circuit: when nothing relevant is in the library
+  and no pinned context exists, the refusal is served without calling
+  the model at all.
+- Grounding contract: citations are machine-extracted, figures must come
+  from the guidance or the app's own records, and answers must declare
+  what the guidance does not cover.
+
 ## Reporting a vulnerability
 
 Please report vulnerabilities privately through **GitHub security advisories**: on the repository page, Security, then "Report a vulnerability". Do not open a public issue for a security problem.

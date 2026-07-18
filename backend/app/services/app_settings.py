@@ -18,6 +18,8 @@ logger = logging.getLogger(__name__)
 
 EMBEDDINGS_ENABLED_KEY = "embeddings_enabled"
 EMBEDDINGS_STATUS_KEY = "embeddings_status"  # idle | running | complete | error:<msg>
+CHAT_DAILY_LIMIT_KEY = "chat_daily_limit"
+TOPIC_GUARD_KEY = "topic_guard_enabled"
 
 
 async def get_setting(session: AsyncSession, key: str, default: Any = None) -> Any:

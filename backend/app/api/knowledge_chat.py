@@ -13,7 +13,7 @@ import uuid
 from typing import Annotated
 
 from fastapi import APIRouter, Body, Depends, HTTPException, status
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.auth import ReadUser, WriteUser
@@ -28,7 +28,7 @@ from app.schemas.qa_chat import (
     ChatSource,
     ConversationOut,
 )
-from app.services.qa_chat import run_chat_turn
+from app.services.qa_chat import is_question_on_topic, run_chat_turn
 from app.services.seeding import get_active_estate, record_audit
 
 router = APIRouter(prefix="/knowledge", tags=["knowledge-chat"])
@@ -59,6 +59,55 @@ async def chat(payload: ChatRequest, session: SessionDep, user: WriteUser) -> Ch
     estate = await get_active_estate(session)
     if estate is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "No estate found.")
+
+    # Usage ceiling: a hard daily cap on questions per estate protects
+    # against runaway loops and unbounded spend (HTTP 429 when reached).
+    from datetime import UTC, datetime
+
+    day_start = datetime.now(UTC).replace(hour=0, minute=0, second=0, microsecond=0)
+    asked_today = (
+        await session.execute(
+            select(func.count())
+            .select_from(QaMessage)
+            .where(QaMessage.estate_id == estate.id)
+            .where(QaMessage.role == "user")
+            .where(QaMessage.created_at >= day_start)
+        )
+    ).scalar_one()
+    from app.services.app_settings import (
+        CHAT_DAILY_LIMIT_KEY,
+        TOPIC_GUARD_KEY,
+        get_setting,
+    )
+
+    daily_limit = int(
+        await get_setting(session, CHAT_DAILY_LIMIT_KEY, settings.CHAT_DAILY_LIMIT)
+    )
+    if asked_today >= daily_limit:
+        raise HTTPException(
+            status.HTTP_429_TOO_MANY_REQUESTS,
+            "The daily question limit for this estate has been reached. "
+            "It resets at midnight UTC; the Library and Search remain available.",
+        )
+
+    # Scope guard: unrelated questions stop for confirmation before any
+    # expensive call runs or anything is stored.
+    guard_on = bool(await get_setting(session, TOPIC_GUARD_KEY, True))
+    if (
+        guard_on
+        and not payload.confirmed
+        and not is_question_on_topic(payload.question, settings)
+    ):
+        return ChatResponse(
+            needs_confirmation=True,
+            notice=(
+                "This question looks unrelated to estate administration and "
+                "bereavement, which is all this assistant covers. It can try "
+                "anyway, but the answer will be limited to the cached official "
+                "guidance. Ask anyway?"
+            ),
+        )
+
     try:
         conversation, message = await run_chat_turn(
             session,
