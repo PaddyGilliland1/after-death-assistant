@@ -101,8 +101,11 @@ export interface ChatMessage {
 
 /** Response of POST /knowledge/chat. */
 export interface ChatResponse {
-  conversation_id: string
-  message: ChatMessage
+  conversation_id: string | null
+  message: ChatMessage | null
+  /** True when the scope guard wants the question confirmed first. */
+  needs_confirmation: boolean
+  notice: string | null
 }
 
 /** One conversation from GET /knowledge/chats (most recent first). */

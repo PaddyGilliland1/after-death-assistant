@@ -15,6 +15,7 @@ const CostsPage = lazy(() => import("@/modules/costs"))
 const AccountsPage = lazy(() => import("@/modules/accounts"))
 const IhtPage = lazy(() => import("@/modules/iht"))
 const KnowledgePage = lazy(() => import("@/modules/knowledge"))
+const HelpPage = lazy(() => import("@/modules/help"))
 const DraftsPage = lazy(() => import("@/modules/drafts"))
 const DocumentsPage = lazy(() => import("@/modules/documents"))
 const TimelinePage = lazy(() => import("@/modules/timeline"))
@@ -74,6 +75,7 @@ export default function App() {
                 { path: "/accounts", element: <AccountsPage /> },
                 { path: "/iht", element: <IhtPage /> },
                 { path: "/knowledge", element: <KnowledgePage /> },
+                { path: "/help", element: <HelpPage /> },
                 { path: "/drafts", element: <DraftsPage /> },
                 { path: "/documents", element: <DocumentsPage /> },
                 { path: "/timeline", element: <TimelinePage /> },

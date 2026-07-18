@@ -97,26 +97,27 @@ export function AskSection() {
       }
       setConfirmation(null)
       setQuestion("")
-      if (!response.conversation_id || !response.message) return
+      const { conversation_id: conversationId, message } = response
+      if (!conversationId || !message) return
       /* Seed the thread cache with the turn just completed: the API
          returns only the assistant message, so the question is echoed
          locally until the server copy is refetched. */
       queryClient.setQueryData<ChatMessage[]>(
-        messagesKey(response.conversation_id),
+        messagesKey(conversationId),
         (existing = []) => [
           ...existing,
           {
-            id: `local-question-${response.message.id}`,
+            id: `local-question-${message.id}`,
             role: "user",
             content: asked,
             sources_cited: [],
             related_sources: [],
-            created_at: response.message.created_at,
+            created_at: message.created_at,
           },
-          response.message,
+          message,
         ],
       )
-      setActiveId(response.conversation_id)
+      setActiveId(conversationId)
       void queryClient.invalidateQueries({ queryKey: CONVERSATIONS_KEY })
     },
     onError: (error) => {

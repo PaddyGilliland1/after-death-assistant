@@ -6,6 +6,7 @@ import {
   ClipboardList,
   FileSignature,
   FileText,
+  HeartHandshake,
   Landmark,
   LayoutDashboard,
   ListChecks,
@@ -65,6 +66,7 @@ export const navGroups: NavGroup[] = [
     label: "Guidance",
     items: [
       { label: "Knowledge library", to: "/knowledge", icon: BookOpen },
+      { label: "When you need help", to: "/help", icon: HeartHandshake },
       { label: "Drafts", to: "/drafts", icon: FileSignature },
       { label: "Timeline", to: "/timeline", icon: Activity },
     ],
