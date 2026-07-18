@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AD Assistant: a request for critique</title>
+<meta name="description" content="Fifteen minutes of your expertise: what is wrong, what is risky, what is missing.">
+</head>
+<body>
+<!-- ARTIFACT-START -->
+<style>
+  :root {
+    --paper: #FAFAF7;
+    --ink: #22302C;
+    --muted: #5A6963;
+    --accent: #2E6659;
+    --accent-soft: #E7EFEC;
+    --rule: #DCE3DF;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #161D1B;
+      --ink: #E4EAE7;
+      --muted: #93A19B;
+      --accent: #7CB8A8;
+      --accent-soft: #1F2B27;
+      --rule: #2A3531;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #161D1B;
+    --ink: #E4EAE7;
+    --muted: #93A19B;
+    --accent: #7CB8A8;
+    --accent-soft: #1F2B27;
+    --rule: #2A3531;
+  }
+  :root[data-theme="light"] {
+    --paper: #FAFAF7;
+    --ink: #22302C;
+    --muted: #5A6963;
+    --accent: #2E6659;
+    --accent-soft: #E7EFEC;
+    --rule: #DCE3DF;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--paper); }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Charter, "Bitstream Charter", Cambria, Georgia, "Liberation Serif", serif;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+  .sheet {
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 3rem;
+  }
+  .eyebrow {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 1rem;
+  }
+  h1 {
+    font-size: 2.35rem;
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.75rem;
+    text-wrap: balance;
+  }
+  .standfirst {
+    font-size: 1.25rem;
+    line-height: 1.45;
+    color: var(--muted);
+    font-style: italic;
+    margin: 0 0 2.5rem;
+  }
+  h2 {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border-top: 1px solid var(--rule);
+    padding-top: 1.6rem;
+    margin: 2.6rem 0 0.9rem;
+  }
+  p { margin: 0 0 1rem; }
+  strong { font-weight: 700; }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  .questions {
+    background: var(--accent-soft);
+    border-radius: 6px;
+    padding: 1.75rem 1.9rem 1.6rem;
+    margin: 1.6rem 0 1.8rem;
+  }
+  .questions ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.85rem; }
+  .questions li {
+    display: flex;
+    align-items: baseline;
+    gap: 1.1rem;
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  .questions li .n {
+    font-size: 2.1rem;
+    font-weight: 400;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    min-width: 1.4rem;
+    text-align: right;
+  }
+  .questions .aside {
+    margin: 1.2rem 0 0;
+    font-size: 0.98rem;
+    color: var(--muted);
+  }
+
+  .areas { margin: 1.4rem 0 0.4rem; padding: 0; }
+  .area {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+    padding: 0.95rem 0;
+    border-top: 1px solid var(--rule);
+  }
+  .area:last-child { border-bottom: 1px solid var(--rule); }
+  .area dt { font-weight: 700; }
+  .area dd { margin: 0; color: var(--muted); font-size: 0.98rem; }
+  .area dd .who {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.1rem;
+  }
+
+  .routes { margin: 1.4rem 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.9rem; }
+  .routes li {
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    padding: 0.9rem 1.1rem;
+  }
+  .routes .route-name { font-weight: 700; display: block; }
+  .routes .url {
+    font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    font-size: 0.82rem;
+    color: var(--muted);
+    word-break: break-all;
+  }
+
+  .foot {
+    margin-top: 3rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 1.2rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .foot p { margin: 0 0 0.5rem; }
+
+  @media print {
+    :root, :root[data-theme="dark"] {
+      --paper: #FFFFFF;
+      --ink: #1E2A26;
+      --muted: #4E5B56;
+      --accent: #2E6659;
+      --accent-soft: #EDF3F1;
+      --rule: #C9D2CE;
+    }
+    body { font-size: 10.5pt; }
+    .sheet { max-width: none; padding: 0; }
+    h2, .questions, .area, .routes li { break-inside: avoid; }
+    a { color: var(--accent); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<main class="sheet">
+  <p class="eyebrow">AD Assistant · Free and open source · England and Wales</p>
+  <h1>Fifteen minutes of your expertise</h1>
+  <p class="standfirst">A request for critique, not endorsement.</p>
+
+  <h2>The problem</h2>
+  <p>Losing someone is hard enough. What follows is months of administration: probate, inheritance tax, estate accounts, dozens of organisations to notify, statutory deadlines that carry personal liability for the executor. Most people do it once, unprepared, while grieving.</p>
+
+  <h2>Why this exists</h2>
+  <p>I built AD Assistant while administering my own father's estate. It is a free, open-source tool for executors in England and Wales: registers for everything, live estate accounts, a deterministic inheritance tax assessment, the official guidance cached and searchable in-app, and drafting that always ends with a human approving. Nothing is ever filed, sent or paid by the software, and no AI model ever calculates a tax figure.</p>
+  <p>It was built from the published official guidance and one family's experience. That is a real foundation, but it is not the same as seeing hundreds of estates professionally, and it is no substitute for trade experience. That gap is exactly what this page asks you to help close.</p>
+  <p>It is not legal or financial advice, and it never claims to be. It is the tool I wished had existed, given away so the next family does not start from a blank page.</p>
+
+  <h2>What I need</h2>
+  <p>I am not looking for investment, customers or endorsement. I am asking people who know this domain, professionally or from lived experience, to spend <strong>about fifteen minutes</strong> on one area and answer three questions:</p>
+  <div class="questions">
+    <ol>
+      <li><span class="n">1</span><span>What is wrong?</span></li>
+      <li><span class="n">2</span><span>What is risky?</span></li>
+      <li><span class="n">3</span><span>What is missing?</span></li>
+    </ol>
+    <p class="aside">Blunt is useful. Every point directly improves a free tool for future executors.</p>
+  </div>
+
+  <h2>Pick one area</h2>
+  <p>Each area starts from the plain-English user guide, so reviewing the words <em>is</em> reviewing the tool's behaviour. Nothing to install, no technical knowledge needed.</p>
+  <dl class="areas">
+    <div class="area">
+      <dt>The probate process and timeline</dt>
+      <dd><span class="who">Probate practitioner · STEP member</span>Is the sequence right, and are the warnings in the right places?</dd>
+    </div>
+    <div class="area">
+      <dt>Inheritance tax and the excepted-estates logic</dt>
+      <dd><span class="who">Private client solicitor · Tax adviser</span>The thresholds, the residence nil rate band rules, the route determination.</dd>
+    </div>
+    <div class="area">
+      <dt>Estate accounts and beneficiary shares</dt>
+      <dd><span class="who">Estate accountant</span>The four-account structure, reconciliation, and interim distribution guards.</dd>
+    </div>
+    <div class="area">
+      <dt>Bereavement support and tone</dt>
+      <dd><span class="who">Bereavement adviser · Counsellor</span>Does the language hold up for someone grieving, and is the signposting right?</dd>
+    </div>
+    <div class="area">
+      <dt>Executor experience and clarity</dt>
+      <dd><span class="who">Anyone who has been an executor</span>Where would you have been confused, and what did your administration need that this lacks?</dd>
+    </div>
+    <div class="area">
+      <dt>Legal caveats and safeguards</dt>
+      <dd><span class="who">Solicitor</span>The disclaimers, the human-approval gates, and what a cautious professional would add.</dd>
+    </div>
+  </dl>
+  <p>The user guide and every document referenced here live at the address in the footer; the review guide there links each area to its exact starting section.</p>
+
+  <h2>How to send feedback</h2>
+  <ul class="routes">
+    <li>
+      <span class="route-name">The feedback form (easiest)</span>
+      A short structured form: which area, what you found, and whether to credit you.<br>
+      <a class="url" href="https://github.com/PaddyGilliland1/after-death-assistant/issues/new?template=expert-feedback.yml">github.com/PaddyGilliland1/after-death-assistant/issues/new?template=expert-feedback.yml</a>
+    </li>
+    <li>
+      <span class="route-name">Privately, if you prefer</span>
+      Message Paddy Gilliland on LinkedIn; nothing you send is published without your say-so.<br>
+      <a class="url" href="https://www.linkedin.com/in/patrick-gilliland-0b092015/">linkedin.com/in/patrick-gilliland-0b092015</a>
+    </li>
+  </ul>
+  <p style="margin-top:1rem;">Every point gets read, answered, and either fixed, queued, or honestly declined with a reason. Contributors are credited in the changelog if they wish, or kept anonymous if they prefer.</p>
+
+  <div class="foot">
+    <p><strong>The project:</strong> github.com/PaddyGilliland1/after-death-assistant · MIT licensed, permanently free, no advertising, your data stays yours.</p>
+    <p>AD Assistant informs and drafts. It is not legal, tax or financial advice, and it is not a substitute for professional help. Its whole design assumes a human decides.</p>
+  </div>
+</main>
+<!-- ARTIFACT-END -->
+</body>
+</html>

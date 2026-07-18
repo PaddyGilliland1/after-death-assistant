@@ -10,6 +10,8 @@ Losing someone is hard enough. What follows is months of administration: probate
 
 I built AD Assistant while administering my own father's estate. It is a free, open-source tool for executors in England and Wales: registers for everything, live estate accounts, a deterministic inheritance tax assessment, the official guidance cached and searchable in-app, and drafting that always ends with a human approving. Nothing is ever filed, sent or paid by the software, and no AI model ever calculates a tax figure.
 
+It was built from the published official guidance and one family's experience. That is a real foundation, but it is not the same as seeing hundreds of estates professionally, and it is no substitute for trade experience. That gap is exactly what this page asks you to help close.
+
 It is not legal or financial advice, and it never claims to be. It is the tool I wished had existed, given away so the next family does not start from a blank page.
 
 ## What I need
@@ -38,7 +40,7 @@ The user guide is written in plain English for executors, so reviewing it *is* r
 ## How to send feedback
 
 - **Easiest:** [open a feedback note here](https://github.com/PaddyGilliland1/after-death-assistant/issues/new?template=expert-feedback.yml). It is a short form, no technical knowledge needed, and a free GitHub account takes a minute to create.
-- Or message **Paddy Gilliland** on LinkedIn if you would rather keep it private.
+- Or message [**Paddy Gilliland** on LinkedIn](https://www.linkedin.com/in/patrick-gilliland-0b092015/) if you would rather keep it private.
 
 ## What happens to your feedback
 
