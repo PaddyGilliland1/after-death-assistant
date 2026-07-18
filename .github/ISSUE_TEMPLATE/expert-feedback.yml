@@ -1,0 +1,44 @@
+name: Expert or executor feedback
+description: Critique from someone who knows this domain, professionally or from lived experience. No technical knowledge needed.
+title: "Feedback: "
+labels: ["expert-feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for giving this your time. Blunt is useful; every point improves a free tool for future executors. Nothing here requires any technical knowledge, and only the first two boxes are required.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which area did you look at?
+      options:
+        - The probate process and timeline
+        - Inheritance tax and the excepted-estates logic
+        - Estate accounts and beneficiary shares
+        - Bereavement support and tone
+        - Executor experience and clarity
+        - Legal caveats and safeguards
+        - Something else (say what below)
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What is wrong, risky or missing?
+      description: The three questions in one box. Anything from a factual error to a process step in the wrong order to a risk you think an executor is not being warned about.
+      placeholder: Write freely; bullet points are fine.
+    validations:
+      required: true
+  - type: input
+    id: background
+    attributes:
+      label: Your background (optional)
+      description: For example "probate solicitor", "STEP member", "executor twice", "bereavement adviser". It helps weigh the feedback; leave blank if you prefer.
+  - type: dropdown
+    id: credit
+    attributes:
+      label: If your feedback leads to a change, may we credit you in the changelog?
+      options:
+        - "Yes, credit me (your GitHub name will be used)"
+        - "No, keep me anonymous"
+      default: 1

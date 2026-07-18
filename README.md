@@ -17,10 +17,15 @@ This tool **informs and drafts. It is not advice, and nothing is filed automatic
 
 The repository contains schema and synthetic seed data only. Real estate data lives in a local, git-ignored `seed/` file and in your own self-hosted database. Nothing personal is ever committed.
 
+## Reviewers wanted
+
+This project improves fastest through critique from people who know the domain: probate professionals, STEP members, estate accountants, bereavement advisers, and anyone who has been an executor. **[The 15-minute review guide](REVIEW.md)** explains what to look at and the three questions we ask: what is wrong, what is risky, what is missing. No installation or technical knowledge needed.
+
 ## Documentation
 
 | Document | What it covers |
 |---|---|
+| [Review guide](REVIEW.md) | How to critique this project in 15 minutes, no technical knowledge needed |
 | [User guide](docs/USER_GUIDE.md) | Using the tool as an executor: every module, step by step, in plain words |
 | [Installation guide](docs/INSTALL.md) | Self-hosting, local development, seeding, the knowledge library, upgrades |
 | [Deployment guide](docs/DEPLOY.md) | Production on Railway with Cloudflare Access, backups, restore drill |

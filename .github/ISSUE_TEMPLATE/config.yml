@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Prefer to talk privately?
+    url: https://www.linkedin.com/in/paddygilliland
+    about: Message Paddy Gilliland on LinkedIn instead of posting publicly.
+  - name: Start with the 15-minute review guide
+    url: https://github.com/PaddyGilliland1/after-death-assistant/blob/main/REVIEW.md
+    about: What to look at and the three questions we are asking every reviewer.
