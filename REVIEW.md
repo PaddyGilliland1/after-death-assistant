@@ -41,12 +41,12 @@ Each area has a detail page showing everything the tool actually does there: the
 
 | Area | Good reviewer | The detail to review |
 |---|---|---|
-| The probate process and timeline | Probate practitioner, STEP member | [The 41-step checklist and every deadline rule](https://paddygilliland1.github.io/after-death-assistant/docs/review/probate-process.html) |
-| Inheritance tax and the excepted-estates logic | Private client solicitor, tax adviser | [The constants, the calculation, the excepted tests](https://paddygilliland1.github.io/after-death-assistant/docs/review/inheritance-tax.html) |
-| Estate accounts and beneficiary shares | Estate accountant | [The four accounts, the equations, the guards](https://paddygilliland1.github.io/after-death-assistant/docs/review/estate-accounts.html) |
-| Bereavement support and tone | Bereavement adviser, counsellor | [The 17-entry directory and the language rules](https://paddygilliland1.github.io/after-death-assistant/docs/review/bereavement-support.html) |
-| Executor experience and clarity | Anyone who has been an executor | [The dashboard, the modules, the moments caught](https://paddygilliland1.github.io/after-death-assistant/docs/review/executor-experience.html) |
-| Legal caveats and safeguards | Solicitor | [The disclaimers, approval gates and enforcement](https://paddygilliland1.github.io/after-death-assistant/docs/review/legal-safeguards.html) |
+| The probate process and timeline | Probate practitioner, STEP member | [The 41-step checklist and every deadline rule](https://paddygilliland1.github.io/after-death-assistant/docs/review-pack.html#probate) |
+| Inheritance tax and the excepted-estates logic | Private client solicitor, tax adviser | [The constants, the calculation, the excepted tests](https://paddygilliland1.github.io/after-death-assistant/docs/review-pack.html#iht) |
+| Estate accounts and beneficiary shares | Estate accountant | [The four accounts, the equations, the guards](https://paddygilliland1.github.io/after-death-assistant/docs/review-pack.html#accounts) |
+| Bereavement support and tone | Bereavement adviser, counsellor | [The 17-entry directory and the language rules](https://paddygilliland1.github.io/after-death-assistant/docs/review-pack.html#support) |
+| Executor experience and clarity | Anyone who has been an executor | [The dashboard, the modules, the moments caught](https://paddygilliland1.github.io/after-death-assistant/docs/review-pack.html#experience) |
+| Legal caveats and safeguards | Solicitor | [The disclaimers, approval gates and enforcement](https://paddygilliland1.github.io/after-death-assistant/docs/review-pack.html#safeguards) |
 
 The [user guide](docs/USER_GUIDE.md) gives the full plain-English walkthrough behind every area. If you would rather see it running, the whole thing self-hosts with one command ([installation guide](docs/INSTALL.md)), but nobody is expected to do that for a review.
 
