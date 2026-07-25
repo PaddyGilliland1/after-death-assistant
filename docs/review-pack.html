@@ -1,130 +1,274 @@
-<!doctype html>
-<html lang="en-GB">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>AD Assistant — Review Pack</title>
-<meta name="description" content="Fifteen minutes of your expertise: what is wrong, what is risky, what is missing.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --ink-900:#0F1217; --ink-700:#2B313B; --ink-500:#5B6472; --ink-200:#D9DDE3;
-    --paper-0:#FFFFFF; --paper-50:#FAF7F1; --paper-100:#F3EEE4; --signal-600:#8C1D18;
-    --ok-600:#2F5D3E; --ok-100:#DDE8DF; --warn-600:#6B5217; --warn-100:#F6ECCF;
-    --alert-600:#B6432A; --alert-100:#F8E6DF;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--paper-50);color:var(--ink-900);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;line-height:1.6;}
-  .wrap{max-width:880px;margin:0 auto;padding:40px 24px 80px;}
-  h1{font-size:30px;letter-spacing:-0.02em;margin:0 0 4px;}
-  h2{font-size:21px;margin:40px 0 10px;padding-top:22px;border-top:2px solid var(--ink-900);}
-  h3{font-size:16px;margin:22px 0 8px;color:var(--signal-600);text-transform:uppercase;letter-spacing:1px;}
-  .meta{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--ink-500);margin-bottom:24px;}
-  .card{background:var(--paper-0);border:1px solid var(--ink-200);border-radius:6px;padding:20px 24px;margin:16px 0;}
-  .copy{background:var(--paper-100);border-left:3px solid var(--signal-600);padding:14px 18px;margin:12px 0;
-    font-size:15px;border-radius:0 4px 4px 0;}
-  .copy .label{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
-    color:var(--ink-500);display:block;margin-bottom:6px;}
-  .badge{display:inline-block;font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:0.5px;
-    padding:3px 9px;border-radius:3px;font-weight:600;}
-  .b-do{background:var(--ok-100);color:var(--ok-600);}
-  .b-defer{background:var(--warn-100);color:var(--warn-600);}
-  .b-note{background:var(--alert-100);color:var(--alert-600);}
-  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px;}
-  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--ink-200);vertical-align:top;}
-  th{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--ink-500);}
-  ol,ul{margin:8px 0;padding-left:22px;}
-  li{margin:5px 0;}
-  code{background:var(--paper-100);padding:1px 5px;border-radius:3px;font-size:13px;}
-  pre{background:var(--paper-100);border-radius:6px;padding:14px 18px;overflow-x:auto;
-    font-family:ui-monospace,Menlo,monospace;font-size:13px;line-height:1.55;margin:12px 0;}
-  .callout{background:var(--alert-100);border:1px solid var(--alert-600);border-radius:6px;padding:16px 20px;margin:18px 0;}
-  .callout strong{color:var(--alert-600);}
-  .ok-callout{background:var(--ok-100);border:1px solid var(--ok-600);border-radius:6px;padding:16px 20px;margin:18px 0;}
-  .warn-callout{background:var(--warn-100);border:1px solid var(--warn-600);border-radius:6px;padding:14px 18px;margin:14px 0;}
-  .warn-callout strong{color:var(--warn-600);}
-  a{color:var(--signal-600);}
-  .small{font-size:13px;color:var(--ink-500);}
-  .menu{columns:2;column-gap:32px;}
-  .menu a{display:block;font-family:ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:0.5px;
-    text-decoration:none;padding:3px 0;color:var(--ink-700);}
-  .menu a:hover{color:var(--signal-600);text-decoration:underline;}
-  @media (max-width:600px){.menu{columns:1;}}
-  .qs{font-size:18px;font-weight:700;margin:6px 0;}
-  .qs .n{color:var(--signal-600);font-family:ui-monospace,Menlo,monospace;font-weight:600;margin-right:10px;}
-  @media print{ h2{break-after:avoid;} .card,.copy,.callout,.ok-callout,.warn-callout,table{break-inside:avoid;} }
+/* ============================================================
+   AD Assistant — Review Pack
+   Brand: Watchdog HQ Brand System v1.0 (revexp1/brand)
+   Paper, not pixels. Editorial. British. Concise.
+   ============================================================ */
+:root {
+  --ink-900: #0F1217; --ink-800: #1A1F27; --ink-700: #2B313B;
+  --ink-500: #5B6472; --ink-400: #828B99; --ink-300: #B6BCC6;
+  --ink-200: #D9DDE3; --ink-100: #EDEFF3;
+  --paper-0: #FFFFFF; --paper-50: #FAF7F1; --paper-100: #F3EEE4;
+  --signal-600: #8C1D18;
+  --alert-600: #B6432A; --alert-100: #F8E6DF;
+  --watch-600: #8A6A1E; --watch-100: #F6ECCF;
+  --info-600:  #2E4E6E; --info-100:  #E1E8EF;
+  --ok-600:    #2F5D3E; --ok-100:    #DDE8DF;
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-sans:    'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --font-mono:    'JetBrains Mono', Menlo, Consolas, monospace;
+  --fs-3xl: clamp(40px, 4.5vw, 56px);
+  --fs-2xl: clamp(26px, 3vw, 36px);
+  --fs-xl:  24px; --fs-lg: 20px; --fs-md: 17px; --fs-base: 16px; --fs-sm: 14px; --fs-xs: 12px;
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px;
+  --sp-6:24px; --sp-8:32px; --sp-10:40px; --sp-12:48px; --sp-16:64px; --sp-24:96px;
+  --r-xs:2px; --r-sm:4px; --r-md:6px;
+  --rule:        1px solid var(--ink-200);
+  --rule-strong: 2px solid var(--ink-900);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-sans);
+  background: var(--paper-50);
+  color: var(--ink-900);
+  font-size: var(--fs-base);
+  line-height: 1.55;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--ink-900); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--signal-600); }
+
+/* ---------- Sidebar ---------- */
+aside {
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  background: var(--paper-100);
+  border-right: var(--rule);
+  padding: var(--sp-8) var(--sp-6);
+}
+.brand-mark {
+  font-family: var(--font-display); font-weight: 500; font-size: var(--fs-xl);
+  letter-spacing: -0.02em; color: var(--ink-900); margin-bottom: 4px; line-height: 1.05;
+}
+.brand-mark .it { font-style: italic; font-weight: 400; color: var(--signal-600); }
+.brand-eyebrow {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-500); margin-bottom: var(--sp-6);
+}
+.brand-meta { border-top: var(--rule); border-bottom: var(--rule); padding: var(--sp-4) 0; margin-bottom: var(--sp-6); }
+.brand-meta dl { display: grid; grid-template-columns: auto 1fr; gap: 4px var(--sp-4); font-size: var(--fs-xs); }
+.brand-meta dt { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; font-size: 10.5px; color: var(--ink-500); }
+.brand-meta dd { color: var(--ink-900); font-weight: 600; }
+.nav-eyebrow { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-500); margin: var(--sp-4) 0 var(--sp-2); }
+nav a {
+  display: grid; grid-template-columns: 26px 1fr; align-items: baseline; gap: var(--sp-2);
+  padding: 7px var(--sp-2); text-decoration: none; color: var(--ink-700); font-size: 13.5px;
+  border-left: 2px solid transparent; transition: color 0.12s, border-color 0.12s, background 0.12s;
+  line-height: 1.35; cursor: pointer;
+}
+nav a:hover { color: var(--ink-900); background: rgba(15,18,23,0.03); }
+nav a.active { color: var(--ink-900); border-left-color: var(--signal-600); background: var(--paper-0); font-weight: 600; }
+nav a .num { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-400); letter-spacing: 0.06em; }
+nav a.active .num { color: var(--signal-600); }
+.side-note { margin-top: var(--sp-8); border-top: var(--rule); padding-top: var(--sp-4); font-size: var(--fs-xs); color: var(--ink-500); }
+
+/* ---------- Main ---------- */
+main { max-width: 100%; }
+.container { max-width: 920px; margin: 0 auto; padding: var(--sp-12) var(--sp-12) var(--sp-24); }
+@media (max-width: 960px) { .container { padding: var(--sp-8) var(--sp-5) var(--sp-16); } }
+
+h1, h2, h3 { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.025em; line-height: 1.05; color: var(--ink-900); }
+h1 { font-size: var(--fs-3xl); margin-bottom: var(--sp-5); }
+h1 .it, h2 .it { font-style: italic; font-weight: 400; color: var(--signal-600); }
+h2 { font-size: var(--fs-2xl); margin-bottom: var(--sp-4); }
+h3 { font-size: var(--fs-lg); margin: var(--sp-8) 0 var(--sp-3); font-weight: 600; }
+h4 { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 500; color: var(--ink-500); margin: var(--sp-6) 0 var(--sp-3); }
+p { margin-bottom: var(--sp-3); color: var(--ink-700); }
+.lead { font-size: var(--fs-lg); line-height: 1.45; color: var(--ink-700); max-width: 60ch; }
+.eyebrow { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-500); }
+ul, ol { margin: var(--sp-3) 0 var(--sp-4) var(--sp-5); color: var(--ink-700); }
+li { margin-bottom: 6px; }
+li strong, strong { color: var(--ink-900); font-weight: 600; }
+code { font-family: var(--font-mono); background: var(--paper-100); padding: 1px 6px; border-radius: var(--r-xs); font-size: 12.5px; color: var(--signal-600); }
+pre { font-family: var(--font-mono); background: var(--ink-900); color: var(--paper-50); padding: var(--sp-4) var(--sp-5); border-radius: var(--r-sm); overflow-x: auto; font-size: 12.5px; line-height: 1.6; margin: var(--sp-4) 0; }
+
+/* ---------- Panels (sub pages) ---------- */
+.panel { display: none; }
+.panel.active { display: block; }
+
+.section-head { display: grid; grid-template-columns: 200px 1fr; gap: var(--sp-8); align-items: baseline; padding-bottom: var(--sp-6); border-bottom: var(--rule-strong); margin-bottom: var(--sp-8); }
+.section-head .label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-500); padding-top: 8px; }
+.section-head h2 { margin: 0; }
+.section-head .lead { margin-top: var(--sp-3); max-width: 60ch; font-size: var(--fs-md); }
+@media (max-width: 860px) { .section-head { grid-template-columns: 1fr; gap: var(--sp-3); } body { grid-template-columns: 1fr; } aside { position: static; height: auto; border-right: 0; border-bottom: var(--rule); } }
+
+/* ---------- Components ---------- */
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: var(--rule-strong); border-bottom: var(--rule-strong); background: var(--paper-0); margin: var(--sp-6) 0 var(--sp-8); }
+.stat { padding: var(--sp-5) var(--sp-6); border-right: var(--rule); }
+.stat:last-child { border-right: 0; }
+.stat .num { font-family: var(--font-display); font-size: clamp(34px, 3.4vw, 46px); line-height: 1; font-weight: 500; color: var(--signal-600); display: block; }
+.stat .label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-500); margin-top: var(--sp-2); display: block; }
+@media (max-width: 680px) { .stats { grid-template-columns: 1fr; } .stat { border-right: 0; border-bottom: var(--rule); } }
+
+.qblock { background: var(--paper-0); border: var(--rule); border-left: 3px solid var(--signal-600); border-radius: 0 var(--r-md) var(--r-md) 0; padding: var(--sp-5) var(--sp-6); margin: var(--sp-5) 0 var(--sp-6); }
+.qblock .q { font-family: var(--font-display); font-size: var(--fs-xl); font-weight: 500; margin: var(--sp-1) 0; color: var(--ink-900); }
+.qblock .q .qn { font-family: var(--font-mono); font-size: 14px; color: var(--signal-600); margin-right: var(--sp-3); }
+.qblock .aside { font-size: var(--fs-sm); color: var(--ink-500); margin: var(--sp-3) 0 0; }
+
+.card { background: var(--paper-0); border: var(--rule); border-radius: var(--r-md); padding: var(--sp-5) var(--sp-6); margin: var(--sp-4) 0; }
+.route { background: var(--paper-0); border: var(--rule); border-left: 3px solid var(--signal-600); border-radius: 0 var(--r-md) var(--r-md) 0; padding: var(--sp-4) var(--sp-5); margin: var(--sp-3) 0; }
+.route .tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500; display: block; margin-bottom: var(--sp-1); }
+.route .tag.ok { color: var(--ok-600); }
+.route .tag.info { color: var(--info-600); }
+.route .url { font-family: var(--font-mono); font-size: 12px; color: var(--ink-500); word-break: break-all; }
+
+.chip { display: inline-block; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; padding: 3px 10px; border-radius: var(--r-xs); }
+.chip-who { background: var(--info-100); color: var(--info-600); }
+
+.gapbox { background: var(--watch-100); border: 1px solid var(--watch-600); border-radius: var(--r-md); padding: var(--sp-4) var(--sp-5); margin: var(--sp-5) 0; }
+.gapbox .label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500; color: var(--watch-600); display: block; margin-bottom: var(--sp-2); }
+.gapbox p, .gapbox li { color: var(--ink-700); font-size: var(--fs-sm); }
+.gapbox ul { margin-bottom: 0; }
+
+.askbox { background: var(--alert-100); border: 1px solid var(--alert-600); border-radius: var(--r-md); padding: var(--sp-4) var(--sp-5); margin: var(--sp-5) 0; }
+.askbox .label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500; color: var(--alert-600); display: block; margin-bottom: var(--sp-2); }
+.askbox p { color: var(--ink-700); font-size: var(--fs-sm); margin-bottom: 0; }
+
+.okbox { background: var(--ok-100); border: 1px solid var(--ok-600); border-radius: var(--r-md); padding: var(--sp-4) var(--sp-5); margin: var(--sp-5) 0; }
+.okbox p { color: var(--ink-700); font-size: var(--fs-sm); margin-bottom: 0; }
+.okbox strong { color: var(--ok-600); }
+
+table { border-collapse: collapse; width: 100%; margin: var(--sp-4) 0; background: var(--paper-0); border: var(--rule); border-radius: var(--r-md); overflow: hidden; font-size: var(--fs-sm); }
+th { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-500); text-align: left; padding: var(--sp-3) var(--sp-4); background: var(--paper-100); border-bottom: var(--rule-strong); font-weight: 500; }
+td { padding: var(--sp-3) var(--sp-4); border-bottom: var(--rule); color: var(--ink-700); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+td.k { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; color: var(--signal-600); white-space: nowrap; }
+
+.datehead { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; color: var(--signal-600); margin: var(--sp-5) 0 var(--sp-2); }
+.small { font-size: var(--fs-sm); color: var(--ink-500); }
+
+/* ---------- Print: every panel becomes a page ---------- */
+@media print {
+  body { grid-template-columns: 1fr; background: #fff; }
+  aside { display: none; }
+  .panel { display: block !important; page-break-before: always; }
+  .panel:first-of-type { page-break-before: auto; }
+  .container { padding: var(--sp-6) 0; max-width: none; }
+  .qblock, .card, .route, .gapbox, .askbox, .okbox, table { break-inside: avoid; }
+}
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <h1>AD Assistant — Review Pack</h1>
-  <div class="meta">Free and open source &middot; estate administration for executors, England and Wales &middot; a request for critique, not endorsement &middot; July 2026</div>
-
-  <div class="callout">
-    <strong>The ask, up front: fifteen minutes of your expertise on one area.</strong>
-    <p class="qs"><span class="n">1</span>What is wrong?</p>
-    <p class="qs"><span class="n">2</span>What is risky?</p>
-    <p class="qs"><span class="n">3</span>What is missing?</p>
-    Blunt is useful. This tool was built from the published official guidance and one family's experience of
-    administering an estate. That is a real foundation, but it is no substitute for trade experience, and every
-    point you send directly improves a free tool for future executors. Nothing here is for sale and there is
-    nothing in it for the author.
+<aside>
+  <div class="brand-mark">AD <span class="it">Assistant</span></div>
+  <div class="brand-eyebrow">Review pack &middot; critique, not endorsement</div>
+  <div class="brand-meta">
+    <dl>
+      <dt>Version</dt><dd>0.10.0</dd>
+      <dt>Licence</dt><dd>MIT, free forever</dd>
+      <dt>Region</dt><dd>England &amp; Wales</dd>
+      <dt>Cost</dt><dd>Nothing, ever</dd>
+    </dl>
   </div>
+  <div class="nav-eyebrow">Contents</div>
+  <nav id="nav">
+    <a data-panel="overview" class="active"><span class="num">00</span><span>Overview &amp; the ask</span></a>
+    <a data-panel="probate"><span class="num">01</span><span>Probate process &amp; timeline</span></a>
+    <a data-panel="iht"><span class="num">02</span><span>Inheritance tax logic</span></a>
+    <a data-panel="accounts"><span class="num">03</span><span>Estate accounts</span></a>
+    <a data-panel="support"><span class="num">04</span><span>Bereavement support &amp; tone</span></a>
+    <a data-panel="experience"><span class="num">05</span><span>Executor experience</span></a>
+    <a data-panel="safeguards"><span class="num">06</span><span>Legal caveats &amp; safeguards</span></a>
+  </nav>
+  <div class="side-note">Built from the published official guidance and one family's experience of administering an estate. No substitute for trade experience; that is the point of this pack.</div>
+</aside>
 
-  <div class="card">
-    <span class="badge b-do">CONTENTS</span>
-    <nav class="menu" aria-label="Sections" style="margin-top:10px;">
-      <a href="#respond">1. How to respond</a>
-      <a href="#changed">2. What has changed since launch</a>
-      <a href="#tool">3. What the tool does</a>
-      <a href="#probate">4. Area: probate process and timeline</a>
-      <a href="#iht">5. Area: inheritance tax logic</a>
-      <a href="#accounts">6. Area: estate accounts</a>
-      <a href="#support">7. Area: bereavement support and tone</a>
-      <a href="#experience">8. Area: executor experience</a>
-      <a href="#safeguards">9. Area: legal caveats and safeguards</a>
-      <a href="#promise">10. What happens to your feedback</a>
-    </nav>
-  </div>
+<main>
+<div class="container">
 
-  <!-- ============ RESPOND ============ -->
-  <h2 id="respond">1. How to respond <span class="badge b-do">2 ROUTES</span></h2>
-  <div class="copy"><span class="label">Easiest &middot; no new account needed</span>
-  Message <strong>Paddy Gilliland</strong> on LinkedIn. A private message is entirely enough; nothing you send is
-  published without your say-so.<br>
-  <a href="https://www.linkedin.com/in/patrick-gilliland-0b092015/">linkedin.com/in/patrick-gilliland-0b092015</a></div>
-  <div class="copy"><span class="label">Structured &middot; needs a free GitHub account</span>
-  A short form: which area, what you found, whether to credit you. Public, so others can build on it.<br>
-  <a href="https://github.com/PaddyGilliland1/after-death-assistant/issues/new?template=expert-feedback.yml">github.com/PaddyGilliland1/after-death-assistant &rarr; issues &rarr; expert feedback</a></div>
-  <p class="small">Pick one area from the contents above; each section shows everything the tool actually does
-  there, including its known limitations, stated openly. The tool is not legal or financial advice and never
-  claims to be; its whole design assumes a human decides.</p>
+  <!-- ================= 00 OVERVIEW ================= -->
+  <div class="panel active" id="overview">
+    <p class="eyebrow">AD Assistant &middot; free and open source &middot; July 2026</p>
+    <h1>Fifteen minutes of your <span class="it">expertise</span></h1>
+    <p class="lead">A free tool that helps executors administer an estate. It was built from the published official guidance and lived experience; it now needs the people who see this work every week to tell it where it is wrong.</p>
 
-  <!-- ============ CHANGED ============ -->
-  <h2 id="changed">2. What has changed since launch</h2>
-  <p>Launched two weeks ago; every change below is public in the repository. The fortnight in plain words:</p>
-  <h3>9 July</h3>
-  <ul>
-    <li>Tasks and the process timeline now stay in sync in both directions, with a repair command for historic drift.</li>
-  </ul>
-  <h3>17 July</h3>
-  <ul>
-    <li>Citations rebuilt: sources listed per document, every claim traceable to a passage, and a "what the retrieved guidance does not cover" section guaranteed on every answer, enforced with automatic retry.</li>
-    <li>The one-shot Ask box became a conversational assistant with follow-up memory, and it now reads the estate's live position with estimates clearly flagged.</li>
-    <li>Optional semantic search behind an administrator switch: a local model, off by default, nothing leaves the machine.</li>
-    <li>Corpus expansion: every document the app references is cached in-app, including NS&amp;I and fifteen verified bereavement financial-support guides; one defunct linked service was caught and replaced.</li>
-  </ul>
-  <h3>18 July</h3>
-  <ul>
-    <li>Guardrails: off-topic questions pause for confirmation, usage has a daily ceiling, every settings change is audited.</li>
-    <li>"When you need help": a verified directory of seventeen support organisations.</li>
-    <li>Version 0.10.0 released; the test suite stands at 329 backend and 125 frontend tests.</li>
-  </ul>
+    <div class="stats">
+      <div class="stat"><span class="num">3</span><span class="label">Questions asked of you</span></div>
+      <div class="stat"><span class="num">15</span><span class="label">Minutes, one area</span></div>
+      <div class="stat"><span class="num">&pound;0</span><span class="label">For sale here, ever</span></div>
+    </div>
 
-  <!-- ============ TOOL ============ -->
-  <h2 id="tool">3. What the tool does</h2>
-  <div class="card">
+    <div class="section-head">
+      <div class="label">The ask</div>
+      <div>
+        <h2>Three questions, one area of your choosing</h2>
+        <p class="lead">For probate practitioners and STEP members, private client solicitors and tax advisers, estate accountants, bereavement advisers, and anyone who has been an executor.</p>
+      </div>
+    </div>
+    <div class="qblock">
+      <p class="q"><span class="qn">01</span>What is wrong?</p>
+      <p class="q"><span class="qn">02</span>What is risky?</p>
+      <p class="q"><span class="qn">03</span>What is missing?</p>
+      <p class="aside">Blunt is useful. Pick an area from the menu; each page shows everything the tool actually does there, the rules and statutory bases applied, and its known limitations, stated openly. Every point you send directly improves a free tool for future executors.</p>
+    </div>
+
+    <div class="section-head">
+      <div class="label">Respond</div>
+      <div><h2>Two routes, both a few minutes</h2></div>
+    </div>
+    <div class="route">
+      <span class="tag ok">Easiest &middot; no new account needed</span>
+      Message <strong>Paddy Gilliland</strong> on LinkedIn. A private message is entirely enough; nothing you send is published without your say-so.<br>
+      <a class="url" href="https://www.linkedin.com/in/patrick-gilliland-0b092015/">linkedin.com/in/patrick-gilliland-0b092015</a>
+    </div>
+    <div class="route">
+      <span class="tag info">Structured &middot; needs a free GitHub account</span>
+      A short form: which area, what you found, whether to credit you. Public, so others can build on it.<br>
+      <a class="url" href="https://github.com/PaddyGilliland1/after-death-assistant/issues/new?template=expert-feedback.yml">github.com/PaddyGilliland1/after-death-assistant &rarr; issues &rarr; expert feedback</a>
+    </div>
+    <div class="okbox"><p><strong>Every point gets read, answered, and either fixed, queued, or honestly declined with a reason.</strong> Contributors are credited in the changelog if they wish, or kept anonymous if they prefer. If this is not your world, an introduction to someone whose world it is helps just as much.</p></div>
+
+    <div class="section-head">
+      <div class="label">Since launch</div>
+      <div>
+        <h2>Two weeks of visible progress</h2>
+        <p class="lead">Launched two weeks ago; every change below is public in the repository.</p>
+      </div>
+    </div>
+    <p class="datehead">9 July</p>
+    <ul>
+      <li>Tasks and the process timeline now stay in sync in both directions, with a repair command for historic drift.</li>
+    </ul>
+    <p class="datehead">17 July</p>
+    <ul>
+      <li>Citations rebuilt: sources listed per document, every claim traceable to a passage, and a "what the retrieved guidance does not cover" section guaranteed on every answer.</li>
+      <li>The one-shot Ask box became a conversational assistant with follow-up memory, reading the estate's live position with estimates clearly flagged.</li>
+      <li>Optional semantic search behind an administrator switch: a local model, off by default, nothing leaves the machine.</li>
+      <li>Corpus expansion: every document the app references is cached in-app; one defunct linked service caught and replaced.</li>
+    </ul>
+    <p class="datehead">18 July</p>
+    <ul>
+      <li>Guardrails: off-topic questions pause for confirmation, usage has a daily ceiling, every settings change audited.</li>
+      <li>"When you need help": a verified directory of seventeen support organisations.</li>
+      <li>Version 0.10.0 released; the test suite stands at 329 backend and 125 frontend tests.</li>
+    </ul>
+
+    <div class="section-head">
+      <div class="label">Orientation</div>
+      <div><h2>What the tool does</h2></div>
+    </div>
     <ul>
       <li><strong>Registers for the whole administration:</strong> assets with estimate-versus-confirmed valuation history, liabilities, debtors and creditors, contacts with a notification tracker, costs, documents, and tasks with dependencies on the standard timeline.</li>
       <li><strong>Estate accounts that must balance,</strong> with live residuary shares per beneficiary.</li>
@@ -133,71 +277,95 @@
       <li><strong>The official guidance cached in-app</strong> (77 sources with provenance) with a cited, fenced assistant.</li>
       <li><strong>Drafting with a human gate:</strong> every AI draft requires recorded approval; the software cannot send, file or pay.</li>
     </ul>
+    <p class="small">AD Assistant informs and drafts. It is not legal, tax or financial advice, and it is not a substitute for professional help. Its whole design assumes a human decides. Project: <a href="https://github.com/PaddyGilliland1/after-death-assistant">github.com/PaddyGilliland1/after-death-assistant</a></p>
   </div>
 
-  <!-- ============ AREA: PROBATE ============ -->
-  <h2 id="probate">4. Area: probate process and timeline <span class="badge b-defer">PROBATE PRACTITIONER &middot; STEP</span></h2>
-  <p>A new estate is seeded with this ordered checklist. Every step becomes both a timeline step and a task,
-  with dependency links so later steps show as blocked until their predecessors are done, and a suggested owner
-  (family or executor).</p>
+  <!-- ================= 01 PROBATE ================= -->
+  <div class="panel" id="probate">
+    <p class="eyebrow">Area 01 &middot; <span class="chip chip-who">Probate practitioner &middot; STEP member</span></p>
+    <h1>The probate <span class="it">process</span> and timeline</h1>
+    <p class="lead">A new estate is seeded with a 41-step ordered checklist; every step becomes both a timeline step and a task, with dependency links and a suggested owner (family or executor). Deadlines are derived by pure, unit-tested functions.</p>
 
-  <h3>The seeded checklist — 41 steps in 6 phases</h3>
-  <div class="card">
-    <strong>First days (1–5).</strong> Get the death verified and the MCCD issued &middot; Tell close family, friends and any employer &middot; Find the will, codicils and funeral wishes &middot; Secure the home, belongings and pets; insure the empty property &middot; Arrange the funeral.<br><br>
-    <strong>Registering the death (6–8).</strong> Register the death within 5 days and order certified copies &middot; Give the certificate for burial or cremation to the funeral director &middot; Use Tell Us Once within 28 days.<br><br>
-    <strong>Notifying organisations (9–19).</strong> Banks, building societies, NS&amp;I and Premium Bonds &middot; Pension providers, including any armed forces service pension &middot; Insurers &middot; Mortgage lender, landlord or housing association &middot; Utility suppliers &middot; Telecoms &middot; TV Licensing and subscriptions &middot; Health and care providers &middot; Employer and professional bodies &middot; Clubs and memberships &middot; Digital accounts.<br><br>
-    <strong>Cancel, redirect, protect (20–24).</strong> Cancel recurring payments &middot; Redirect post and stop marketing mail &middot; Deal with any vehicle &middot; Claim the Council Tax Class F exemption &middot; Trace forgotten assets via the free official services.<br><br>
-    <strong>Administering the estate (25–39).</strong> Confirm the executors named in the will &middot; Open an executors' bank account &middot; Value the estate &middot; Assess inheritance tax and determine the reporting route &middot; Complete the IHT400 and required schedules; arrange payment &middot; Pay any inheritance tax due by the statutory deadline &middot; Submit the IHT400 and wait for the HMRC code &middot; Apply for probate and receive the grant &middot; Place the Section 27 creditor notice &middot; Collect the assets &middot; Settle debts and creditors &middot; Finalise administration-period income tax and CGT &middot; Prepare estate accounts and make interim distributions &middot; Wait out the claims window, then make the final distribution &middot; Apply for the IHT30 clearance certificate and retain records.<br><br>
-    <strong>Support and wellbeing (40–41).</strong> Arrange bereavement support &middot; Check bereavement-related benefits.
+    <div class="section-head">
+      <div class="label">The checklist</div>
+      <div><h2>41 steps in 6 phases</h2></div>
+    </div>
+    <div class="card">
+      <h4>First days (1&ndash;5)</h4>
+      <p>Get the death verified and the MCCD issued &middot; Tell close family, friends and any employer &middot; Find the will, codicils and funeral wishes &middot; Secure the home, belongings and pets; insure the empty property &middot; Arrange the funeral.</p>
+      <h4>Registering the death (6&ndash;8)</h4>
+      <p>Register the death within 5 days and order certified copies &middot; Give the certificate for burial or cremation to the funeral director &middot; Use Tell Us Once within 28 days.</p>
+      <h4>Notifying organisations (9&ndash;19)</h4>
+      <p>Banks, building societies, NS&amp;I and Premium Bonds &middot; Pension providers, including any armed forces service pension &middot; Insurers &middot; Mortgage lender, landlord or housing association &middot; Utility suppliers &middot; Telecoms &middot; TV Licensing and subscriptions &middot; Health and care providers &middot; Employer and professional bodies &middot; Clubs and memberships &middot; Digital accounts.</p>
+      <h4>Cancel, redirect, protect (20&ndash;24)</h4>
+      <p>Cancel recurring payments &middot; Redirect post and stop marketing mail &middot; Deal with any vehicle &middot; Claim the Council Tax Class F exemption &middot; Trace forgotten assets via the free official services.</p>
+      <h4>Administering the estate (25&ndash;39)</h4>
+      <p>Confirm the executors named in the will &middot; Open an executors' bank account &middot; Value the estate &middot; Assess inheritance tax and determine the reporting route &middot; Complete the IHT400 and required schedules; arrange payment &middot; Pay any inheritance tax due by the statutory deadline &middot; Submit the IHT400 and wait for the HMRC code &middot; Apply for probate and receive the grant &middot; Place the Section 27 creditor notice &middot; Collect the assets &middot; Settle debts and creditors &middot; Finalise administration-period income tax and CGT &middot; Prepare estate accounts and make interim distributions &middot; Wait out the claims window, then make the final distribution &middot; Apply for the IHT30 clearance certificate and retain records.</p>
+      <h4>Support and wellbeing (40&ndash;41)</h4>
+      <p>Arrange bereavement support &middot; Check bereavement-related benefits.</p>
+    </div>
+
+    <div class="section-head">
+      <div class="label">Deadlines</div>
+      <div>
+        <h2>Every rule the engine applies</h2>
+        <p class="lead">Month arithmetic clamps to month-end: a death on 31 August gives an inheritance tax due date of 28 or 29 February.</p>
+      </div>
+    </div>
+    <table>
+      <tr><th>Deadline</th><th>Rule applied</th><th>Statutory basis</th></tr>
+      <tr><td>Inheritance tax payment due</td><td>End of the 6th month after the month of death</td><td class="k">IHTA 1984 s.226(1)</td></tr>
+      <tr><td>IHT400 account filing due</td><td>End of the 12th month after the month of death</td><td class="k">IHTA 1984 s.216(6)(a)</td></tr>
+      <tr><td>Section 27 claims window</td><td>2 months and 1 day from the later notice date (Gazette or local paper)</td><td class="k">Trustee Act 1925 s.27(1)</td></tr>
+      <tr><td>Instalment option</td><td>10 equal yearly instalments, first at the normal due date</td><td class="k">IHTA 1984 s.227</td></tr>
+      <tr><td>CGT on residential property sale</td><td>Completion date + 60 days</td><td class="k">FA 2019 Sch.2</td></tr>
+      <tr><td>ISA tax exemption ends</td><td>Earlier of the 3rd anniversary of death or completion of administration</td><td class="k">SI 1998/1870 reg.2(1)</td></tr>
+      <tr><td>Earliest probate application after IHT400</td><td>Submission + 20 working days (Monday to Friday)</td><td class="k">HMRC / HMCTS guidance</td></tr>
+    </table>
+    <p class="small">Raised per estate: the two IHT dates always; the Section 27 date once a creditor notice is recorded; the ISA date only if an ISA asset exists; one 60-day deadline per recorded disposal. The dashboard flags past-due deadlines and shows the soonest five.</p>
+
+    <div class="gapbox">
+      <span class="label">Known limitations, stated openly</span>
+      <ul>
+        <li>The instalment schedule and the 20-working-day probate wait are computed and tested but not yet surfaced as deadline entries.</li>
+        <li>The 20-working-day rule does not model public holidays; the code says so.</li>
+        <li>Deadline alerting is currently the dashboard's overdue flag; there is no advance-warning notification yet.</li>
+      </ul>
+    </div>
+    <div class="askbox">
+      <span class="label">For this area</span>
+      <p>Is the sequence right? Are the deadline rules and their statutory bases correct? Which warning would you insist a lay executor sees, and where?</p>
+    </div>
   </div>
 
-  <h3>The deadline engine — every rule it applies</h3>
-  <p>Derived by pure, unit-tested functions from the date of death and recorded events. Month arithmetic clamps
-  to month-end: a death on 31 August gives an inheritance tax due date of 28 or 29 February.</p>
-  <table>
-    <tr><th>Deadline</th><th>Rule applied</th><th>Statutory basis</th></tr>
-    <tr><td>Inheritance tax payment due</td><td>End of the 6th month after the month of death</td><td><code>IHTA 1984 s.226(1)</code></td></tr>
-    <tr><td>IHT400 account filing due</td><td>End of the 12th month after the month of death</td><td><code>IHTA 1984 s.216(6)(a)</code></td></tr>
-    <tr><td>Section 27 claims window</td><td>2 months and 1 day from the later notice date (Gazette or local paper)</td><td><code>Trustee Act 1925 s.27(1)</code></td></tr>
-    <tr><td>Instalment option</td><td>10 equal yearly instalments, first at the normal due date</td><td><code>IHTA 1984 s.227</code></td></tr>
-    <tr><td>CGT on residential property sale</td><td>Completion date + 60 days</td><td><code>FA 2019 Sch.2, as amended</code></td></tr>
-    <tr><td>ISA tax exemption ends</td><td>Earlier of the 3rd anniversary of death or completion of administration</td><td><code>SI 1998/1870 reg.2(1)</code></td></tr>
-    <tr><td>Earliest probate application after IHT400</td><td>Submission + 20 working days (Monday to Friday)</td><td><code>HMRC / HMCTS guidance</code></td></tr>
-  </table>
-  <p class="small">What is actually raised per estate: the two IHT dates always; the Section 27 date once a
-  creditor notice is recorded; the ISA date only if an ISA asset exists; one 60-day deadline per recorded
-  disposal. The dashboard flags past-due deadlines and shows the soonest five.</p>
-  <div class="warn-callout"><strong>Known limitations, stated openly.</strong> The instalment schedule and the
-  20-working-day probate wait are computed and tested but not yet surfaced as deadline entries. The
-  20-working-day rule does not model public holidays; the code says so. Deadline alerting is currently the
-  dashboard's overdue flag; there is no advance-warning notification yet.</div>
-  <div class="copy"><span class="label">For this area</span>
-  Is the sequence right? Are the deadline rules and their statutory bases correct? Which warning would you
-  insist a lay executor sees, and where?</div>
+  <!-- ================= 02 IHT ================= -->
+  <div class="panel" id="iht">
+    <p class="eyebrow">Area 02 &middot; <span class="chip chip-who">Private client solicitor &middot; Tax adviser</span></p>
+    <h1>The inheritance <span class="it">tax</span> logic</h1>
+    <p class="lead">Pure, deterministic, unit-tested code; no AI model is involved in any figure. For deaths on or after 1 January 2022, England and Wales. Every constant carries its source address and fetch date (6 July 2026), and a refresh flags any source that changes. If a rule here is wrong, that matters more than anything else in this tool.</p>
 
-  <!-- ============ AREA: IHT ============ -->
-  <h2 id="iht">5. Area: inheritance tax logic <span class="badge b-defer">PRIVATE CLIENT SOLICITOR &middot; TAX ADVISER</span></h2>
-  <p>Pure, deterministic, unit-tested code; no AI model is involved in any figure. If a rule here is wrong,
-  that matters more than anything else in this tool. For deaths on or after 1 January 2022, England and Wales.
-  Every constant is stored with its source address and fetch date (6 July 2026), and a refresh flags any source
-  that changes.</p>
+    <div class="section-head">
+      <div class="label">Constants</div>
+      <div><h2>The values the engine uses</h2></div>
+    </div>
+    <table>
+      <tr><th>Constant</th><th>Value</th><th>Source</th></tr>
+      <tr><td>Nil rate band (NRB)</td><td>&pound;325,000</td><td>gov.uk rates and allowances</td></tr>
+      <tr><td>Residence nil rate band (RNRB)</td><td>&pound;175,000</td><td>gov.uk RNRB guidance</td></tr>
+      <tr><td>RNRB taper threshold</td><td>&pound;2,000,000</td><td>gov.uk RNRB guidance</td></tr>
+      <tr><td>Standard rate</td><td>40%</td><td>gov.uk rates and allowances</td></tr>
+      <tr><td>Reduced charity rate</td><td>36% at a 10% charity share</td><td>gov.uk charity-rate guidance</td></tr>
+      <tr><td>Excepted: exempt-estate gross limit</td><td>&pound;3,000,000</td><td class="k">SI 2021/1167</td></tr>
+      <tr><td>Excepted: specified transfers limit</td><td>&pound;250,000</td><td class="k">SI 2021/1167</td></tr>
+      <tr><td>Excepted: trust property limit</td><td>&pound;250,000</td><td class="k">SI 2021/1167</td></tr>
+      <tr><td>Excepted: foreign property limit</td><td>&pound;100,000</td><td class="k">SI 2021/1167</td></tr>
+    </table>
 
-  <h3>The constants</h3>
-  <table>
-    <tr><th>Constant</th><th>Value</th><th>Source</th></tr>
-    <tr><td>Nil rate band (NRB)</td><td>&pound;325,000</td><td>gov.uk rates and allowances</td></tr>
-    <tr><td>Residence nil rate band (RNRB)</td><td>&pound;175,000</td><td>gov.uk RNRB guidance</td></tr>
-    <tr><td>RNRB taper threshold</td><td>&pound;2,000,000</td><td>gov.uk RNRB guidance</td></tr>
-    <tr><td>Standard rate</td><td>40%</td><td>gov.uk rates and allowances</td></tr>
-    <tr><td>Reduced charity rate</td><td>36% at a 10% charity share</td><td>gov.uk charity-rate guidance</td></tr>
-    <tr><td>Excepted: exempt-estate gross limit</td><td>&pound;3,000,000</td><td><code>SI 2021/1167</code></td></tr>
-    <tr><td>Excepted: specified transfers limit</td><td>&pound;250,000</td><td><code>SI 2021/1167</code></td></tr>
-    <tr><td>Excepted: trust property limit</td><td>&pound;250,000</td><td><code>SI 2021/1167</code></td></tr>
-    <tr><td>Excepted: foreign property limit</td><td>&pound;100,000</td><td><code>SI 2021/1167</code></td></tr>
-  </table>
-
-  <h3>The assessment calculation, as implemented</h3>
-  <pre>nrb        = 325,000 x (1 + transferred NRB %)
+    <div class="section-head">
+      <div class="label">Calculation</div>
+      <div><h2>The assessment, as implemented</h2></div>
+    </div>
+<pre>nrb        = 325,000 x (1 + transferred NRB %)
 rnrb_max   = 175,000 x (1 + transferred RNRB %)
 if net_estate > 2,000,000:
     rnrb_max = max(rnrb_max - (net_estate - 2,000,000) / 2, 0)   # the taper
@@ -209,65 +377,84 @@ rate       = 36% if charity share of baseline >= 10% else 40%
 tax        = taxable x rate        # rounded to pence, half up
 
 must_file_IHT400 = RNRB claimed  OR  estate is not excepted</pre>
-  <p>The RNRB-claimed flag can be set explicitly; if it is not, it is inferred from whether a qualifying
-  residence passes to descendants. <strong>Claiming the RNRB always forces a full IHT400</strong>, even where no
-  tax results; a dedicated guardrail test asserts this can never be bypassed.</p>
+    <p>The RNRB-claimed flag can be set explicitly; if it is not, it is inferred from whether a qualifying residence passes to descendants. <strong>Claiming the RNRB always forces a full IHT400</strong>, even where no tax results; a dedicated guardrail test asserts this can never be bypassed.</p>
 
-  <h3>The excepted-estates tests (SI 2004/2543 as amended by SI 2021/1167)</h3>
-  <p><strong>Disqualifiers first.</strong> If any of these is true, or simply unknown, the estate is not
-  excepted and the IHT400 route is required. Unknown is treated as disqualifying on purpose: the conservative
-  direction.</p>
-  <ol>
-    <li>The RNRB is claimed</li>
-    <li>Gifts with reservation of benefit exist, or the answer is unknown</li>
-    <li>Foreign assets exceed &pound;100,000, or are unknown</li>
-    <li>Settled (trust) property exceeds &pound;250,000, or is unknown</li>
-    <li>More than one trust, or the trust count is unknown, where trust property exists</li>
-    <li>Specified lifetime transfers in the 7 years before death exceed &pound;250,000, or are unknown</li>
-  </ol>
-  <p><strong>Then the two category tests:</strong></p>
-  <ul>
-    <li><strong>Low-value estate:</strong> gross estate plus gifts in the 7 years before death does not exceed the available NRB. A transferred NRB only raises this ceiling when a <em>full 100 per cent</em> transfer is claimed; a partial transfer deliberately forces the IHT400 route, mirroring the regulations.</li>
-    <li><strong>Exempt estate:</strong> gross plus gifts does not exceed &pound;3,000,000, and the net after spouse and charity exemptions does not exceed the available NRB.</li>
-  </ul>
+    <div class="section-head">
+      <div class="label">Excepted estates</div>
+      <div>
+        <h2>The tests</h2>
+        <p class="lead">SI 2004/2543 as amended by SI 2021/1167. Unknown facts are treated as disqualifying on purpose: the conservative direction.</p>
+      </div>
+    </div>
+    <h3>Disqualifiers first (any true, or unknown, forces the IHT400 route)</h3>
+    <ol>
+      <li>The RNRB is claimed</li>
+      <li>Gifts with reservation of benefit exist, or the answer is unknown</li>
+      <li>Foreign assets exceed &pound;100,000, or are unknown</li>
+      <li>Settled (trust) property exceeds &pound;250,000, or is unknown</li>
+      <li>More than one trust, or the trust count is unknown, where trust property exists</li>
+      <li>Specified lifetime transfers in the 7 years before death exceed &pound;250,000, or are unknown</li>
+    </ol>
+    <h3>Then the two category tests</h3>
+    <ul>
+      <li><strong>Low-value estate:</strong> gross estate plus gifts in the 7 years before death does not exceed the available NRB. A transferred NRB only raises this ceiling when a <em>full 100 per cent</em> transfer is claimed; a partial transfer deliberately forces the IHT400 route, mirroring the regulations.</li>
+      <li><strong>Exempt estate:</strong> gross plus gifts does not exceed &pound;3,000,000, and the net after spouse and charity exemptions does not exceed the available NRB.</li>
+    </ul>
 
-  <h3>The schedules checklist derivation</h3>
-  <table>
-    <tr><th>Estate contents</th><th>Schedule required</th></tr>
-    <tr><td>Land and buildings</td><td>IHT405</td></tr>
-    <tr><td>Bank and building society accounts, NS&amp;I</td><td>IHT406</td></tr>
-    <tr><td>Household and personal goods</td><td>IHT407</td></tr>
-    <tr><td>Listed stocks and shares</td><td>IHT411</td></tr>
-    <tr><td>Unlisted shares</td><td>IHT412</td></tr>
-    <tr><td>Gifts in the 7 years before death, or with reservation</td><td>IHT403</td></tr>
-    <tr><td>Transferred nil rate band claimed</td><td>IHT402</td></tr>
-    <tr><td>RNRB claimed</td><td>IHT435 (and IHT436 where the transferred RNRB is also claimed)</td></tr>
-  </table>
+    <div class="section-head">
+      <div class="label">Schedules</div>
+      <div><h2>The checklist derivation</h2></div>
+    </div>
+    <table>
+      <tr><th>Estate contents</th><th>Schedule required</th></tr>
+      <tr><td>Land and buildings</td><td class="k">IHT405</td></tr>
+      <tr><td>Bank and building society accounts, NS&amp;I</td><td class="k">IHT406</td></tr>
+      <tr><td>Household and personal goods</td><td class="k">IHT407</td></tr>
+      <tr><td>Listed stocks and shares</td><td class="k">IHT411</td></tr>
+      <tr><td>Unlisted shares</td><td class="k">IHT412</td></tr>
+      <tr><td>Gifts in the 7 years before death, or with reservation</td><td class="k">IHT403</td></tr>
+      <tr><td>Transferred nil rate band claimed</td><td class="k">IHT402</td></tr>
+      <tr><td>RNRB claimed</td><td class="k">IHT435 (+ IHT436 with transferred RNRB)</td></tr>
+    </table>
 
-  <h3>Re-evaluation: when the tool insists on a fresh look</h3>
-  <p>Any change to an asset, liability or estate setting recomputes the assessment. The other executors are
-  alerted (never the person who made the change, never viewers) when any of these move:</p>
-  <ul>
-    <li>Tax crosses zero in either direction</li>
-    <li>The net estate crosses the &pound;2,000,000 taper threshold in either direction</li>
-    <li>The excepted-estate status changes</li>
-    <li>The RNRB taper starts or stops biting against the residence value</li>
-    <li>Any single input figure moves by more than &pound;10,000</li>
-  </ul>
-  <div class="warn-callout"><strong>Known limitations, stated openly.</strong> Spouse and charity exempt
-  transfers are not yet derived from the beneficiary records; the engine currently sees zero exempt transfers,
-  which overstates rather than understates tax (the conservative direction); deriving them is queued. There is
-  no lifetime-gift register yet; the gifts figure is entered at assessment level. One jurisdiction is
-  implemented, behind an interface built for others to be added.</div>
-  <div class="copy"><span class="label">For this area</span>
-  Would you trust the route determination? Is the taper, transfer and excepted logic faithful to the
-  regulations? Where would this mislead a lay executor?</div>
+    <div class="section-head">
+      <div class="label">Re-evaluation</div>
+      <div><h2>When the tool insists on a fresh look</h2></div>
+    </div>
+    <p>Any change to an asset, liability or estate setting recomputes the assessment. The other executors are alerted (never the person who made the change, never viewers) when any of these move:</p>
+    <ul>
+      <li>Tax crosses zero in either direction</li>
+      <li>The net estate crosses the &pound;2,000,000 taper threshold in either direction</li>
+      <li>The excepted-estate status changes</li>
+      <li>The RNRB taper starts or stops biting against the residence value</li>
+      <li>Any single input figure moves by more than &pound;10,000</li>
+    </ul>
 
-  <!-- ============ AREA: ACCOUNTS ============ -->
-  <h2 id="accounts">6. Area: estate accounts <span class="badge b-defer">ESTATE ACCOUNTANT</span></h2>
+    <div class="gapbox">
+      <span class="label">Known limitations, stated openly</span>
+      <ul>
+        <li>Spouse and charity exempt transfers are not yet derived from the beneficiary records; the engine currently sees zero exempt transfers, which overstates rather than understates tax. Deriving them is queued.</li>
+        <li>There is no lifetime-gift register yet; the gifts figure is entered at assessment level.</li>
+        <li>One jurisdiction is implemented, behind an interface built for others to be added.</li>
+      </ul>
+    </div>
+    <div class="askbox">
+      <span class="label">For this area</span>
+      <p>Would you trust the route determination? Is the taper, transfer and excepted logic faithful to the regulations? Where would this mislead a lay executor?</p>
+    </div>
+  </div>
 
-  <h3>The four-account structure, as computed</h3>
-  <pre>net_estate       = sum of estate shares of assets
+  <!-- ================= 03 ACCOUNTS ================= -->
+  <div class="panel" id="accounts">
+    <p class="eyebrow">Area 03 &middot; <span class="chip chip-who">Estate accountant</span></p>
+    <h1>Estate <span class="it">accounts</span> and beneficiary shares</h1>
+    <p class="lead">The account structure, the exact equations, the ownership treatment and the distribution guards, as implemented.</p>
+
+    <div class="section-head">
+      <div class="label">Structure</div>
+      <div><h2>The four accounts, as computed</h2></div>
+    </div>
+<pre>net_estate       = sum of estate shares of assets
                    - deductible liabilities - funeral costs
 capital account  = net_estate + realisation gains and losses
 income account   = income received - income expenses - income tax
@@ -275,195 +462,269 @@ administration   = administration costs + inheritance tax due
 legacies total   = sum of pecuniary and specific legacies
 residue          = capital + income - administration - legacies total
 distribution     = legacies total + residue</pre>
+    <h3>Ownership treatment feeding the asset shares</h3>
+    <ul>
+      <li>Solely owned assets count in full.</li>
+      <li>Tenants-in-common assets count at the recorded percentage share.</li>
+      <li>Joint-tenancy assets count as <strong>zero</strong> in the free estate: they pass by survivorship. (They still appear in the registers and feed the tax picture as appropriate.)</li>
+    </ul>
 
-  <h3>Ownership treatment feeding the asset shares</h3>
-  <ul>
-    <li>Solely owned assets count in full.</li>
-    <li>Tenants-in-common assets count at the recorded percentage share.</li>
-    <li>Joint-tenancy assets count as <strong>zero</strong> in the free estate: they pass by survivorship. (They still appear in the registers and feed the tax picture as appropriate.)</li>
-  </ul>
+    <div class="section-head">
+      <div class="label">Balance</div>
+      <div><h2>The check that is always on screen</h2></div>
+    </div>
+    <p>The accounts are only reported as balanced when all of the following hold, to the penny:</p>
+    <ol>
+      <li>Each account equals its defining equation above.</li>
+      <li>The distribution account equals capital plus income minus administration, reached two independent ways.</li>
+      <li>The residuary entitlements sum exactly to the residue.</li>
+      <li>Each beneficiary's remaining due equals entitlement minus interim payments received.</li>
+    </ol>
+    <h3>Residuary shares and rounding</h3>
+    <ul>
+      <li>Residuary shares must sum to 1, validated at input; the accounts will not compute otherwise.</li>
+      <li>Each entitlement is the residue multiplied by the share, rounded to pence; the final beneficiary absorbs the rounding remainder so the total is exact.</li>
+      <li>Interim distributions are recorded per beneficiary; the accounts always show entitlement, received and remaining side by side.</li>
+    </ul>
 
-  <h3>The balance check that is always on screen</h3>
-  <p>The accounts are only reported as balanced when all of the following hold, to the penny:</p>
-  <ol>
-    <li>Each account equals its defining equation above.</li>
-    <li>The distribution account equals capital plus income minus administration, reached two independent ways.</li>
-    <li>The residuary entitlements sum exactly to the residue.</li>
-    <li>Each beneficiary's remaining due equals entitlement minus interim payments received.</li>
-  </ol>
+    <div class="section-head">
+      <div class="label">Distribution</div>
+      <div><h2>The guard on paying out</h2></div>
+    </div>
+    <p>"Safe to distribute" is never a stored flag a user can set. It is recomputed on every change to notices and claims, and is true only when all three hold:</p>
+    <ol>
+      <li>At least one active Section 27 creditor notice exists (The Gazette, plus a local paper where there is property).</li>
+      <li>Every active notice's claims window has closed: 2 months and 1 day from the later notice date (<span class="k" style="font-family:var(--font-mono);font-size:11px;color:var(--signal-600);">Trustee Act 1925 s.27</span>).</li>
+      <li>No claim against a notice remains open. A claim with no recorded outcome counts as open.</li>
+    </ol>
+    <p class="small">When no notice exists at all, the tool says so plainly: place the notices before distributing. The banner carrying this guard also states it is an automated check on the records held, not legal or financial advice.</p>
 
-  <h3>Residuary shares and rounding</h3>
-  <ul>
-    <li>Residuary shares must sum to 1, validated at input; the accounts will not compute otherwise.</li>
-    <li>Each entitlement is the residue multiplied by the share, rounded to pence; the final beneficiary absorbs the rounding remainder so the total is exact.</li>
-    <li>Interim distributions are recorded per beneficiary; the accounts always show entitlement, received and remaining side by side.</li>
-  </ul>
-
-  <h3>The distribution guard</h3>
-  <p>"Safe to distribute" is never a stored flag a user can set. It is recomputed on every change to notices
-  and claims, and is true only when all three hold:</p>
-  <ol>
-    <li>At least one active Section 27 creditor notice exists (The Gazette, plus a local paper where there is property).</li>
-    <li>Every active notice's claims window has closed: 2 months and 1 day from the later notice date (<code>Trustee Act 1925 s.27</code>).</li>
-    <li>No claim against a notice remains open. A claim with no recorded outcome counts as open.</li>
-  </ol>
-  <p class="small">When no notice exists at all, the tool says so plainly: place the notices before
-  distributing. The banner carrying this guard also states it is an automated check on the records held, not
-  legal or financial advice.</p>
-  <div class="warn-callout"><strong>Known limitations, stated openly.</strong> The four-account presentation is
-  one recognised layout; practitioners lay out estate accounts differently, and critique on the structure and
-  headings is actively wanted. Income is tracked at account level; there is no per-asset income apportionment
-  yet.</div>
-  <div class="copy"><span class="label">For this area</span>
-  Is the structure sound? Are the equations and the survivorship treatment right? What would you add before
-  showing these accounts to a residuary beneficiary for approval?</div>
-
-  <!-- ============ AREA: SUPPORT ============ -->
-  <h2 id="support">7. Area: bereavement support and tone <span class="badge b-defer">BEREAVEMENT ADVISER &middot; COUNSELLOR</span></h2>
-
-  <h3>The "When you need help" directory — all 17 entries</h3>
-  <p>Every phone number was checked against the organisation's own website (18 July 2026); the two that could
-  not be fully verified say "check the website" instead of guessing hours. Numbers are tap-to-dial; everything
-  listed is free to contact.</p>
-  <div class="card">
-    <strong>Someone to talk to.</strong> Samaritans (116 123, 24 hours) &middot; NHS urgent mental health help (111, 24 hours) &middot; Cruse Bereavement Support (0808 808 1677) &middot; Marie Curie Support Line (0800 090 2309) &middot; The Silver Line (0800 4 70 80 90, 24 hours) &middot; WAY Widowed and Young (online).<br><br>
-    <strong>Practical help and money.</strong> Bereavement Advice Centre (0800 634 9494) &middot; National Bereavement Service (0800 0246 121) &middot; Tell Us Once &middot; DWP Bereavement Service (0800 151 2012) &middot; Citizens Advice (0800 144 8848) &middot; Age UK Advice Line (0800 678 1602) &middot; StepChange (0800 138 1111).<br><br>
-    <strong>Armed forces families.</strong> SSAFA Forcesline (0800 260 6767) &middot; Veterans UK (0808 1914 218).<br><br>
-    <strong>Tax and probate.</strong> Probate helpline, HMCTS (0300 303 0648) &middot; HMRC Inheritance Tax helpline (0300 123 1072).
+    <div class="gapbox">
+      <span class="label">Known limitations, stated openly</span>
+      <ul>
+        <li>The four-account presentation is one recognised layout; practitioners lay out estate accounts differently, and critique on the structure and headings is actively wanted.</li>
+        <li>Income is tracked at account level; there is no per-asset income apportionment yet.</li>
+      </ul>
+    </div>
+    <div class="askbox">
+      <span class="label">For this area</span>
+      <p>Is the structure sound? Are the equations and the survivorship treatment right? What would you add before showing these accounts to a residuary beneficiary for approval?</p>
+    </div>
   </div>
-  <p class="small">The seeded checklist also carries two dedicated wellbeing steps (arranging bereavement
-  support; checking bereavement-related benefits), so support is part of the process, not a footnote.</p>
 
-  <h3>The language rules the tool holds itself to</h3>
-  <ul>
-    <li>Calm, plain UK English; short sentences and everyday words; paragraphs of three sentences or fewer.</li>
-    <li>Warm but not effusive, and never breezy about the death. No exclamation marks.</li>
-    <li>Lists over long paragraphs, because stressed people scan.</li>
-    <li>The assistant says plainly what the official guidance does not cover rather than improvising; where nothing relevant exists it declines rather than guesses.</li>
-    <li>Estimates are always labelled as estimates when the estate's own figures are discussed.</li>
-  </ul>
+  <!-- ================= 04 SUPPORT ================= -->
+  <div class="panel" id="support">
+    <p class="eyebrow">Area 04 &middot; <span class="chip chip-who">Bereavement adviser &middot; Counsellor</span></p>
+    <h1>Bereavement <span class="it">support</span> and tone</h1>
+    <p class="lead">Exactly who the tool signposts, the rules its language follows, and where the human boundaries sit.</p>
 
-  <h3>Accessibility measures</h3>
-  <ul>
-    <li>WCAG 2.2 AA is the working target: labelled progress bars, status and alert roles for dynamic content, decorative icons hidden from screen readers, visually hidden data tables behind charts.</li>
-    <li>Phone numbers render as tap-to-dial links for someone doing all of this from a phone.</li>
-  </ul>
-  <div class="warn-callout"><strong>Known limitations, stated openly.</strong> WCAG 2.2 AA is a target the
-  interface is built against, not an audited certification; an accessibility review would be genuinely valued.
-  The directory is England-and-Wales-shaped; advisers may know organisations that should be added, and the two
-  unverified numbers need confirming.</div>
-  <div class="copy"><span class="label">For this area</span>
-  Is the signposting right and complete? Would the language hold up for someone grieving? Which organisation or
-  warning is missing?</div>
+    <div class="section-head">
+      <div class="label">Directory</div>
+      <div>
+        <h2>"When you need help": all 17 entries</h2>
+        <p class="lead">Every number checked against the organisation's own website (18 July 2026); the two that could not be fully verified say "check the website" instead of guessing hours. Numbers are tap-to-dial; everything listed is free to contact.</p>
+      </div>
+    </div>
+    <div class="card">
+      <h4>Someone to talk to</h4>
+      <p>Samaritans (116 123, 24 hours) &middot; NHS urgent mental health help (111, 24 hours) &middot; Cruse Bereavement Support (0808 808 1677) &middot; Marie Curie Support Line (0800 090 2309) &middot; The Silver Line (0800 4 70 80 90, 24 hours) &middot; WAY Widowed and Young (online).</p>
+      <h4>Practical help and money</h4>
+      <p>Bereavement Advice Centre (0800 634 9494) &middot; National Bereavement Service (0800 0246 121) &middot; Tell Us Once &middot; DWP Bereavement Service (0800 151 2012) &middot; Citizens Advice (0800 144 8848) &middot; Age UK Advice Line (0800 678 1602) &middot; StepChange (0800 138 1111).</p>
+      <h4>Armed forces families</h4>
+      <p>SSAFA Forcesline (0800 260 6767) &middot; Veterans UK (0808 1914 218).</p>
+      <h4>Tax and probate</h4>
+      <p>Probate helpline, HMCTS (0300 303 0648) &middot; HMRC Inheritance Tax helpline (0300 123 1072).</p>
+    </div>
+    <p class="small">The seeded checklist also carries two dedicated wellbeing steps (arranging bereavement support; checking bereavement-related benefits), so support is part of the process, not a footnote.</p>
 
-  <!-- ============ AREA: EXPERIENCE ============ -->
-  <h2 id="experience">8. Area: executor experience <span class="badge b-defer">ANYONE WHO HAS BEEN AN EXECUTOR</span></h2>
-  <p>You know what the months actually felt like; the question is whether this would have helped, confused, or
-  missed the thing that mattered.</p>
+    <div class="section-head">
+      <div class="label">Language</div>
+      <div><h2>The rules the tool holds itself to</h2></div>
+    </div>
+    <ul>
+      <li>Calm, plain UK English; short sentences and everyday words; paragraphs of three sentences or fewer.</li>
+      <li>Warm but not effusive, and never breezy about the death. No exclamation marks.</li>
+      <li>Lists over long paragraphs, because stressed people scan.</li>
+      <li>The assistant says plainly what the official guidance does not cover rather than improvising; where nothing relevant exists it declines rather than guesses.</li>
+      <li>Estimates are always labelled as estimates when the estate's own figures are discussed.</li>
+    </ul>
+    <h3>Accessibility measures</h3>
+    <ul>
+      <li>WCAG 2.2 AA is the working target: labelled progress bars, status and alert roles for dynamic content, decorative icons hidden from screen readers, visually hidden data tables behind charts.</li>
+      <li>Phone numbers render as tap-to-dial links for someone doing all of this from a phone.</li>
+    </ul>
 
-  <h3>The dashboard: what greets you</h3>
-  <ul>
-    <li><strong>Six figures at a glance:</strong> gross estate, net estate, inheritance tax due, open tasks, organisations still to notify, costs to date.</li>
-    <li><strong>How far through you are:</strong> a labelled progress bar across the 41-step process, naming the current step.</li>
-    <li><strong>Alerts:</strong> the latest unread notifications, including when a change moves the tax position materially.</li>
-    <li><strong>Next deadlines:</strong> the soonest five statutory dates, with anything overdue flagged.</li>
-  </ul>
-
-  <h3>The twenty modules, as the sidebar presents them</h3>
-  <table>
-    <tr><th>Group</th><th>Modules</th></tr>
-    <tr><td>Overview</td><td>Dashboard</td></tr>
-    <tr><td>Records</td><td>Tasks &middot; Assets &middot; Debtors and creditors &middot; Contacts &middot; Costs &middot; Documents</td></tr>
-    <tr><td>Money and tax</td><td>Estate accounts &middot; Inheritance tax &middot; Reliefs &middot; Administration tax</td></tr>
-    <tr><td>Guidance</td><td>Knowledge library &middot; When you need help &middot; Drafts &middot; Timeline</td></tr>
-    <tr><td>Further work</td><td>Asset tracing &middot; Digital assets &middot; Veteran checklist &middot; Executor protection</td></tr>
-    <tr><td>Administration</td><td>Settings and audit</td></tr>
-  </table>
-
-  <h3>The moments the tool tries to catch</h3>
-  <ul>
-    <li>Tasks blocked by dependencies show as blocked, so effort goes where it can move.</li>
-    <li>Replacing an estimated valuation with a confirmed one updates every beneficiary share on screen, live.</li>
-    <li>Recording a residential property sale creates the 60-day tax reporting task the moment the sale is entered.</li>
-    <li>"Safe to distribute" stays blocked until the creditor notice window has closed and no claim is open.</li>
-    <li>Loss-relief windows (shares within 12 months, property within 4 years) are watched so money is not left behind.</li>
-    <li>The decision log records the significant choices permanently: once recorded, an entry cannot be edited or deleted, which is what makes it worth having.</li>
-    <li>A "When you need help" page is one click away, for the days when it is all too much.</li>
-  </ul>
-  <div class="warn-callout"><strong>Known limitations, stated openly.</strong> The tool assumes England and
-  Wales; executors elsewhere will find rules that do not apply to them. Advance deadline reminders (before a
-  date is missed, not after) are not built yet. It is a web application: executors who work on paper are not
-  served, and honest views on whether that matters are welcome.</div>
-  <div class="copy"><span class="label">For this area</span>
-  Where would you have been confused? What did your administration need that this lacks? What would have
-  actually helped at 11pm on the hard days?</div>
-
-  <!-- ============ AREA: SAFEGUARDS ============ -->
-  <h2 id="safeguards">9. Area: legal caveats and safeguards <span class="badge b-defer">SOLICITOR</span></h2>
-
-  <h3>Where the caveats appear</h3>
-  <ul>
-    <li>Every surface states the tool informs and drafts and is not legal, tax or financial advice.</li>
-    <li>The distribution guard banner carries its own wording: an automated check on the records held, not advice; take professional advice before distributing.</li>
-    <li>Draft PDF exports are marked as drafts and are never the official HMRC form.</li>
-    <li>A professional-review checkpoint sits on the tax output, switched on by default.</li>
-    <li>When the assistant cannot ground an answer in the official guidance it declines rather than guesses, and says so in those terms.</li>
-  </ul>
-
-  <h3>Human approval, enforced structurally</h3>
-  <ul>
-    <li>Every AI draft (form content, letters, narrations, task suggestions) is created together with a pending approval record in the same transaction.</li>
-    <li>Approving stamps who approved and when, permanently.</li>
-    <li>An unapproved letter cannot even be exported to PDF: the export endpoint refuses with "drafts are never sent or exported unapproved".</li>
-    <li>Automated tests assert every one of these paths creates its approval record and that artefacts remain drafts until a person approves.</li>
-  </ul>
-
-  <h3>What the AI is structurally prevented from doing</h3>
-  <p>Enforced by tests that fail the build, not by policy text:</p>
-  <ul>
-    <li>The agents' tool list is a closed allowlist of 16 read-only and draft-only tools; a test asserts the list is exactly that set and that all five agent workflows use only tools on it.</li>
-    <li>A source scan test forbids any email, payment or outbound-submission capability in the agent code: no mail libraries, no payment providers, no outbound HTTP writes.</li>
-    <li>A figures validator rejects any number in an AI narration that does not appear in the deterministic engine's snapshot; a fabricated figure fails the draft, while citations, dates and form codes are correctly ignored.</li>
-    <li>A dedicated test asserts that claiming the residence nil rate band always forces the IHT400 flag through every layer.</li>
-  </ul>
-
-  <h3>The assistant's own guardrails</h3>
-  <ul>
-    <li>Answers come only from the cached official guidance, cite the passages relied on, and end with what the guidance does not cover; a validation contract with retry enforces the format and rejects ungrounded figures.</li>
-    <li>Questions that look unrelated to estate administration pause for the user's confirmation (a deliberate fail-open design: a broken check must never block a grieving user).</li>
-    <li>A per-estate daily question ceiling (default 200) protects against runaway cost.</li>
-    <li>Both are administrator-adjustable settings, and every change is audited with before and after values.</li>
-  </ul>
-
-  <h3>Roles and the record</h3>
-  <table>
-    <tr><th>Safeguard</th><th>As implemented</th></tr>
-    <tr><td>Roles</td><td>Administrator and executor write; viewer is strictly read-only. Enforced on the server from the authenticated email; the client is never trusted. No identity means no access; the system fails closed when login is unconfigured.</td></tr>
-    <tr><td>Private records</td><td>Items marked executor-private are hidden from viewers everywhere, including search.</td></tr>
-    <tr><td>Audit trail</td><td>Immutable events for every change, approval and recompute, with before and after values; sensitive reads such as document downloads are logged too.</td></tr>
-    <tr><td>Decision log</td><td>Append-only by design: the server refuses edits and deletions of recorded decisions.</td></tr>
-    <tr><td>Data ownership</td><td>Complete open-format export of the estate; admin-only erasure with explicit confirmation, the one hard delete in the system.</td></tr>
-  </table>
-  <div class="warn-callout"><strong>Known limitations, stated openly.</strong> The caveat wording has not had
-  legal review; whether the disclaimers are sufficient, correctly placed and correctly worded is precisely what
-  this section asks a solicitor to judge. The professional-review checkpoint can be marked not-needed by the
-  executors; whether that should be harder to dismiss is an open design question.</div>
-  <div class="copy"><span class="label">For this area</span>
-  Are the caveats sufficient and correctly worded? Where would a cautious professional add a warning, a gate,
-  or a harder stop?</div>
-
-  <!-- ============ PROMISE ============ -->
-  <h2 id="promise">10. What happens to your feedback</h2>
-  <div class="ok-callout">
-    <strong>Every point gets read, answered, and either fixed, queued, or honestly declined with a reason.</strong>
-    Contributors are credited in the changelog if they wish, or kept anonymous if they prefer. If this is not
-    your world, an introduction to someone whose world it is helps just as much.
+    <div class="gapbox">
+      <span class="label">Known limitations, stated openly</span>
+      <ul>
+        <li>WCAG 2.2 AA is a target the interface is built against, not an audited certification; an accessibility review would be genuinely valued.</li>
+        <li>The directory is England-and-Wales-shaped; advisers may know organisations that should be added, and the two unverified numbers need confirming.</li>
+      </ul>
+    </div>
+    <div class="askbox">
+      <span class="label">For this area</span>
+      <p>Is the signposting right and complete? Would the language hold up for someone grieving? Which organisation or warning is missing?</p>
+    </div>
   </div>
-  <p class="small">The project: <a href="https://github.com/PaddyGilliland1/after-death-assistant">github.com/PaddyGilliland1/after-death-assistant</a>
-  &middot; MIT licensed, permanently free, no advertising, your data stays yours. AD Assistant informs and
-  drafts. It is not legal, tax or financial advice, and it is not a substitute for professional help. Its whole
-  design assumes a human decides.</p>
+
+  <!-- ================= 05 EXPERIENCE ================= -->
+  <div class="panel" id="experience">
+    <p class="eyebrow">Area 05 &middot; <span class="chip chip-who">Anyone who has been an executor</span></p>
+    <h1>The executor <span class="it">experience</span></h1>
+    <p class="lead">You know what the months actually felt like; the question is whether this would have helped, confused, or missed the thing that mattered.</p>
+
+    <div class="section-head">
+      <div class="label">Dashboard</div>
+      <div><h2>What greets you</h2></div>
+    </div>
+    <ul>
+      <li><strong>Six figures at a glance:</strong> gross estate, net estate, inheritance tax due, open tasks, organisations still to notify, costs to date.</li>
+      <li><strong>How far through you are:</strong> a labelled progress bar across the 41-step process, naming the current step.</li>
+      <li><strong>Alerts:</strong> the latest unread notifications, including when a change moves the tax position materially.</li>
+      <li><strong>Next deadlines:</strong> the soonest five statutory dates, with anything overdue flagged.</li>
+    </ul>
+
+    <div class="section-head">
+      <div class="label">Modules</div>
+      <div><h2>The twenty, as the sidebar presents them</h2></div>
+    </div>
+    <table>
+      <tr><th>Group</th><th>Modules</th></tr>
+      <tr><td class="k">Overview</td><td>Dashboard</td></tr>
+      <tr><td class="k">Records</td><td>Tasks &middot; Assets &middot; Debtors and creditors &middot; Contacts &middot; Costs &middot; Documents</td></tr>
+      <tr><td class="k">Money and tax</td><td>Estate accounts &middot; Inheritance tax &middot; Reliefs &middot; Administration tax</td></tr>
+      <tr><td class="k">Guidance</td><td>Knowledge library &middot; When you need help &middot; Drafts &middot; Timeline</td></tr>
+      <tr><td class="k">Further work</td><td>Asset tracing &middot; Digital assets &middot; Veteran checklist &middot; Executor protection</td></tr>
+      <tr><td class="k">Administration</td><td>Settings and audit</td></tr>
+    </table>
+
+    <div class="section-head">
+      <div class="label">Moments</div>
+      <div><h2>What the tool tries to catch</h2></div>
+    </div>
+    <ul>
+      <li>Tasks blocked by dependencies show as blocked, so effort goes where it can move.</li>
+      <li>Replacing an estimated valuation with a confirmed one updates every beneficiary share on screen, live.</li>
+      <li>Recording a residential property sale creates the 60-day tax reporting task the moment the sale is entered.</li>
+      <li>"Safe to distribute" stays blocked until the creditor notice window has closed and no claim is open.</li>
+      <li>Loss-relief windows (shares within 12 months, property within 4 years) are watched so money is not left behind.</li>
+      <li>The decision log records the significant choices permanently: once recorded, an entry cannot be edited or deleted, which is what makes it worth having.</li>
+      <li>A "When you need help" page is one click away, for the days when it is all too much.</li>
+    </ul>
+
+    <div class="gapbox">
+      <span class="label">Known limitations, stated openly</span>
+      <ul>
+        <li>The tool assumes England and Wales; executors elsewhere will find rules that do not apply to them.</li>
+        <li>Advance deadline reminders (before a date is missed, not after) are not built yet.</li>
+        <li>It is a web application: executors who work on paper are not served, and honest views on whether that matters are welcome.</li>
+      </ul>
+    </div>
+    <div class="askbox">
+      <span class="label">For this area</span>
+      <p>Where would you have been confused? What did your administration need that this lacks? What would have actually helped at 11pm on the hard days?</p>
+    </div>
+  </div>
+
+  <!-- ================= 06 SAFEGUARDS ================= -->
+  <div class="panel" id="safeguards">
+    <p class="eyebrow">Area 06 &middot; <span class="chip chip-who">Solicitor</span></p>
+    <h1>Legal caveats and <span class="it">safeguards</span></h1>
+    <p class="lead">Where the disclaimers sit, how human approval is enforced, what the AI is structurally prevented from doing, and what is on the record. The question is whether a cautious professional would consider it enough.</p>
+
+    <div class="section-head">
+      <div class="label">Caveats</div>
+      <div><h2>Where they appear</h2></div>
+    </div>
+    <ul>
+      <li>Every surface states the tool informs and drafts and is not legal, tax or financial advice.</li>
+      <li>The distribution guard banner carries its own wording: an automated check on the records held, not advice; take professional advice before distributing.</li>
+      <li>Draft PDF exports are marked as drafts and are never the official HMRC form.</li>
+      <li>A professional-review checkpoint sits on the tax output, switched on by default.</li>
+      <li>When the assistant cannot ground an answer in the official guidance it declines rather than guesses, and says so in those terms.</li>
+    </ul>
+
+    <div class="section-head">
+      <div class="label">Approval</div>
+      <div><h2>Human approval, enforced structurally</h2></div>
+    </div>
+    <ul>
+      <li>Every AI draft (form content, letters, narrations, task suggestions) is created together with a pending approval record in the same transaction.</li>
+      <li>Approving stamps who approved and when, permanently.</li>
+      <li>An unapproved letter cannot even be exported to PDF: the export endpoint refuses with "drafts are never sent or exported unapproved".</li>
+      <li>Automated tests assert every one of these paths creates its approval record and that artefacts remain drafts until a person approves.</li>
+    </ul>
+
+    <div class="section-head">
+      <div class="label">AI limits</div>
+      <div>
+        <h2>What the AI is structurally prevented from doing</h2>
+        <p class="lead">Enforced by tests that fail the build, not by policy text.</p>
+      </div>
+    </div>
+    <ul>
+      <li>The agents' tool list is a closed allowlist of 16 read-only and draft-only tools; a test asserts the list is exactly that set and that all five agent workflows use only tools on it.</li>
+      <li>A source scan test forbids any email, payment or outbound-submission capability in the agent code: no mail libraries, no payment providers, no outbound HTTP writes.</li>
+      <li>A figures validator rejects any number in an AI narration that does not appear in the deterministic engine's snapshot; a fabricated figure fails the draft, while citations, dates and form codes are correctly ignored.</li>
+      <li>A dedicated test asserts that claiming the residence nil rate band always forces the IHT400 flag through every layer.</li>
+      <li>The assistant answers only from the cached official guidance with a validation contract and retry; off-topic questions pause for confirmation (deliberately fail-open: a broken check must never block a grieving user); a per-estate daily ceiling (default 200) caps cost; both are audited, administrator-adjustable settings.</li>
+    </ul>
+
+    <div class="section-head">
+      <div class="label">The record</div>
+      <div><h2>Roles, audit and ownership</h2></div>
+    </div>
+    <table>
+      <tr><th>Safeguard</th><th>As implemented</th></tr>
+      <tr><td class="k">Roles</td><td>Administrator and executor write; viewer is strictly read-only. Enforced on the server from the authenticated email; the client is never trusted. No identity means no access; the system fails closed when login is unconfigured.</td></tr>
+      <tr><td class="k">Private records</td><td>Items marked executor-private are hidden from viewers everywhere, including search.</td></tr>
+      <tr><td class="k">Audit trail</td><td>Immutable events for every change, approval and recompute, with before and after values; sensitive reads such as document downloads are logged too.</td></tr>
+      <tr><td class="k">Decision log</td><td>Append-only by design: the server refuses edits and deletions of recorded decisions.</td></tr>
+      <tr><td class="k">Data ownership</td><td>Complete open-format export of the estate; admin-only erasure with explicit confirmation, the one hard delete in the system.</td></tr>
+    </table>
+
+    <div class="gapbox">
+      <span class="label">Known limitations, stated openly</span>
+      <ul>
+        <li>The caveat wording has not had legal review; whether the disclaimers are sufficient, correctly placed and correctly worded is precisely what this page asks a solicitor to judge.</li>
+        <li>The professional-review checkpoint can be marked not-needed by the executors; whether that should be harder to dismiss is an open design question.</li>
+      </ul>
+    </div>
+    <div class="askbox">
+      <span class="label">For this area</span>
+      <p>Are the caveats sufficient and correctly worded? Where would a cautious professional add a warning, a gate, or a harder stop?</p>
+    </div>
+  </div>
 
 </div>
+</main>
+
+<script>
+function showPanel(id){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('#nav a').forEach(function(a){a.classList.remove('active')});
+  var panel=document.getElementById(id);
+  if(!panel){id='overview';panel=document.getElementById(id);}
+  panel.classList.add('active');
+  var link=document.querySelector('#nav a[data-panel="'+id+'"]');
+  if(link){link.classList.add('active');}
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('#nav a').forEach(function(a){
+  a.addEventListener('click',function(e){
+    e.preventDefault();
+    var id=a.getAttribute('data-panel');
+    showPanel(id);
+    if(history.replaceState){history.replaceState(null,'','#'+id);}
+  });
+});
+(function(){
+  var id=(location.hash||'').replace('#','');
+  if(id){showPanel(id);}
+})();
+window.addEventListener('hashchange',function(){
+  showPanel((location.hash||'').replace('#',''));
+});
+</script>
 </body>
 </html>
