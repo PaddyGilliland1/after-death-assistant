@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review area: inheritance tax and the excepted-estates logic</title>
+<link rel="stylesheet" href="review.css">
+</head>
+<body>
+<main class="sheet">
+  <p class="eyebrow"><a href="../review-pack.html">AD Assistant review</a> · Area 2 of 6</p>
+  <h1>Inheritance tax and the excepted-estates logic</h1>
+  <p class="standfirst">For private client solicitors and tax advisers. This page shows the exact rules, constants and calculation the engine applies. It is pure, deterministic, unit-tested code; no AI model is involved in any figure. If a rule is wrong, that matters more than anything else in this tool.</p>
+
+  <h2>The constants, with provenance</h2>
+  <p>For deaths on or after 1 January 2022, England and Wales. Every constant is stored with its source address and fetch date (6 July 2026), and a refresh flags any source that changes.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Constant</th><th class="num">Value</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td>Nil rate band (NRB)</td><td class="num">£325,000</td><td>gov.uk rates and allowances</td></tr>
+        <tr><td>Residence nil rate band (RNRB)</td><td class="num">£175,000</td><td>gov.uk RNRB guidance</td></tr>
+        <tr><td>RNRB taper threshold</td><td class="num">£2,000,000</td><td>gov.uk RNRB guidance</td></tr>
+        <tr><td>Standard rate</td><td class="num">40%</td><td>gov.uk rates and allowances</td></tr>
+        <tr><td>Reduced charity rate</td><td class="num">36% at a 10% charity share</td><td>gov.uk charity-rate guidance</td></tr>
+        <tr><td>Excepted: exempt-estate gross limit</td><td class="num">£3,000,000</td><td class="law">SI 2021/1167</td></tr>
+        <tr><td>Excepted: specified transfers limit</td><td class="num">£250,000</td><td class="law">SI 2021/1167</td></tr>
+        <tr><td>Excepted: trust property limit</td><td class="num">£250,000</td><td class="law">SI 2021/1167</td></tr>
+        <tr><td>Excepted: foreign property limit</td><td class="num">£100,000</td><td class="law">SI 2021/1167</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>The assessment calculation, as implemented</h2>
+  <pre class="calc">nrb        = 325,000 x (1 + transferred NRB %)
+rnrb_max   = 175,000 x (1 + transferred RNRB %)
+if net_estate > 2,000,000:
+    rnrb_max = max(rnrb_max - (net_estate - 2,000,000) / 2, 0)   # the taper
+rnrb       = min(rnrb_max, value of residence passing to descendants
+                           + downsizing addition)
+allowance  = nrb + rnrb
+taxable    = max(net_estate - exempt transfers - allowance, 0)
+rate       = 36% if charity share of baseline >= 10% else 40%
+tax        = taxable x rate        # rounded to pence, half up
+
+must_file_IHT400 = RNRB claimed  OR  estate is not excepted</pre>
+  <p>The RNRB-claimed flag can be set explicitly; if it is not, it is inferred from whether a qualifying residence passes to descendants. <strong>Claiming the RNRB always forces a full IHT400</strong>, even where no tax results; a dedicated guardrail test asserts this can never be bypassed.</p>
+
+  <h2>The excepted-estates tests <span style="text-transform:none;letter-spacing:0;">(SI 2004/2543 as amended by SI 2021/1167)</span></h2>
+  <p><strong>Disqualifiers first.</strong> If any of these is true, or simply unknown, the estate is not excepted and the IHT400 route is required. Unknown is treated as disqualifying on purpose: the conservative direction.</p>
+  <ol>
+    <li>The RNRB is claimed</li>
+    <li>Gifts with reservation of benefit exist, or the answer is unknown</li>
+    <li>Foreign assets exceed £100,000, or are unknown</li>
+    <li>Settled (trust) property exceeds £250,000, or is unknown</li>
+    <li>More than one trust, or the trust count is unknown, where trust property exists</li>
+    <li>Specified lifetime transfers in the 7 years before death exceed £250,000, or are unknown</li>
+  </ol>
+  <p><strong>Then the two category tests:</strong></p>
+  <ul>
+    <li><strong>Low-value estate:</strong> gross estate plus gifts in the 7 years before death does not exceed the available NRB. A transferred NRB only raises this ceiling when a <em>full 100 per cent</em> transfer is claimed; a partial transfer deliberately forces the IHT400 route, mirroring the regulations.</li>
+    <li><strong>Exempt estate:</strong> gross plus gifts does not exceed £3,000,000, and the net after spouse and charity exemptions does not exceed the available NRB.</li>
+  </ul>
+
+  <h2>The schedules checklist derivation</h2>
+  <p>When the IHT400 route applies, the required schedules are derived from what the estate actually contains:</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Estate contents</th><th>Schedule required</th></tr></thead>
+      <tbody>
+        <tr><td>Land and buildings</td><td>IHT405</td></tr>
+        <tr><td>Bank and building society accounts, NS&amp;I</td><td>IHT406</td></tr>
+        <tr><td>Household and personal goods</td><td>IHT407</td></tr>
+        <tr><td>Listed stocks and shares</td><td>IHT411</td></tr>
+        <tr><td>Unlisted shares</td><td>IHT412</td></tr>
+        <tr><td>Gifts in the 7 years before death, or with reservation</td><td>IHT403</td></tr>
+        <tr><td>Transferred nil rate band claimed</td><td>IHT402</td></tr>
+        <tr><td>RNRB claimed</td><td>IHT435 (and IHT436 where the transferred RNRB is also claimed)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Re-evaluation: when the tool insists on a fresh look</h2>
+  <p>Any change to an asset, liability or estate setting recomputes the assessment. The other executors are alerted (never the person who made the change, never viewers) when any of these move:</p>
+  <ul>
+    <li>Tax crosses zero in either direction</li>
+    <li>The net estate crosses the £2,000,000 taper threshold in either direction</li>
+    <li>The excepted-estate status changes</li>
+    <li>The RNRB taper starts or stops biting against the residence value</li>
+    <li>Any single input figure moves by more than £10,000</li>
+  </ul>
+
+  <h2>Known limitations, stated openly</h2>
+  <div class="gaps">
+    <ul>
+      <li>Spouse and charity exempt transfers are not yet derived from the beneficiary records; the engine currently sees zero exempt transfers, which overstates rather than understates tax (the conservative direction). Deriving them is queued work.</li>
+      <li>There is no lifetime-gift register yet; gifts listed in seed data are skipped with a logged warning, and the gifts figure is entered at assessment level.</li>
+      <li>One jurisdiction is implemented, England and Wales for deaths on or after 1 January 2022, behind an interface built for others to be added.</li>
+    </ul>
+  </div>
+
+  <h2>The three questions</h2>
+  <div class="questions">
+    <p>1. What is wrong?&nbsp;&nbsp;2. What is risky?&nbsp;&nbsp;3. What is missing?</p>
+    <p class="aside">Would you trust the route determination? Is the taper, transfer and excepted logic faithful to the regulations? Where would this mislead a lay executor?</p>
+  </div>
+  <p><a href="https://github.com/PaddyGilliland1/after-death-assistant/issues/new?template=expert-feedback.yml">Send feedback through the short form</a>, or message <a href="https://www.linkedin.com/in/patrick-gilliland-0b092015/">Paddy Gilliland on LinkedIn</a>. <a href="../review-pack.html">Back to the review guide.</a></p>
+
+  <div class="foot">
+    <p>AD Assistant informs and drafts. It is not legal, tax or financial advice, and it is not a substitute for professional help.</p>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review area: legal caveats and safeguards</title>
+<link rel="stylesheet" href="review.css">
+</head>
+<body>
+<main class="sheet">
+  <p class="eyebrow"><a href="../review-pack.html">AD Assistant review</a> · Area 6 of 6</p>
+  <h1>Legal caveats and safeguards</h1>
+  <p class="standfirst">For solicitors. This page shows where the disclaimers sit, how human approval is enforced, what the AI is structurally prevented from doing, and what is on the record. The question is whether a cautious professional would consider it enough.</p>
+
+  <h2>Where the caveats appear</h2>
+  <ul>
+    <li>Every surface states the tool informs and drafts and is not legal, tax or financial advice.</li>
+    <li>The distribution guard banner carries its own wording: an automated check on the records held, not advice; take professional advice before distributing.</li>
+    <li>Draft PDF exports are marked as drafts and are never the official HMRC form.</li>
+    <li>A professional-review checkpoint sits on the tax output, switched on by default: a prompt that a near-threshold estate deserves a professional's eye before anything is submitted.</li>
+    <li>When the assistant cannot ground an answer in the official guidance it declines rather than guesses, and says so in those terms.</li>
+  </ul>
+
+  <h2>Human approval, enforced structurally</h2>
+  <ul>
+    <li>Every AI draft (form content, letters, narrations, task suggestions) is created together with a pending approval record in the same transaction.</li>
+    <li>Approving stamps who approved and when, permanently.</li>
+    <li>An unapproved letter cannot even be exported to PDF: the export endpoint refuses with "drafts are never sent or exported unapproved".</li>
+    <li>Automated tests assert every one of these paths creates its approval record and that artefacts remain drafts until a person approves.</li>
+  </ul>
+
+  <h2>What the AI is structurally prevented from doing</h2>
+  <p>These are enforced by tests that fail the build, not by policy text:</p>
+  <ul>
+    <li>The agents' tool list is a closed allowlist of 16 read-only and draft-only tools; a test asserts the list is exactly that set and that all five agent workflows use only tools on it.</li>
+    <li>A source scan test forbids any email, payment or outbound-submission capability in the agent code: no mail libraries, no payment providers, no outbound HTTP writes.</li>
+    <li>A figures validator rejects any number in an AI narration that does not appear in the deterministic engine's snapshot; a fabricated figure fails the draft, while citations, dates and form codes are correctly ignored.</li>
+    <li>A dedicated test asserts that claiming the residence nil rate band always forces the IHT400 flag through every layer.</li>
+  </ul>
+
+  <h2>The assistant's own guardrails</h2>
+  <ul>
+    <li>Answers come only from the cached official guidance, cite the passages relied on, and end with what the guidance does not cover; a validation contract with retry enforces the format and rejects ungrounded figures.</li>
+    <li>Questions that look unrelated to estate administration pause for the user's confirmation (a deliberate fail-open design: a broken check must never block a grieving user).</li>
+    <li>A per-estate daily question ceiling (default 200) protects against runaway cost; requests beyond it are refused until midnight.</li>
+    <li>Both are administrator-adjustable settings, and every change is audited with before and after values.</li>
+  </ul>
+
+  <h2>Roles and the record</h2>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Safeguard</th><th>As implemented</th></tr></thead>
+      <tbody>
+        <tr><td>Roles</td><td>Administrator and executor write; viewer is strictly read-only. Enforced on the server from the authenticated email; the client is never trusted. No identity means no access; the system fails closed when login is unconfigured.</td></tr>
+        <tr><td>Private records</td><td>Items marked executor-private are hidden from viewers everywhere, including search.</td></tr>
+        <tr><td>Audit trail</td><td>Immutable events for every change, approval and recompute, with before and after values; sensitive reads such as document downloads are logged too. Full payloads visible to executors and administrators only.</td></tr>
+        <tr><td>Decision log</td><td>Append-only by design: the server refuses edits and deletions of recorded decisions.</td></tr>
+        <tr><td>Data ownership</td><td>Complete open-format export of the estate; admin-only erasure with explicit confirmation, the one hard delete in the system.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Known limitations, stated openly</h2>
+  <div class="gaps">
+    <ul>
+      <li>The caveat wording has not had legal review; whether the disclaimers are sufficient, correctly placed and correctly worded is precisely what this page asks a solicitor to judge.</li>
+      <li>The professional-review checkpoint can be marked not-needed by the executors; whether that should be harder to dismiss is an open design question.</li>
+    </ul>
+  </div>
+
+  <h2>The three questions</h2>
+  <div class="questions">
+    <p>1. What is wrong?&nbsp;&nbsp;2. What is risky?&nbsp;&nbsp;3. What is missing?</p>
+    <p class="aside">Are the caveats sufficient and correctly worded? Where would a cautious professional add a warning, a gate, or a harder stop?</p>
+  </div>
+  <p><a href="https://github.com/PaddyGilliland1/after-death-assistant/issues/new?template=expert-feedback.yml">Send feedback through the short form</a>, or message <a href="https://www.linkedin.com/in/patrick-gilliland-0b092015/">Paddy Gilliland on LinkedIn</a>. <a href="../review-pack.html">Back to the review guide.</a></p>
+
+  <div class="foot">
+    <p>AD Assistant informs and drafts. It is not legal, tax or financial advice, and it is not a substitute for professional help.</p>
+  </div>
+</main>
+</body>
+</html>

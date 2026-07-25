@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review area: estate accounts and beneficiary shares</title>
+<link rel="stylesheet" href="review.css">
+</head>
+<body>
+<main class="sheet">
+  <p class="eyebrow"><a href="../review-pack.html">AD Assistant review</a> · Area 3 of 6</p>
+  <h1>Estate accounts and beneficiary shares</h1>
+  <p class="standfirst">For estate accountants. This page shows the account structure, the exact equations, the ownership treatment and the distribution guards as implemented. If a professional preparing estate accounts would structure or state any of it differently, that is the feedback wanted.</p>
+
+  <h2>The four-account structure, as computed</h2>
+  <pre class="calc">net_estate       = sum of estate shares of assets
+                   - deductible liabilities - funeral costs
+capital account  = net_estate + realisation gains and losses
+income account   = income received - income expenses - income tax
+administration   = administration costs + inheritance tax due
+legacies total   = sum of pecuniary and specific legacies
+residue          = capital + income - administration - legacies total
+distribution     = legacies total + residue</pre>
+
+  <h3>Ownership treatment feeding the asset shares</h3>
+  <ul>
+    <li>Solely owned assets count in full.</li>
+    <li>Tenants-in-common assets count at the recorded percentage share.</li>
+    <li>Joint-tenancy assets count as <strong>zero</strong> in the free estate: they pass by survivorship. (They still appear in the registers and feed the tax picture as appropriate.)</li>
+  </ul>
+
+  <h2>The balance check that is always on screen</h2>
+  <p>The accounts are only reported as balanced when all of the following hold, to the penny:</p>
+  <ol>
+    <li>Each account equals its defining equation above (all seven lines).</li>
+    <li>The distribution account equals capital plus income minus administration, reached two independent ways.</li>
+    <li>The residuary entitlements sum exactly to the residue.</li>
+    <li>Each beneficiary's remaining due equals entitlement minus interim payments received.</li>
+  </ol>
+
+  <h2>Residuary shares and rounding</h2>
+  <ul>
+    <li>Residuary shares must sum to 1, validated at input to a tolerance of 0.0001; the accounts will not compute otherwise.</li>
+    <li>Each residuary beneficiary's entitlement is the residue multiplied by their share, rounded to pence; the final beneficiary absorbs the rounding remainder so the total is exact to the penny.</li>
+    <li>Interim distributions are recorded per beneficiary and reduce the remaining due; the accounts always show entitlement, received and remaining side by side.</li>
+  </ul>
+
+  <h2>The distribution guard</h2>
+  <p>"Safe to distribute" is never a stored flag a user can set. It is recomputed on every change to notices and claims, and is true only when all three hold:</p>
+  <ol>
+    <li>At least one active Section 27 creditor notice exists (The Gazette, plus a local paper where there is property).</li>
+    <li>Every active notice's claims window has closed: 2 months and 1 day from the later notice date <span class="law">(Trustee Act 1925 s.27)</span>.</li>
+    <li>No claim against a notice remains open. A claim with no recorded outcome counts as open.</li>
+  </ol>
+  <p>When no notice exists at all, the tool says so plainly: place the notices before distributing. The banner carrying this guard also states it is an automated check on the records held, not legal or financial advice.</p>
+
+  <h2>Known limitations, stated openly</h2>
+  <div class="gaps">
+    <ul>
+      <li>The four-account presentation is one recognised layout; practitioners lay out estate accounts differently, and critique on the structure, headings and what beneficiaries should be shown is actively wanted.</li>
+      <li>Income is tracked at account level; there is no per-asset income apportionment yet.</li>
+    </ul>
+  </div>
+
+  <h2>The three questions</h2>
+  <div class="questions">
+    <p>1. What is wrong?&nbsp;&nbsp;2. What is risky?&nbsp;&nbsp;3. What is missing?</p>
+    <p class="aside">Is the structure sound? Are the equations and the survivorship treatment right? What would you add before showing these accounts to a residuary beneficiary for approval?</p>
+  </div>
+  <p><a href="https://github.com/PaddyGilliland1/after-death-assistant/issues/new?template=expert-feedback.yml">Send feedback through the short form</a>, or message <a href="https://www.linkedin.com/in/patrick-gilliland-0b092015/">Paddy Gilliland on LinkedIn</a>. <a href="../review-pack.html">Back to the review guide.</a></p>
+
+  <div class="foot">
+    <p>AD Assistant informs and drafts. It is not legal, tax or financial advice, and it is not a substitute for professional help.</p>
+  </div>
+</main>
+</body>
+</html>
