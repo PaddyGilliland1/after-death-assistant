@@ -8,7 +8,7 @@ Losing someone is hard enough. What follows is months of administration: probate
 
 ## Why this exists
 
-I built AD Assistant while administering my own father's estate. It is a free, open-source tool for executors in England and Wales: registers for everything, live estate accounts, a deterministic inheritance tax assessment, the official guidance cached and searchable in-app, and drafting that always ends with a human approving. Nothing is ever filed, sent or paid by the software, and no AI model ever calculates a tax figure.
+I built AD Assistant while administering a family estate. It is a free, open-source tool for executors in England and Wales: registers for everything, live estate accounts, a deterministic inheritance tax assessment, the official guidance cached and searchable in-app, and drafting that always ends with a human approving. Nothing is ever filed, sent or paid by the software, and no AI model ever calculates a tax figure.
 
 It was built from the published official guidance and one family's experience. That is a real foundation, but it is not the same as seeing hundreds of estates professionally, and it is no substitute for trade experience. That gap is exactly what this page asks you to help close.
 
